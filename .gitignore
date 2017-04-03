@@ -68,3 +68,4 @@ $RECYCLE.BIN/
 .settings/*
 target/*
 *.name
+/target/

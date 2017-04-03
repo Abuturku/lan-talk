@@ -10,7 +10,7 @@
   
   	<servlet-mapping>
 	  	<servlet-name>LANTalkServlet</servlet-name>
-  		<url-pattern>/lan-talk/*</url-pattern>
+  		<url-pattern>/*</url-pattern>
   	</servlet-mapping>
   	
 </web-app>
