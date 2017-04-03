@@ -61,3 +61,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.project
+.classpath
+*.jsdtscope
+*.prefs
+.settings/*
+target/*
+*.name
