@@ -22,6 +22,11 @@ public class Article {
 	@Column(name = "id")
 	private int id;
 	/**
+	 * Represents the user who create the article
+	 */
+	@ManyToOne(targetEntity = User.class)
+	private User user;
+	/**
 	 * Represents a list of comments from the article
 	 */
 	@OneToMany(targetEntity = Comment.class)
@@ -70,6 +75,22 @@ public class Article {
 		return this.id;
 	}
 
+	/**
+	 *
+	 * @param user
+	 *            set the {@link Article#user} who created the article
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	/**
+	 * @return the {@link Article#user} who created the article
+	 */
+	public User getUser() {
+		return this.user;
+	}
+	
 	/**
 	 *
 	 * @param text

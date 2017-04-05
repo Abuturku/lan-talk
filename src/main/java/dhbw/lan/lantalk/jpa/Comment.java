@@ -20,6 +20,11 @@ public class Comment {
 	@Column(name = "id")
 	private int id;
 	/**
+	 * Represents the article of the comment
+	 */
+	@ManyToOne(targetEntity = Article.class)
+	private Article article;
+	/**
 	 * The text of the comment
 	 */
 	@Column(name = "text")
@@ -44,6 +49,22 @@ public class Comment {
 	 */
 	public int getID() {
 		return this.id;
+	}
+
+	/**
+	 *
+	 * @param user
+	 *            set the {@link Comment#article} of the comment
+	 */
+	public void setArticle(Article article) {
+		this.article = article;
+	}
+
+	/**
+	 * @return the {@link Comment#article} of the comment
+	 */
+	public Article getArticle() {
+		return this.article;
 	}
 
 	/**
