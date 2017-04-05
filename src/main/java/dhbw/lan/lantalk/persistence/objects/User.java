@@ -1,4 +1,4 @@
-package dhbw.lan.lantalk.jpa;
+package dhbw.lan.lantalk.persistence.objects;
 
 import java.util.List;
 
