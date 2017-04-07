@@ -36,6 +36,11 @@ public class User {
 	 */
 	@OneToMany(targetEntity = Article.class)
 	private List<Article> articleList;
+	/**
+	 * Represents a list of comments the user have written
+	 */
+	@OneToMany(targetEntity = Comment.class)
+	private List<Comment> commentList;
 
 	/**
 	 * 
@@ -52,6 +57,23 @@ public class User {
 	 */
 	public List<Article> getArticleList() {
 		return this.articleList;
+	}
+
+	/**
+	 * 
+	 * @param commentList
+	 *            set the commends {@link User#commentList} the user write
+	 */
+	public void setCommentList(List<Comment> commentList) {
+		this.commentList = commentList;
+	}
+
+	/**
+	 * 
+	 * @return all commands {@link User#commentList} of the User
+	 */
+	public List<Comment> getCommentList() {
+		return this.commentList;
 	}
 
 	/**
