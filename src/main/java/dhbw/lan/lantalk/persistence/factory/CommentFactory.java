@@ -3,6 +3,11 @@ package dhbw.lan.lantalk.persistence.factory;
 import dhbw.lan.lantalk.persistence.objects.Comment;
 
 public class CommentFactory extends AFactory<Comment> {
+
+	private CommentFactory() {
+		super(Comment.class);
+	}
+
 	private static CommentFactory commentFactory;
 
 	public static synchronized CommentFactory getInstance() {
@@ -10,5 +15,13 @@ public class CommentFactory extends AFactory<Comment> {
 			commentFactory = new CommentFactory();
 		}
 		return commentFactory;
+	}
+
+	@Override
+	protected void setParameter(Comment toSet, Comment orginal) {
+		toSet.setArticle(orginal.getArticle());
+		toSet.setPoints(orginal.getPoints());
+		toSet.setText(orginal.getText());
+		toSet.setUser(orginal.getUser());
 	}
 }

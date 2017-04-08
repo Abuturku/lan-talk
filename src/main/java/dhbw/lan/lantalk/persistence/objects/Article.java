@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "article")
-public class Article {
+public class Article implements IPrimKey{
 
 	/**
 	 * Represents the primary key in database
@@ -71,6 +71,7 @@ public class Article {
 	/**
 	 * @return the {@link Article#id} of the article
 	 */
+	@Override
 	public int getID() {
 		return this.id;
 	}
@@ -103,7 +104,7 @@ public class Article {
 	/**
 	 * @return the {@link Article#text} of the article
 	 */
-	public String getText(String text) {
+	public String getText() {
 		return this.text;
 	}
 

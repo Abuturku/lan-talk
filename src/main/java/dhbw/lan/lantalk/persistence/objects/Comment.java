@@ -10,7 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "comment")
-public class Comment {
+public class Comment implements IPrimKey {
 
 	/**
 	 * Represents the primary key in database
@@ -19,6 +19,11 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private int id;
+	/**
+	 * Represents the user who create the comment
+	 */
+	@ManyToOne(targetEntity = User.class)
+	private User user;
 	/**
 	 * Represents the article of the comment
 	 */
@@ -47,8 +52,25 @@ public class Comment {
 	/**
 	 * @return the {@link Comment#id} of the comment
 	 */
+	@Override
 	public int getID() {
 		return this.id;
+	}
+
+	/**
+	 *
+	 * @param user
+	 *            set the {@link Comment#user} who created the comment
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	/**
+	 * @return the {@link Comment#user} who created the comment
+	 */
+	public User getUser() {
+		return this.user;
 	}
 
 	/**
@@ -79,7 +101,7 @@ public class Comment {
 	/**
 	 * @return the {@link Comment#text} of the comment
 	 */
-	public String getText(String text) {
+	public String getText() {
 		return this.text;
 	}
 

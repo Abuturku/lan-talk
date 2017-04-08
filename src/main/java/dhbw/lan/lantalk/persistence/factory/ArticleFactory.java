@@ -4,6 +4,10 @@ import dhbw.lan.lantalk.persistence.objects.Article;
 
 public class ArticleFactory extends AFactory<Article> {
 
+	private ArticleFactory() {
+		super(Article.class);
+	}
+
 	private static ArticleFactory articleFactory;
 
 	public static synchronized ArticleFactory getInstance() {
@@ -11,6 +15,14 @@ public class ArticleFactory extends AFactory<Article> {
 			articleFactory = new ArticleFactory();
 		}
 		return articleFactory;
+	}
+
+	@Override
+	protected void setParameter(Article toSet, Article orginal) {
+		toSet.setCommentList(orginal.getCommentList());
+		toSet.setPoints(orginal.getPoints());
+		toSet.setText(orginal.getText());
+		toSet.setUser(orginal.getUser());
 	}
 
 }
