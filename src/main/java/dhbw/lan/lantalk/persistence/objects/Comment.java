@@ -9,7 +9,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "comment")
+@Table(name = "Comment")
 public class Comment implements IPrimKey {
 
 	/**
@@ -22,22 +22,24 @@ public class Comment implements IPrimKey {
 	/**
 	 * Represents the user who create the comment
 	 */
-	@ManyToOne(targetEntity = User.class)
+	@ManyToOne//(targetEntity = User.class)
+	@JoinColumn(name = "USER_ID")
 	private User user;
 	/**
 	 * Represents the article of the comment
 	 */
-	@ManyToOne(targetEntity = Article.class)
+	@ManyToOne//(targetEntity = Article.class)
+	@JoinColumn(name = "ARTICLE_ID")
 	private Article article;
 	/**
 	 * The text of the comment
 	 */
-	@Column(name = "text")
+	@Column(name = "TEXT")
 	private String text;
 	/**
 	 * The points a comment have get
 	 */
-	@Column(name = "points")
+	@Column(name = "POINTS")
 	private int points;
 
 	/**

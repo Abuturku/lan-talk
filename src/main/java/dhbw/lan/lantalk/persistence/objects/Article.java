@@ -11,35 +11,37 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "article")
-public class Article implements IPrimKey{
+@Table(name = "Article")
+public class Article implements IPrimKey {
 
 	/**
 	 * Represents the primary key in database
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
+	@Column(name = "ID")
 	private int id;
 	/**
 	 * Represents the user who create the article
 	 */
-	@ManyToOne(targetEntity = User.class)
+	@ManyToOne//(targetEntity = User.class)
+	@JoinColumn(name = "USER_ID")
 	private User user;
 	/**
 	 * Represents a list of comments from the article
 	 */
-	@OneToMany(targetEntity = Comment.class)
+	@OneToMany//(targetEntity = Comment.class)
+	@JoinColumn(name="ARTICLE_ID", referencedColumnName="ID")
 	private List<Comment> commentList;
 	/**
 	 * The text of the article
 	 */
-	@Column(name = "text")
+	@Column(name = "TEXT")
 	private String text;
 	/**
 	 * The points a article have get
 	 */
-	@Column(name = "points")
+	@Column(name = "POINTS")
 	private int points;
 
 	/**
@@ -91,7 +93,7 @@ public class Article implements IPrimKey{
 	public User getUser() {
 		return this.user;
 	}
-	
+
 	/**
 	 *
 	 * @param text

@@ -11,7 +11,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "user")
+@Table(name = "User")
 public class User implements IPrimKey{
 
 	/**
@@ -19,27 +19,29 @@ public class User implements IPrimKey{
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
+	@Column(name = "ID")
 	private int id;
 	/**
 	 * is the name of the user
 	 */
-	@Column(name = "name")
+	@Column(name = "NAME")
 	private String name;
 	/**
 	 * The points a user have made with his articles and comments
 	 */
-	@Column(name = "points")
+	@Column(name = "POINTS")
 	private int points;
 	/**
 	 * All the articles the user have written.
 	 */
-	@OneToMany(targetEntity = Article.class)
+	@OneToMany//(targetEntity = Article.class)
+	@JoinColumn(name="USER_ID", referencedColumnName="ID")
 	private List<Article> articleList;
 	/**
 	 * Represents a list of comments the user have written
 	 */
-	@OneToMany(targetEntity = Comment.class)
+	@OneToMany//(targetEntity = Comment.class)
+	@JoinColumn(name="USER_ID", referencedColumnName="ID")
 	private List<Comment> commentList;
 
 	/**
