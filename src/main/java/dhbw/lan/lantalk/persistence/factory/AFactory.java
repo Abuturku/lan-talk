@@ -1,13 +1,18 @@
 package dhbw.lan.lantalk.persistence.factory;
 
+import java.io.Serializable;
+
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
 import dhbw.lan.lantalk.persistence.objects.IPrimKey;
 
-public abstract class AFactory<T extends IPrimKey> {
+public abstract class AFactory<T extends IPrimKey> implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8385764731346098260L;
 	/**
 	 * Is the class of the database object
 	 */
@@ -15,8 +20,8 @@ public abstract class AFactory<T extends IPrimKey> {
 	/**
 	 * Connection to database
 	 */
-	private final EntityManagerFactory entityManagerFactory;
-
+	@PersistenceContext
+	private EntityManager entityManager;
 	/**
 	 * 
 	 * @param clazz
@@ -24,7 +29,6 @@ public abstract class AFactory<T extends IPrimKey> {
 	 */
 	protected AFactory(Class<T> clazz) {
 		this.clazz = clazz;
-		this.entityManagerFactory = Persistence.createEntityManagerFactory("dhbw.lan.lantalk.persistence.factory");
 	}
 
 	/**
@@ -34,11 +38,7 @@ public abstract class AFactory<T extends IPrimKey> {
 	 *            The object to create
 	 */
 	public void create(T object) {
-		EntityManager entityManager = this.entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
 		entityManager.persist(object);
-		entityManager.getTransaction().commit();
-		entityManager.close();
 	}
 
 	/**
@@ -59,11 +59,7 @@ public abstract class AFactory<T extends IPrimKey> {
 	 * @return the object from database
 	 */
 	public T get(int id) {
-		EntityManager entitymanager = this.entityManagerFactory.createEntityManager();
-		entitymanager.getTransaction().begin();
-		T object = (T) entitymanager.find(this.clazz, id);
-		entitymanager.getTransaction().commit();
-		entitymanager.close();
+		T object = (T) entityManager.find(this.clazz, id);
 		return object;
 	}
 
@@ -75,12 +71,8 @@ public abstract class AFactory<T extends IPrimKey> {
 	 * @return new reference of the updated object
 	 */
 	public T update(T object) {
-		EntityManager entitymanager = this.entityManagerFactory.createEntityManager();
-		entitymanager.getTransaction().begin();
-		T databaseobject = entitymanager.find(this.clazz, object.getID());
+		T databaseobject = entityManager.find(this.clazz, object.getID());
 		setParameter(databaseobject, object);
-		entitymanager.getTransaction().commit();
-		entitymanager.close();
 		return databaseobject;
 	}
 
@@ -109,11 +101,7 @@ public abstract class AFactory<T extends IPrimKey> {
 	 *            Delete the object with the commit id
 	 */
 	public void delete(int id) {
-		EntityManager entitymanager = this.entityManagerFactory.createEntityManager();
-		entitymanager.getTransaction().begin();
-		T object = entitymanager.find(this.clazz, id);
-		entitymanager.remove(object);
-		entitymanager.getTransaction().commit();
-		entitymanager.close();
+		T object = entityManager.find(this.clazz, id);
+		entityManager.remove(object);
 	}
 }

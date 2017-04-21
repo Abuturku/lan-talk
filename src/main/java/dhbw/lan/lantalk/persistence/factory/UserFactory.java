@@ -4,6 +4,8 @@ import dhbw.lan.lantalk.persistence.objects.User;
 
 public class UserFactory extends AFactory<User> {
 
+	private static final long serialVersionUID = -928517708638283242L;
+
 	private UserFactory() {
 		super(User.class);
 	}

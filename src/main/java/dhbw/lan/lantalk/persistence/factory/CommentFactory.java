@@ -4,6 +4,8 @@ import dhbw.lan.lantalk.persistence.objects.Comment;
 
 public class CommentFactory extends AFactory<Comment> {
 
+	private static final long serialVersionUID = -7117587465443453557L;
+
 	private CommentFactory() {
 		super(Comment.class);
 	}
