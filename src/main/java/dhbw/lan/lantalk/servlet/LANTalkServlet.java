@@ -17,8 +17,8 @@ public class LANTalkServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.getWriter().append("Hello World!");
 
-		User user = new User();
-		user.setName("Niklas");
-		UserFactory.getInstance().create(user);
+//		User user = new User();
+//		user.setName("Niklas");
+//		UserFactory.getInstance().create(user);
 	}
 }

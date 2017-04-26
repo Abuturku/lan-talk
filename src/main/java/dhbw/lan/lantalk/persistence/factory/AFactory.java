@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import dhbw.lan.lantalk.persistence.objects.IPrimKey;
 
-public abstract class AFactory<T extends IPrimKey> implements Serializable{
+public abstract class AFactory<T extends IPrimKey> implements Serializable {
 
 	/**
 	 * 
@@ -22,6 +23,7 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable{
 	 */
 	@PersistenceContext
 	private EntityManager entityManager;
+
 	/**
 	 * 
 	 * @param clazz
@@ -37,6 +39,7 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable{
 	 * @param object
 	 *            The object to create
 	 */
+	@Transactional
 	public void create(T object) {
 		entityManager.persist(object);
 	}
@@ -49,7 +52,7 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable{
 	 * @return the actual object from database
 	 */
 	public T get(T object) {
-		return get(object.getID());
+		return reattach(object);
 	}
 
 	/**
@@ -58,6 +61,7 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable{
 	 *            the id of the object in the database
 	 * @return the object from database
 	 */
+	@Transactional
 	public T get(int id) {
 		T object = (T) entityManager.find(this.clazz, id);
 		return object;
@@ -70,21 +74,11 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable{
 	 *            The current object
 	 * @return new reference of the updated object
 	 */
+	@Transactional
 	public T update(T object) {
-		T databaseobject = entityManager.find(this.clazz, object.getID());
-		setParameter(databaseobject, object);
-		return databaseobject;
+		T databaseobject = reattach(object);
+		return this.entityManager.merge(databaseobject);
 	}
-
-	/**
-	 * Transfer parameter between classes
-	 * 
-	 * @param toSet
-	 *            Class were the parameter should be set
-	 * @param orginal
-	 *            Class from were the parameter will be taken
-	 */
-	protected abstract void setParameter(T toSet, T orginal);
 
 	/**
 	 * 
@@ -92,7 +86,7 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable{
 	 *            Delete the object in the database
 	 */
 	public void delete(T object) {
-		delete(object.getID());
+		this.entityManager.remove(reattach(object));
 	}
 
 	/**
@@ -100,8 +94,20 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable{
 	 * @param id
 	 *            Delete the object with the commit id
 	 */
+	@Transactional
 	public void delete(int id) {
 		T object = entityManager.find(this.clazz, id);
 		entityManager.remove(object);
+	}
+
+	/**
+	 * If the instance of object is not a managed resource it will be reattached
+	 * 
+	 * @param object
+	 *            to be reattached
+	 * @return managed resource;
+	 */
+	public T reattach(T object) {
+		return this.entityManager.contains(object) ? object : get(object);
 	}
 }

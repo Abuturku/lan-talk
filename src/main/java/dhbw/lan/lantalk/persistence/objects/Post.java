@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "Article")
-public class Article implements IPrimKey {
+public class Post implements IPrimKey {
 
 	/**
 	 * Represents the primary key in database
@@ -24,14 +24,19 @@ public class Article implements IPrimKey {
 	/**
 	 * Represents the user who create the article
 	 */
-	@ManyToOne//(targetEntity = User.class)
+	@ManyToOne // (targetEntity = User.class)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	/**
+	 * Represents the create time of the article
+	 */
+	@Column(name = "TIME")
+	private long time;
+	/**
 	 * Represents a list of comments from the article
 	 */
-	@OneToMany//(targetEntity = Comment.class)
-	@JoinColumn(name="ARTICLE_ID", referencedColumnName="ID")
+	@OneToMany // (targetEntity = Comment.class)
+	@JoinColumn(name = "ARTICLE_ID", referencedColumnName = "ID")
 	private List<Comment> commentList;
 	/**
 	 * The text of the article
@@ -47,7 +52,7 @@ public class Article implements IPrimKey {
 	/**
 	 * 
 	 * @param commentList
-	 *            set the commends in {@link Article#commentList} of the article
+	 *            set the commends in {@link Post#commentList} of the article
 	 */
 	public void setCommentList(List<Comment> commentList) {
 		this.commentList = commentList;
@@ -55,7 +60,7 @@ public class Article implements IPrimKey {
 
 	/**
 	 * 
-	 * @return the all commands {@link Article#commentList} of the article
+	 * @return the all commands {@link Post#commentList} of the article
 	 */
 	public List<Comment> getCommentList() {
 		return this.commentList;
@@ -64,14 +69,14 @@ public class Article implements IPrimKey {
 	/**
 	 *
 	 * @param id
-	 *            set the {@link Article#id} of the article
+	 *            set the {@link Post#id} of the article
 	 */
 	public void setID(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the {@link Article#id} of the article
+	 * @return the {@link Post#id} of the article
 	 */
 	@Override
 	public int getID() {
@@ -81,14 +86,14 @@ public class Article implements IPrimKey {
 	/**
 	 *
 	 * @param user
-	 *            set the {@link Article#user} who created the article
+	 *            set the {@link Post#user} who created the article
 	 */
 	public void setUser(User user) {
 		this.user = user;
 	}
 
 	/**
-	 * @return the {@link Article#user} who created the article
+	 * @return the {@link Post#user} who created the article
 	 */
 	public User getUser() {
 		return this.user;
@@ -97,14 +102,14 @@ public class Article implements IPrimKey {
 	/**
 	 *
 	 * @param text
-	 *            set the {@link Article#text} of the article
+	 *            set the {@link Post#text} of the article
 	 */
 	public void setText(String text) {
 		this.text = text;
 	}
 
 	/**
-	 * @return the {@link Article#text} of the article
+	 * @return the {@link Post#text} of the article
 	 */
 	public String getText() {
 		return this.text;
@@ -113,16 +118,32 @@ public class Article implements IPrimKey {
 	/**
 	 *
 	 * @param points
-	 *            set the {@link Article#points} of the article
+	 *            set the {@link Post#points} of the article
 	 */
 	public void setPoints(int points) {
 		this.points = points;
 	}
 
 	/**
-	 * @return the {@link Article#points} of the article
+	 * @return the {@link Post#points} of the article
 	 */
 	public int getPoints() {
 		return this.points;
+	}
+
+	/**
+	 *
+	 * @param time
+	 *            set the {@link Post#time} of the article
+	 */
+	public void setTime(long time) {
+		this.time = time;
+	}
+
+	/**
+	 * @return the {@link Post#time} of the article
+	 */
+	public long getTime() {
+		return this.time;
 	}
 }

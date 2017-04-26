@@ -1,30 +1,18 @@
 package dhbw.lan.lantalk.persistence.factory;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Named;
+
 import dhbw.lan.lantalk.persistence.objects.User;
 
+@Named("userFactory")
+@Dependent
 public class UserFactory extends AFactory<User> {
 
 	private static final long serialVersionUID = -928517708638283242L;
 
-	private UserFactory() {
+	public UserFactory() {
 		super(User.class);
-	}
-
-	private static UserFactory userFactory;
-
-	public static synchronized UserFactory getInstance() {
-		if (userFactory == null) {
-			userFactory = new UserFactory();
-		}
-		return userFactory;
-	}
-
-	@Override
-	protected void setParameter(User toSet, User orginal) {
-		toSet.setArticleList(orginal.getArticleList());
-		toSet.setCommentList(orginal.getCommentList());
-		toSet.setName(orginal.getName());
-		toSet.setPoints(orginal.getPoints());
 	}
 
 }

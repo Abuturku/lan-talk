@@ -22,20 +22,25 @@ public class Comment implements IPrimKey {
 	/**
 	 * Represents the user who create the comment
 	 */
-	@ManyToOne//(targetEntity = User.class)
+	@ManyToOne // (targetEntity = User.class)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	/**
 	 * Represents the article of the comment
 	 */
-	@ManyToOne//(targetEntity = Article.class)
+	@ManyToOne // (targetEntity = Article.class)
 	@JoinColumn(name = "ARTICLE_ID")
-	private Article article;
+	private Post article;
 	/**
 	 * The text of the comment
 	 */
 	@Column(name = "TEXT")
 	private String text;
+	/**
+	 * Represents the create time of the comment
+	 */
+	@Column(name = "TIME")
+	private long time;
 	/**
 	 * The points a comment have get
 	 */
@@ -80,14 +85,14 @@ public class Comment implements IPrimKey {
 	 * @param user
 	 *            set the {@link Comment#article} of the comment
 	 */
-	public void setArticle(Article article) {
+	public void setArticle(Post article) {
 		this.article = article;
 	}
 
 	/**
 	 * @return the {@link Comment#article} of the comment
 	 */
-	public Article getArticle() {
+	public Post getArticle() {
 		return this.article;
 	}
 
@@ -121,5 +126,21 @@ public class Comment implements IPrimKey {
 	 */
 	public int getPoints() {
 		return this.points;
+	}
+
+	/**
+	 *
+	 * @param time
+	 *            set the {@link Comment#time} of the comment
+	 */
+	public void setTime(long time) {
+		this.time = time;
+	}
+
+	/**
+	 * @return the {@link Comment#time} of the comment
+	 */
+	public long getTime() {
+		return this.time;
 	}
 }

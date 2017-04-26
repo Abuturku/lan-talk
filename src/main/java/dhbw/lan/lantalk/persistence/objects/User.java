@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "User")
-public class User implements IPrimKey{
+public class User implements IPrimKey {
 
 	/**
 	 * Represents the primary key in database
@@ -27,6 +27,17 @@ public class User implements IPrimKey{
 	@Column(name = "NAME")
 	private String name;
 	/**
+	 * the rang of the user
+	 */
+	@Column(name = "RANG")
+	@Enumerated(EnumType.STRING)
+	private Rang rang;
+	/**
+	 * Represents the registrationtime
+	 */
+	@Column(name = "REGTIME")
+	private long regTime;
+	/**
 	 * The points a user have made with his articles and comments
 	 */
 	@Column(name = "POINTS")
@@ -34,14 +45,14 @@ public class User implements IPrimKey{
 	/**
 	 * All the articles the user have written.
 	 */
-	@OneToMany//(targetEntity = Article.class)
-	@JoinColumn(name="USER_ID", referencedColumnName="ID")
-	private List<Article> articleList;
+	@OneToMany // (targetEntity = Article.class)
+	@JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+	private List<Post> articleList;
 	/**
 	 * Represents a list of comments the user have written
 	 */
-	@OneToMany//(targetEntity = Comment.class)
-	@JoinColumn(name="USER_ID", referencedColumnName="ID")
+	@OneToMany // (targetEntity = Comment.class)
+	@JoinColumn(name = "USER_ID", referencedColumnName = "ID")
 	private List<Comment> commentList;
 
 	/**
@@ -49,7 +60,7 @@ public class User implements IPrimKey{
 	 * @param articleList
 	 *            set the {@link User#articleList} of the User
 	 */
-	public void setArticleList(List<Article> articleList) {
+	public void setArticleList(List<Post> articleList) {
 		this.articleList = articleList;
 	}
 
@@ -57,7 +68,7 @@ public class User implements IPrimKey{
 	 * 
 	 * @return the {@link User#articleList} of the user
 	 */
-	public List<Article> getArticleList() {
+	public List<Post> getArticleList() {
 		return this.articleList;
 	}
 
@@ -125,5 +136,37 @@ public class User implements IPrimKey{
 	 */
 	public int getPoints() {
 		return this.points;
+	}
+
+	/**
+	 *
+	 * @param rang
+	 *            set the {@link User#rang} of the user
+	 */
+	public void setRang(Rang rang) {
+		this.rang = rang;
+	}
+
+	/**
+	 * @return the {@link User#rang} of the user
+	 */
+	public Rang getRang() {
+		return this.rang;
+	}
+
+	/**
+	 *
+	 * @param time
+	 *            set the {@link User#regTime} of the user
+	 */
+	public void setTime(long time) {
+		this.regTime = time;
+	}
+
+	/**
+	 * @return the {@link User#regTime} of the user
+	 */
+	public long getTime() {
+		return this.regTime;
 	}
 }
