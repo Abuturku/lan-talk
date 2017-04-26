@@ -159,14 +159,14 @@ public class User implements IPrimKey {
 	 * @param time
 	 *            set the {@link User#regTime} of the user
 	 */
-	public void setTime(long time) {
+	public void setRegTime(long time) {
 		this.regTime = time;
 	}
 
 	/**
 	 * @return the {@link User#regTime} of the user
 	 */
-	public long getTime() {
+	public long getRegTime() {
 		return this.regTime;
 	}
 }
