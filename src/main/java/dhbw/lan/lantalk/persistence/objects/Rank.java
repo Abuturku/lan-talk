@@ -1,5 +1,5 @@
 package dhbw.lan.lantalk.persistence.objects;
 
-public enum Rang {
+public enum Rank {
 	Admin, Mod, Sup, User;
 }

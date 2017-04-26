@@ -27,11 +27,11 @@ public class User implements IPrimKey {
 	@Column(name = "NAME")
 	private String name;
 	/**
-	 * the rang of the user
+	 * the rank of the user
 	 */
-	@Column(name = "RANG")
+	@Column(name = "RANK")
 	@Enumerated(EnumType.STRING)
-	private Rang rang;
+	private Rank rank;
 	/**
 	 * Represents the registrationtime
 	 */
@@ -140,18 +140,18 @@ public class User implements IPrimKey {
 
 	/**
 	 *
-	 * @param rang
-	 *            set the {@link User#rang} of the user
+	 * @param rank
+	 *            set the {@link User#rank} of the user
 	 */
-	public void setRang(Rang rang) {
-		this.rang = rang;
+	public void setRank(Rank rank) {
+		this.rank = rank;
 	}
 
 	/**
-	 * @return the {@link User#rang} of the user
+	 * @return the {@link User#rank} of the user
 	 */
-	public Rang getRang() {
-		return this.rang;
+	public Rank getRank() {
+		return this.rank;
 	}
 
 	/**
