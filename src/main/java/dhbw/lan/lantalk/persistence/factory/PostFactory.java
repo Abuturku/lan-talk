@@ -11,7 +11,7 @@ public class PostFactory extends AFactory<Post> {
 
 	private static final long serialVersionUID = 6301412543332910585L;
 
-	private PostFactory() {
+	public PostFactory() {
 		super(Post.class);
 	}
 
