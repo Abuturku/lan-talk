@@ -22,49 +22,43 @@ public class User implements IPrimKey {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
 	private int id;
-	
-	
+
 	/**
 	 * The name of the user
 	 */
 	@Column(name = "NAME")
 	private String name;
-	
-	
+
 	/**
 	 * The rank of the user
 	 */
 	@Column(name = "RANK")
 	@Enumerated(EnumType.STRING)
 	private Rank rank;
-	
-	
+
 	/**
 	 * Represents the registrationtime
 	 */
 	@Column(name = "REGTIME")
 	private long regTime;
-	
-	
+
 	/**
 	 * The points a user has made with his articles and comments
 	 */
 	@Column(name = "POINTS")
 	private int points;
-	
-	
+
 	/**
 	 * All the articles the user has written.
 	 */
-	@OneToMany // (targetEntity = Article.class)
+	@OneToMany
 	@JoinColumn(name = "USER_ID", referencedColumnName = "ID")
 	private List<Post> postList;
-	
-	
+
 	/**
 	 * Represents a list of comments the user has written
 	 */
-	@OneToMany // (targetEntity = Comment.class)
+	@OneToMany
 	@JoinColumn(name = "USER_ID", referencedColumnName = "ID")
 	private List<Comment> commentList;
 

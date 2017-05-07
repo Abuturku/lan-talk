@@ -15,13 +15,4 @@ public class PostFactory extends AFactory<Post> {
 		super(Post.class);
 	}
 
-	@Override
-	protected void setParameter(Post toSet, Post orginal) {
-		toSet.setCommentList(orginal.getCommentList());
-		toSet.setPoints(orginal.getPoints());
-		toSet.setText(orginal.getText());
-		toSet.setUser(orginal.getUser());
-		toSet.setTime(orginal.getTime());
-	}
-
 }
