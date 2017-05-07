@@ -9,7 +9,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "Comment")
+@Table(name = "Comments")
 public class Comment implements IPrimKey {
 
 	/**
@@ -60,7 +60,7 @@ public class Comment implements IPrimKey {
 	 * @return the {@link Comment#id} of the comment
 	 */
 	@Override
-	public int getID() {
+	public int getId() {
 		return this.id;
 	}
 

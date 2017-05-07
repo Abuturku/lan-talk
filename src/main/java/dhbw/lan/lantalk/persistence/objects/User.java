@@ -10,46 +10,59 @@ import javax.persistence.*;
  * @author Niklas Nikisch
  *
  */
+
 @Entity
-@Table(name = "User")
+@Table(name = "Users")
 public class User implements IPrimKey {
 
 	/**
-	 * Represents the primary key in database
+	 * Represents the primary key in the database
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
 	private int id;
+	
+	
 	/**
-	 * is the name of the user
+	 * The name of the user
 	 */
 	@Column(name = "NAME")
 	private String name;
+	
+	
 	/**
-	 * the rank of the user
+	 * The rank of the user
 	 */
 	@Column(name = "RANK")
 	@Enumerated(EnumType.STRING)
 	private Rank rank;
+	
+	
 	/**
 	 * Represents the registrationtime
 	 */
 	@Column(name = "REGTIME")
 	private long regTime;
+	
+	
 	/**
-	 * The points a user have made with his articles and comments
+	 * The points a user has made with his articles and comments
 	 */
 	@Column(name = "POINTS")
 	private int points;
+	
+	
 	/**
-	 * All the articles the user have written.
+	 * All the articles the user has written.
 	 */
 	@OneToMany // (targetEntity = Article.class)
 	@JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-	private List<Post> articleList;
+	private List<Post> postList;
+	
+	
 	/**
-	 * Represents a list of comments the user have written
+	 * Represents a list of comments the user has written
 	 */
 	@OneToMany // (targetEntity = Comment.class)
 	@JoinColumn(name = "USER_ID", referencedColumnName = "ID")
@@ -57,25 +70,25 @@ public class User implements IPrimKey {
 
 	/**
 	 * 
-	 * @param articleList
-	 *            set the {@link User#articleList} of the User
+	 * @param postList
+	 *            Sets the {@link User#postList} of the User
 	 */
-	public void setArticleList(List<Post> articleList) {
-		this.articleList = articleList;
+	public void setPostList(List<Post> postList) {
+		this.postList = postList;
 	}
 
 	/**
 	 * 
-	 * @return the {@link User#articleList} of the user
+	 * @return {@link User#postList} of the user
 	 */
-	public List<Post> getArticleList() {
-		return this.articleList;
+	public List<Post> getPostList() {
+		return this.postList;
 	}
 
 	/**
 	 * 
 	 * @param commentList
-	 *            set the commends {@link User#commentList} the user write
+	 *            Sets the comments {@link User#commentList} the user wrote
 	 */
 	public void setCommentList(List<Comment> commentList) {
 		this.commentList = commentList;
@@ -83,7 +96,7 @@ public class User implements IPrimKey {
 
 	/**
 	 * 
-	 * @return all commands {@link User#commentList} of the User
+	 * @return All comments {@link User#commentList} of the User
 	 */
 	public List<Comment> getCommentList() {
 		return this.commentList;
@@ -92,31 +105,31 @@ public class User implements IPrimKey {
 	/**
 	 *
 	 * @param id
-	 *            set the {@link User#id} of the user
+	 *            Sets the {@link User#id} of the user
 	 */
 	public void setID(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the {@link User#id} of the user
+	 * @return The {@link User#id} of the user
 	 */
 	@Override
-	public int getID() {
+	public int getId() {
 		return this.id;
 	}
 
 	/**
 	 *
 	 * @param name
-	 *            set the {@link User#name} of the user
+	 *            Sets the {@link User#name} of the user
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @return the {@link User#name} of the user
+	 * @return The {@link User#name} of the user
 	 */
 	public String getName() {
 		return this.name;
@@ -125,14 +138,14 @@ public class User implements IPrimKey {
 	/**
 	 *
 	 * @param points
-	 *            set the {@link User#points} of the user
+	 *            Sets the {@link User#points} of the user
 	 */
 	public void setPoints(int points) {
 		this.points = points;
 	}
 
 	/**
-	 * @return the {@link User#points} of the user
+	 * @return The {@link User#points} of the user
 	 */
 	public int getPoints() {
 		return this.points;
@@ -141,14 +154,14 @@ public class User implements IPrimKey {
 	/**
 	 *
 	 * @param rank
-	 *            set the {@link User#rank} of the user
+	 *            Set the {@link User#rank} of the user
 	 */
 	public void setRank(Rank rank) {
 		this.rank = rank;
 	}
 
 	/**
-	 * @return the {@link User#rank} of the user
+	 * @return The {@link User#rank} of the user
 	 */
 	public Rank getRank() {
 		return this.rank;
@@ -157,14 +170,14 @@ public class User implements IPrimKey {
 	/**
 	 *
 	 * @param time
-	 *            set the {@link User#regTime} of the user
+	 *            Sets the {@link User#regTime} of the user
 	 */
 	public void setRegTime(long time) {
 		this.regTime = time;
 	}
 
 	/**
-	 * @return the {@link User#regTime} of the user
+	 * @return The {@link User#regTime} of the user
 	 */
 	public long getRegTime() {
 		return this.regTime;

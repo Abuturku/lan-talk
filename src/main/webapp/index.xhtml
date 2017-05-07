@@ -1,16 +1,56 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:ui="http://java.sun.com/jsf/facelets" 
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
-	
+
 	<ui:composition template="/templates/basic.xhtml">
 		<ui:define name="content">
-			<p>Ein p-Tag</p>
+			<h:form>
+				<p>Ein p-Tag</p>
+				<h:outputText value="#{userManagedBean.userId}" />
+				<br/>
+				<h:inputText value="#{userManagedBean.userName}"/>
+				<h:commandButton action="#{userManagedBean.createUser()}" value="User anlegen" />
+			</h:form>
+			<br/>
+			<h:form>
+				<h:outputText value="Post erstellen"/>
+				<br/>
+				<h:inputText value="#{postManagedBean.newPostText}"/>
+				<h:commandButton action="#{postManagedBean.createPost}" value="Posten">
+					<f:param name="userId" value="#{userManagedBean.userId}"/>
+				</h:commandButton>
+			</h:form>
+			
+			<h:form>
+				<p:dataScroller value="#{postManagedBean.allPosts}" var="post" chunkSize="20">
+					<f:facet name="header">
+						Alle Posts
+					</f:facet>
+					
+					<h:panelGrid columns="4" style="width:100%" cellpadding="5">
+							<h:outputText value="#{post.text}" />
+							
+							<h:outputText value="#{post.points}"/>
+							
+							<h:commandButton action="#{postManagedBean.upvotePost}" value="+">
+								<f:param name="postId" value="#{post.id}"/>
+							</h:commandButton>
+							
+							<h:commandButton action="#{postManagedBean.downvotePost}" value="-">
+								<f:param name="postId" value="#{post.id}"/>
+							</h:commandButton>
+							
+					</h:panelGrid>
+				</p:dataScroller>
+			</h:form>
+			
+			
 		</ui:define>
-	</ui:composition>
-	
+</ui:composition>
+
 </html>
