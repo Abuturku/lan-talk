@@ -21,44 +21,38 @@ public class Post implements IPrimKey {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
 	private int id;
-	
-	
+
 	/**
 	 * Represents the user who created the post
 	 */
 	@ManyToOne // (targetEntity = User.class)
 	@JoinColumn(name = "USER_ID")
 	private User user;
-	
-	
+
 	/**
 	 * Represents the creation time of the post
 	 */
 	@Column(name = "TIME")
 	private long time;
-	
-	
+
 	/**
 	 * Represents a list of comments of the post
 	 */
 	@OneToMany // (targetEntity = Comment.class)
 	@JoinColumn(name = "ARTICLE_ID", referencedColumnName = "ID")
 	private List<Comment> commentList;
-	
-	
+
 	/**
 	 * The text of the post
 	 */
 	@Column(name = "TEXT")
 	private String text;
-	
-	
+
 	/**
 	 * The points a post has gotten
 	 */
 	@Column(name = "POINTS")
 	private int points;
-	
 
 	/**
 	 * 
@@ -68,7 +62,6 @@ public class Post implements IPrimKey {
 	public void setCommentList(List<Comment> commentList) {
 		this.commentList = commentList;
 	}
-	
 
 	/**
 	 * 
@@ -77,7 +70,6 @@ public class Post implements IPrimKey {
 	public List<Comment> getCommentList() {
 		return this.commentList;
 	}
-	
 
 	/**
 	 *
@@ -87,7 +79,6 @@ public class Post implements IPrimKey {
 	public void setID(int id) {
 		this.id = id;
 	}
-	
 
 	/**
 	 * @return the {@link Post#id} of the post
@@ -96,7 +87,6 @@ public class Post implements IPrimKey {
 	public int getId() {
 		return this.id;
 	}
-	
 
 	/**
 	 *
@@ -106,7 +96,6 @@ public class Post implements IPrimKey {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
 
 	/**
 	 * @return the {@link Post#user} who created the post
@@ -114,7 +103,6 @@ public class Post implements IPrimKey {
 	public User getUser() {
 		return this.user;
 	}
-	
 
 	/**
 	 *
@@ -125,14 +113,12 @@ public class Post implements IPrimKey {
 		this.text = text;
 	}
 
-	
 	/**
 	 * @return the {@link Post#text} of the post
 	 */
 	public String getText() {
 		return this.text;
 	}
-	
 
 	/**
 	 *
@@ -142,7 +128,6 @@ public class Post implements IPrimKey {
 	public void setPoints(int points) {
 		this.points = points;
 	}
-	
 
 	/**
 	 * @return the {@link Post#points} of the post
@@ -150,7 +135,6 @@ public class Post implements IPrimKey {
 	public int getPoints() {
 		return this.points;
 	}
-	
 
 	/**
 	 *
@@ -160,7 +144,6 @@ public class Post implements IPrimKey {
 	public void setTime(long time) {
 		this.time = time;
 	}
-	
 
 	/**
 	 * @return the {@link Post#time} of the post

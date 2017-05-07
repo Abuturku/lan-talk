@@ -1,9 +1,11 @@
 package dhbw.lan.lantalk.persistence.factory;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
 import javax.transaction.Transactional;
 
 import dhbw.lan.lantalk.persistence.objects.IPrimKey;
@@ -53,6 +55,13 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable {
 	 */
 	public T get(T object) {
 		return reattach(object);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<T> getAll() {
+		return entityManager.createQuery("SELECT x FROM " + clazz.getAnnotation(Table.class).name() + " x")
+				.getResultList();
 	}
 
 	/**
