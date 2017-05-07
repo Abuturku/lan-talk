@@ -44,6 +44,9 @@ public class TextComponent implements IPrimKey {
 	@JoinColumn(name = "POINT_ID", referencedColumnName = "ID")
 	private List<Point> pointList;
 
+	
+	private int votes;
+	
 	/**
 	 * 
 	 * @param commentList
@@ -52,6 +55,7 @@ public class TextComponent implements IPrimKey {
 	 */
 	public void setPointList(List<Point> pointList) {
 		this.pointList = pointList;
+		updateVotes();
 	}
 
 	/**
@@ -118,8 +122,14 @@ public class TextComponent implements IPrimKey {
 	 *            add a Point to {@link TextComponent#pointList} of the
 	 *            text-component
 	 */
-	public void addPoint(Point points) {
-		this.pointList.add(points);
+	public void addPoint(Point point) {
+		if (point.isUpVote()) {
+			this.votes++;
+		}else{
+			this.votes--;
+		}
+		
+		this.pointList.add(point);
 	}
 
 	/**
@@ -137,4 +147,21 @@ public class TextComponent implements IPrimKey {
 	public long getTime() {
 		return this.time;
 	}
+	
+	public int getVotes() {
+		return votes;
+	}
+	
+	private void updateVotes(){
+		this.votes = 0;
+		
+		for (int i = 0; i < pointList.size(); i++) {
+			if (pointList.get(i).isUpVote()) {
+				votes++;
+			}else{
+				votes--;
+			}
+		}
+	}
+	
 }

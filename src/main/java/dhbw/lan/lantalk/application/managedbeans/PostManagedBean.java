@@ -11,8 +11,10 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import dhbw.lan.lantalk.persistence.factory.CommentFactory;
+import dhbw.lan.lantalk.persistence.factory.PointFactory;
 import dhbw.lan.lantalk.persistence.factory.PostFactory;
 import dhbw.lan.lantalk.persistence.factory.UserFactory;
+import dhbw.lan.lantalk.persistence.objects.Point;
 import dhbw.lan.lantalk.persistence.objects.Post;
 
 @ManagedBean
@@ -33,6 +35,9 @@ public class PostManagedBean implements Serializable{
 	@Inject
 	private UserFactory userFactory;
 	
+	@Inject
+	private PointFactory pointFactory;
+	
 	
 	@PostConstruct
 	public void init(){
@@ -44,10 +49,10 @@ public class PostManagedBean implements Serializable{
 		
 		Post newPost = new Post();
 		newPost.setText(newPostText);
-		newPost.setPoints(0);
 		newPost.setUser(userFactory.get(userId));
 		newPost.setTime(System.nanoTime());
 		newPost.setCommentList(new ArrayList<>());
+		newPost.setPointList(new ArrayList<>());
 		allPosts.add(newPost);
 		postFactory.create(newPost);
 	}
@@ -55,9 +60,17 @@ public class PostManagedBean implements Serializable{
 	public void upvotePost(){
 		int postId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("postId"));
 		Post post = postFactory.get(postId);
-		post.setPoints(post.getPoints() + 1);
-		System.out.println("Performing upvote of Post " + post.getId());
+		
+		Point point = new Point();
+		point.setVote(true);
+		point.setUser(post.getUser());
+		point.setTime(System.nanoTime());
+		
+		post.addPoint(point);
+		
+		pointFactory.create(point);
 		postFactory.update(post);
+		
 		allPosts = postFactory.getAll();
 		
 	}
@@ -65,8 +78,15 @@ public class PostManagedBean implements Serializable{
 	public void downvotePost(){
 		int postId = Integer.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("postId"));
 		Post post = postFactory.get(postId);
-		post.setPoints(post.getPoints() - 1);
-		System.out.println("Performing downvote of Post " + post.getId());
+		
+		Point point = new Point();
+		point.setVote(false);
+		point.setUser(post.getUser());
+		point.setTime(System.nanoTime());
+		
+		post.addPoint(point);
+		
+		pointFactory.create(point);
 		postFactory.update(post);
 		allPosts = postFactory.getAll();
 	}

@@ -35,7 +35,7 @@
 					<h:panelGrid columns="4" style="width:100%" cellpadding="5">
 							<h:outputText value="#{post.text}" />
 							
-							<h:outputText value="#{post.points}"/>
+							<h:outputText value="#{post.votes}"/>
 							
 							<h:commandButton action="#{postManagedBean.upvotePost}" value="+">
 								<f:param name="postId" value="#{post.id}"/>

@@ -9,7 +9,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "Posts")
+@Table(name = "Points")
 public class Point implements IPrimKey {
 
 	/**
