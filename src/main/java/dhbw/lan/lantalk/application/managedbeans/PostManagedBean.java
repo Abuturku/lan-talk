@@ -36,7 +36,7 @@ public class PostManagedBean implements Serializable{
 	
 	@PostConstruct
 	public void init(){
-		allPosts = new ArrayList<>();		
+		allPosts = postFactory.getAll();		
 	}
 	
 	public void createPost(){
@@ -58,7 +58,7 @@ public class PostManagedBean implements Serializable{
 		post.setPoints(post.getPoints() + 1);
 		System.out.println("Performing upvote of Post " + post.getId());
 		postFactory.update(post);
-		updateAllPosts();
+		allPosts = postFactory.getAll();
 		
 	}
 	
@@ -68,17 +68,7 @@ public class PostManagedBean implements Serializable{
 		post.setPoints(post.getPoints() - 1);
 		System.out.println("Performing downvote of Post " + post.getId());
 		postFactory.update(post);
-		updateAllPosts();
-	}
-	
-	//TODO
-	private void updateAllPosts(){
-		allPosts = new ArrayList<>();
-		int id = 2;
-		while (postFactory.get(id) != null) {
-			allPosts.add(postFactory.get(id));	
-			id++;
-		}
+		allPosts = postFactory.getAll();
 	}
 	
 	public List<Post> getAllPosts() {

@@ -60,7 +60,7 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<T> getAll() {
-		return entityManager.createQuery("SELECT x FROM " + clazz.getAnnotation(Table.class).name() + " x")
+		return entityManager.createQuery("SELECT x FROM " + clazz.getName() + " x")
 				.getResultList();
 	}
 
