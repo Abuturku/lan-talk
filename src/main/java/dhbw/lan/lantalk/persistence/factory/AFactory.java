@@ -108,6 +108,6 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable {
 	 * @return managed resource;
 	 */
 	public T reattach(T object) {
-		return this.entityManager.contains(object) ? object : get(object);
+		return this.entityManager.contains(object) ? object : get(object.getId());
 	}
 }
