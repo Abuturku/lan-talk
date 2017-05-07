@@ -14,5 +14,13 @@ public class CommentFactory extends AFactory<Comment> {
 	public CommentFactory() {
 		super(Comment.class);
 	}
- 
+
+	@Override
+	protected void setParameter(Comment toSet, Comment orginal) {
+		toSet.setArticle(orginal.getArticle());
+		toSet.setPoints(orginal.getPoints());
+		toSet.setText(orginal.getText());
+		toSet.setUser(orginal.getUser());
+		toSet.setTime(orginal.getTime());
+	}
 }

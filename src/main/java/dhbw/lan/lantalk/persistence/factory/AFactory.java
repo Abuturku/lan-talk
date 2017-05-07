@@ -76,8 +76,8 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable {
 	 */
 	@Transactional
 	public T update(T object) {
-		T databaseobject = reattach(object);
-		return this.entityManager.merge(databaseobject);
+		// T databaseobject = reattach(object);
+		return this.entityManager.merge(object);
 	}
 
 	/**
@@ -110,4 +110,14 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable {
 	public T reattach(T object) {
 		return this.entityManager.contains(object) ? object : get(object.getId());
 	}
+
+	/**
+	 * Transfer parameter between classes
+	 * 
+	 * @param toSet
+	 *            Class were the parameter should be set
+	 * @param orginal
+	 *            Class from were the parameter will be taken
+	 */
+	protected abstract void setParameter(T toSet, T orginal);
 }
