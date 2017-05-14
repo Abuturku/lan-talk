@@ -18,7 +18,6 @@ public class Post extends TextComponent {
 	 * Represents a list of comments of the post
 	 */
 	@OneToMany
-	@JoinColumn(name = "POST_ID", referencedColumnName = "ID")
 	private List<Comment> commentList;
 
 	/**

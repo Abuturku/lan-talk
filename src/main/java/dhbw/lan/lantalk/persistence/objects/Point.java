@@ -17,27 +17,33 @@ public class Point implements IPrimKey {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID")
+	@Column
 	private int id;
 
 	/**
 	 * Represents the user who created the point
 	 */
 	@ManyToOne
-	@JoinColumn(name = "USER_ID")
+	@JoinColumn
 	private User user;
 
 	/**
 	 * Represents the user who created the point
 	 */
-	@Column(name = "upvote")
+	@Column
 	private boolean upvote;
 
 	/**
 	 * Represents the creation time of the post
 	 */
-	@Column(name = "TIME")
+	@Column
 	private long time;
+
+	/**
+	 * Reference to the text from the vote
+	 */
+	@ManyToOne
+	private TextComponent textComponent;
 
 	/**
 	 *
@@ -82,7 +88,7 @@ public class Point implements IPrimKey {
 	}
 
 	/**
-	 * @return the {@link Point#time} of the post
+	 * @return the {@link Point#time} of the point
 	 */
 	public long getTime() {
 		return this.time;
@@ -91,7 +97,7 @@ public class Point implements IPrimKey {
 	/**
 	 *
 	 * @param upVote
-	 *            set the {@link Point#upvote} of the post
+	 *            set the {@link Point#upvote} of the point
 	 */
 	public void setVote(boolean upVote) {
 		this.upvote = upVote;
@@ -102,5 +108,21 @@ public class Point implements IPrimKey {
 	 */
 	public boolean isUpVote() {
 		return this.upvote;
+	}
+
+	/**
+	 *
+	 * @param textComponent
+	 *            set the {@link Point#textComponent} of the post
+	 */
+	public void setTextComponent(TextComponent textComponent) {
+		this.textComponent = textComponent;
+	}
+
+	/**
+	 * @return the {@link Point#textComponent} of the post
+	 */
+	public TextComponent getTextComponent() {
+		return this.textComponent;
 	}
 }

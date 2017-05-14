@@ -16,20 +16,20 @@ import dhbw.lan.lantalk.persistence.objects.User;
 
 @ManagedBean
 @SessionScoped
-public class UserManagedBean implements Serializable{
+public class UserManagedBean implements Serializable {
 	private static final long serialVersionUID = 3413209755795108052L;
-	
+
 	private int userId;
 	private String userName;
-	
+
 	@Inject
 	private UserFactory userFactory;
-	
+
 	@PostConstruct
-	public void init(){
+	public void init() {
 		User user = new User();
 		user.setName("BreakableBratwurst");
-		user.setPoints(0);
+		user.setPoints(new ArrayList<>());
 		user.setRank(Rank.User);
 		user.setRegTime(System.nanoTime());
 		user.setPostList(new ArrayList<Post>());
@@ -37,27 +37,27 @@ public class UserManagedBean implements Serializable{
 		userFactory.create(user);
 		this.userId = user.getId();
 	}
-	
-	public void createUser(){
+
+	public void createUser() {
 		User user = new User();
 		user.setName(userName);
-		user.setPoints(0);
+		user.setPoints(new ArrayList<>());
 		user.setRank(Rank.User);
 		user.setRegTime(System.nanoTime());
 		user.setPostList(new ArrayList<Post>());
 		user.setCommentList(new ArrayList<Comment>());
 		userFactory.create(user);
 	}
-	
+
 	public int getUserId() {
 		return userId;
 	}
 
-	public String getUserName(){
+	public String getUserName() {
 		return userName;
-	}	
-	
-	public void setUserName(String userName){
+	}
+
+	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 }

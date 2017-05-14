@@ -16,7 +16,7 @@ public class Comment extends TextComponent {
 	 * Represents the article of the comment
 	 */
 	@ManyToOne
-	@JoinColumn(name = "POST_ID")
+	@JoinColumn
 	private Post post;
 
 	/**

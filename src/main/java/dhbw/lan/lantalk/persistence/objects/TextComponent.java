@@ -10,7 +10,8 @@ import javax.persistence.*;
  * @author Niklas Nikisch
  *
  */
-@MappedSuperclass
+@Entity(name = "TextComponent")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class TextComponent implements IPrimKey {
 
 	/**
@@ -18,35 +19,33 @@ public class TextComponent implements IPrimKey {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID")
+	@Column
 	private int id;
 
 	/**
 	 * Represents the user who created the post
 	 */
 	@ManyToOne
-	@JoinColumn(name = "USER_ID")
+	@JoinColumn
 	private User user;
 
 	/**
 	 * Represents the creation time of the post
 	 */
-	@Column(name = "TIME")
+	@Column
 	private long time;
 
 	/**
 	 * The points of the textcomponent
 	 */
-	@Column(name = "TEXT")
+	@Column
 	private String text;
 
-	@OneToMany  
-	@JoinColumn(name = "POINT_ID", referencedColumnName = "ID")
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Point> pointList;
 
-	
 	private int votes;
-	
+
 	/**
 	 * 
 	 * @param commentList
@@ -125,10 +124,10 @@ public class TextComponent implements IPrimKey {
 	public void addPoint(Point point) {
 		if (point.isUpVote()) {
 			this.votes++;
-		}else{
+		} else {
 			this.votes--;
 		}
-		
+
 		this.pointList.add(point);
 	}
 
@@ -147,21 +146,21 @@ public class TextComponent implements IPrimKey {
 	public long getTime() {
 		return this.time;
 	}
-	
+
 	public int getVotes() {
 		return votes;
 	}
-	
-	private void updateVotes(){
+
+	private void updateVotes() {
 		this.votes = 0;
-		
+
 		for (int i = 0; i < pointList.size(); i++) {
 			if (pointList.get(i).isUpVote()) {
 				votes++;
-			}else{
+			} else {
 				votes--;
 			}
 		}
 	}
-	
+
 }

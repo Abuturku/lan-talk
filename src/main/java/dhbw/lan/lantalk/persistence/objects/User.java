@@ -20,46 +20,44 @@ public class User implements IPrimKey {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID")
+	@Column
 	private int id;
 
 	/**
 	 * The name of the user
 	 */
-	@Column(name = "NAME")
+	@Column
 	private String name;
 
 	/**
 	 * The rank of the user
 	 */
-	@Column(name = "RANK")
+	@Column
 	@Enumerated(EnumType.STRING)
 	private Rank rank;
 
 	/**
 	 * Represents the registrationtime
 	 */
-	@Column(name = "REGTIME")
+	@Column
 	private long regTime;
 
 	/**
 	 * The points a user has made with his articles and comments
 	 */
-	@Column(name = "POINTS")
-	private int points;
+	@OneToMany
+	private List<Point> points;
 
 	/**
 	 * All the articles the user has written.
 	 */
 	@OneToMany
-	@JoinColumn(name = "USER_ID", referencedColumnName = "ID")
 	private List<Post> postList;
 
 	/**
 	 * Represents a list of comments the user has written
 	 */
 	@OneToMany
-	@JoinColumn(name = "USER_ID", referencedColumnName = "ID")
 	private List<Comment> commentList;
 
 	/**
@@ -134,14 +132,23 @@ public class User implements IPrimKey {
 	 * @param points
 	 *            Sets the {@link User#points} of the user
 	 */
-	public void setPoints(int points) {
+	public void setPoints(List<Point> points) {
 		this.points = points;
+	}
+
+	/**
+	 *
+	 * @param points
+	 *            Add to the {@link User#points} of the user
+	 */
+	public void addPoints(Point point) {
+		this.points.add(point);
 	}
 
 	/**
 	 * @return The {@link User#points} of the user
 	 */
-	public int getPoints() {
+	public List<Point> getPoints() {
 		return this.points;
 	}
 
