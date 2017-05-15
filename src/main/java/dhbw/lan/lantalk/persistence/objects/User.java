@@ -71,6 +71,15 @@ public class User implements IPrimKey {
 
 	/**
 	 * 
+	 * @param post
+	 *            add to {@link User#postList} of the User
+	 */
+	public void addPost(Post post) {
+		this.postList.add(post);
+	}
+
+	/**
+	 * 
 	 * @return {@link User#postList} of the user
 	 */
 	public List<Post> getPostList() {
@@ -84,6 +93,15 @@ public class User implements IPrimKey {
 	 */
 	public void setCommentList(List<Comment> commentList) {
 		this.commentList = commentList;
+	}
+
+	/**
+	 * 
+	 * @param comment
+	 *            Add the comment to {@link User#commentList} of the user
+	 */
+	public void addComment(Comment comment) {
+		this.commentList.add(comment);
 	}
 
 	/**

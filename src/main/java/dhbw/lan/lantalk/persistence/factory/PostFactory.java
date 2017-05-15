@@ -4,6 +4,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Named;
 
 import dhbw.lan.lantalk.persistence.objects.Post;
+import dhbw.lan.lantalk.persistence.objects.User;
 
 @Named("postFactory")
 @Dependent
@@ -15,4 +16,10 @@ public class PostFactory extends AFactory<Post> {
 		super(Post.class);
 	}
 
+	public Post create(Post post, User user) {
+		post.setUser(user);
+		user.addPost(post);
+		super.create(post);
+		return post;
+	}
 }

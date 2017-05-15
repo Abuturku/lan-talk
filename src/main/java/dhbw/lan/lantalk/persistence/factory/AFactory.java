@@ -41,8 +41,9 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable {
 	 *            The object to create
 	 */
 	@Transactional
-	public void create(T object) {
+	public T create(T object) {
 		entityManager.persist(object);
+		return object;
 	}
 
 	/**
@@ -83,7 +84,6 @@ public abstract class AFactory<T extends IPrimKey> implements Serializable {
 	 */
 	@Transactional
 	public T update(T object) {
-		// T databaseobject = reattach(object);
 		return this.entityManager.merge(object);
 	}
 
