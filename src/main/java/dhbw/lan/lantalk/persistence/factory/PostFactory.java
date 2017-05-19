@@ -19,7 +19,6 @@ public class PostFactory extends AFactory<Post> {
 	public Post create(Post post, User user) {
 		post.setUser(user);
 		user.addPost(post);
-		super.create(post);
-		return post;
+		return super.create(post);
 	}
 }

@@ -22,7 +22,7 @@ public class PointFactory extends AFactory<Point> {
 		point.setUser(user);
 		user.addPoints(point);
 		textComponent.addPoint(point);
-		super.create(point);
-		return point;
+		return super.create(point);
+
 	}
 }

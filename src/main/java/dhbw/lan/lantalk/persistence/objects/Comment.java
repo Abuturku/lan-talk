@@ -15,7 +15,7 @@ public class Comment extends TextComponent {
 	/**
 	 * Represents the article of the comment
 	 */
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn
 	private Post post;
 
