@@ -36,6 +36,7 @@ public class UserManagerBean implements Serializable {
 		user.setCommentList(new ArrayList<Comment>());
 		userFactory.create(user);
 		this.userId = user.getId();
+		this.userName = user.getName();
 	}
 
 	public void createUser() {

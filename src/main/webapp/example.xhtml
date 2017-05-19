@@ -11,23 +11,23 @@
 		<ui:define name="content">
 			<h:form>
 				<p>Ein p-Tag</p>
-				<h:outputText value="#{userManagedBean.userId}" />
+				<h:outputText value="#{userManagerBean.userId}" />
 				<br/>
-				<h:inputText value="#{userManagedBean.userName}"/>
-				<h:commandButton action="#{userManagedBean.createUser()}" value="User anlegen" />
+				<h:inputText value="#{userManagerBean.userName}"/>
+				<h:commandButton action="#{userManagerBean.createUser()}" value="User anlegen" />
 			</h:form>
 			<br/>
 			<h:form>
 				<h:outputText value="Post erstellen"/>
 				<br/>
-				<h:inputText value="#{postManagedBean.newPostText}"/>
-				<h:commandButton action="#{postManagedBean.createPost}" value="Posten">
-					<f:param name="userId" value="#{userManagedBean.userId}"/>
+				<h:inputText value="#{postManagerBean.newPostText}"/>
+				<h:commandButton action="#{postManagerBean.createPost}" value="Posten">
+					<f:param name="userId" value="#{userManagerBean.userId}"/>
 				</h:commandButton>
 			</h:form>
 			
 			<h:form>
-				<p:dataScroller value="#{postManagedBean.allPosts}" var="post" chunkSize="10">
+				<p:dataScroller value="#{postManagerBean.allPosts}" var="post" chunkSize="10">
 					<f:facet name="header">
 						Alle Posts
 					</f:facet>
@@ -37,11 +37,11 @@
 							
 							<h:outputText value="#{post.votes}"/>
 							
-							<h:commandButton action="#{postManagedBean.upvotePost}" value="+">
+							<h:commandButton action="#{postManagerBean.upvotePost}" value="+">
 								<f:param name="postId" value="#{post.id}"/>
 							</h:commandButton>
 							
-							<h:commandButton action="#{postManagedBean.downvotePost}" value="-">
+							<h:commandButton action="#{postManagerBean.downvotePost}" value="-">
 								<f:param name="postId" value="#{post.id}"/>
 							</h:commandButton>
 							

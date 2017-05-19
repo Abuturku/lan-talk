@@ -10,10 +10,28 @@
 	<ui:composition template="/templates/basic.xhtml">
 		<ui:define name="container">
 		
-
 			<p:layout>
-			    <p:layoutUnit id="west" position="west" resizable="true" size="23%" minSize="40" maxSize="1000">
+			    <p:layoutUnit id="west" position="west" resizable="true" size="35%" minSize="40" maxSize="1000">
 					<img id="logo" alt="Lan-Talk Logo" src="./img/logo_lan_talk.png"/>
+					
+					<h:form>
+					    <p:growl autoUpdate="true"/>
+					 
+					    <p:panelMenu id="menu">
+					        <p:submenu label="Logged in as #{userManagerBean.userName}">
+					            <p:menuitem class="nonclickable" value="Role: #[Admin]"/>
+					            <p:menuitem class="nonclickable" value="Rank: #[Beginner] (#[10] Points)"/>
+					            <p:menuitem class="nonclickable" value="Member since #[01.01.2001]"/>
+					            <p:menuitem class="nonclickable" value="Talks: #[2]"/>
+					            <p:menuitem class="nonclickable" value="Comments: #[3]"/>
+					            <p:menuitem class="nonclickable" value="Votes: #[12]"/>
+					            
+					            <p:menuitem value="Update" actionListener="#{menuView.update}" />
+					        </p:submenu>
+					        <p:separator />
+					    </p:panelMenu>
+					</h:form>
+
 			    </p:layoutUnit>
 			 
 			    <p:layoutUnit id="center" position="center">
