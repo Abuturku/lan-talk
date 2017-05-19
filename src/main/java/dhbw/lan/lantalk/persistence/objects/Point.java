@@ -42,7 +42,7 @@ public class Point implements IPrimKey {
 	/**
 	 * Reference to the text from the vote
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn
 	private TextComponent textComponent;
 

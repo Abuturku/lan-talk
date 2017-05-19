@@ -18,10 +18,10 @@ public class PointFactory extends AFactory<Point> {
 	}
 
 	public Point create(Point point, User user, TextComponent textComponent) {
-		// point.setTextComponent(textComponent);
-		// point.setUser(user);
-		// user.addPoints(point);
-		// textComponent.addPoint(point);
+		point.setTextComponent(textComponent);
+		point.setUser(user);
+		user.addPoints(point);
+		textComponent.addPoint(point);
 		return super.create(point);
 
 	}
