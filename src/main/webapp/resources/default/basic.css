@@ -1,9 +1,51 @@
 * {
 	margin: 0;
 	padding: 0;
-	font: 20px arial, sans-serif;
+	font: 20px calibri, arial, sans-serif;
 	}
 
 html, body {
 	height: 100%;
+	width: 100%;
+	background-color: gainsboro;
+}
+
+#container {
+	height: 100%;
+}
+
+.ui-layout-container {
+	height: 100%;
+}
+
+#west, #center {
+	height: 100% !important;
+	border: none;
+	padding: 0;
+	border-radius: 0;
+}
+
+#west-resizer {
+	height: 100% !important;
+}
+
+#center {
+	background-color: inherit;
+}
+
+.ui-layout-unit-content {
+	height: 97% !important;
+	background-color:inherit;
+	border: 1px solid black;
+}
+
+/** menu bar **/
+
+#west {
+	background-color: grey;
+}
+
+#logo {
+	width: 84%;
+	margin: 7%;
 }
