@@ -2,6 +2,7 @@ package dhbw.lan.lantalk.application.managedbeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -40,8 +41,8 @@ public class PostManagedBean implements Serializable{
 	
 	
 	@PostConstruct
-	public void init(){
-		allPosts = postFactory.getAll();		
+	public void init(){	
+		refreshAllPosts();
 	}
 	
 	public void createPost(){
@@ -55,6 +56,19 @@ public class PostManagedBean implements Serializable{
 		newPost.setPointList(new ArrayList<>());
 		allPosts.add(newPost);
 		postFactory.create(newPost);
+		refreshAllPosts();
+	}
+	
+	public void refreshAllPosts(){
+		allPosts = postFactory.getAll();
+		allPosts.sort(new Comparator<Post>() {
+
+			@Override
+			public int compare(Post post1, Post post2) {
+				return (post1.getTime() < post2.getTime()) ? 1 : (post1.getTime() > post2.getTime()) ? -1 : 0 ;
+			}
+			
+		});
 	}
 	
 	public void upvotePost(){
@@ -71,7 +85,7 @@ public class PostManagedBean implements Serializable{
 		pointFactory.create(point);
 		postFactory.update(post);
 		
-		allPosts = postFactory.getAll();
+//		refreshAllPosts();
 		
 	}
 	
@@ -88,7 +102,7 @@ public class PostManagedBean implements Serializable{
 		
 		pointFactory.create(point);
 		postFactory.update(post);
-		allPosts = postFactory.getAll();
+//		refreshAllPosts();
 	}
 	
 	public List<Post> getAllPosts() {
