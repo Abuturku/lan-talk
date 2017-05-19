@@ -17,7 +17,7 @@ public class Post extends TextComponent {
 	/**
 	 * Represents a list of comments of the post
 	 */
-	@OneToMany
+	@OneToMany(mappedBy = "post")
 	private List<Comment> commentList;
 
 	/**

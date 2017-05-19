@@ -23,7 +23,7 @@ public class Point implements IPrimKey {
 	/**
 	 * Represents the user who created the point
 	 */
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn
 	private User user;
 
@@ -42,7 +42,8 @@ public class Point implements IPrimKey {
 	/**
 	 * Reference to the text from the vote
 	 */
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn
 	private TextComponent textComponent;
 
 	/**

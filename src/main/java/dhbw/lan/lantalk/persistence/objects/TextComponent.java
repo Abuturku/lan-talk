@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity(name = "TextComponent")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class TextComponent implements IPrimKey {
+public abstract class TextComponent implements IPrimKey {
 
 	/**
 	 * Represents the primary key in database
@@ -25,7 +25,7 @@ public class TextComponent implements IPrimKey {
 	/**
 	 * Represents the user who created the post
 	 */
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn
 	private User user;
 
@@ -41,7 +41,7 @@ public class TextComponent implements IPrimKey {
 	@Column
 	private String text;
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "textComponent", fetch = FetchType.EAGER)
 	private List<Point> pointList;
 
 	private int votes;
