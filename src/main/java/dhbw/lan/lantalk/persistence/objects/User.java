@@ -65,7 +65,8 @@ public class User implements IPrimKey {
 	/**
 	 * Represents a list of comments the user has written
 	 */
-	@OneToMany(mappedBy = "user", targetEntity = TextComponent.class, cascade = { CascadeType.PERSIST })
+	@OneToMany(mappedBy = "user", targetEntity = TextComponent.class, cascade = {
+			CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	private List<Comment> commentList;
 
 	/**
