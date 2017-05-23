@@ -3,15 +3,18 @@ package dhbw.lan.lantalk.application.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
+
+import org.primefaces.event.ToggleEvent;
 
 import dhbw.lan.lantalk.persistence.factory.CommentFactory;
 import dhbw.lan.lantalk.persistence.factory.PointFactory;
@@ -42,9 +45,23 @@ public class PostManagerBean implements Serializable{
 	@Inject
 	private PointFactory pointFactory;
 	
+	/*UI*/
+	private int sortBy;  
+    private Map<String,Integer> sortMethods;
+    
+    private String showAll = "1";
+    
+	/*/UI*/
 	
 	@PostConstruct
 	public void init(){	
+		/*UI*/
+		sortMethods  = new LinkedHashMap<String, Integer>();
+		sortMethods.put("#{msgs['newestFirst']}", 0);
+		sortMethods.put("Oldest first", 1);
+		sortMethods.put("Most popular first", 2);
+		/*/UI*/
+		
 		refreshAllPosts();
 	}
 	
@@ -119,5 +136,36 @@ public class PostManagerBean implements Serializable{
 	public void setNewPostText(String newPostText) {
 		this.newPostText = newPostText;
 	}
+	
+	/*UI*/
+	public int getSortBy(){
+		return sortBy;
+	}
+	
+	public void setSortBy(int sortBy){
+		this.sortBy = sortBy;
+	}
+	
+	public Map<String, Integer> getSortMethods() {
+        return sortMethods;
+    }
+	
+	public void onSortByChange(){
+		//todo: reload displayed posts
+	}
+	
+
+    public String getShowAll() {
+		return showAll;
+	}
+
+	public void setShowAll(String showAll) {
+		this.showAll = showAll;
+	}
+	
+	public void handleToggleAddPost(ToggleEvent event) {
+		//todo
+    }
+	/*/UI*/
 
 }
