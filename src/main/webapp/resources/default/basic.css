@@ -1,13 +1,13 @@
 * {
 	margin: 0;
 	padding: 0;
-	font: 20px calibri, arial, sans-serif;
+	font: 16px calibri, arial, sans-serif;
 	}
 
 html, body {
 	height: 100%;
 	width: 100%;
-	background-color: gainsboro;
+	background-color: #999999;
 }
 
 #container {
@@ -30,19 +30,19 @@ html, body {
 }
 
 #center {
-	background-color: inherit;
+	/*background-color: inherit;*/
 }
 
 .ui-layout-unit-content {
 	height: 97% !important;
-	background-color:inherit;
+	/*background-color:inherit;*/
 	border: 1px solid black;
 }
 
 /** menu bar **/
 
 #west {
-	background-color: grey;
+	/*background-color: grey;*/
 }
 
 #logo {

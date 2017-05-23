@@ -25,10 +25,22 @@
 					            <p:menuitem class="nonclickable" value="Talks: #[2]"/>
 					            <p:menuitem class="nonclickable" value="Comments: #[3]"/>
 					            <p:menuitem class="nonclickable" value="Votes: #[12]"/>
-					            
-					            <p:menuitem value="Update" actionListener="#{menuView.update}" />
 					        </p:submenu>
-					        <p:separator />
+					        <p:submenu label="Sort by...">
+					        	<p:menuitem value="Date (descending)" actionListener="#{menuView.update}"/>
+					        	<p:menuitem value="Date (ascending)"/>
+					        	<p:menuitem value="Votes"/>
+					        </p:submenu>
+					        <p:submenu label="Talks">
+					        	<p:menuitem value="Start new talk"/>
+					        	<p:menuitem value="Show my talks"/>
+					        </p:submenu>
+					        <p:submenu label="Reports" class="modOnly">
+					        	<p:menuitem value="User reports" class="adminOnly"/>
+					        	<p:menuitem value="Talk reports" class="modOnly"/>
+					        	<p:menuitem value="Comment reports" class="modOnly"/>
+					        </p:submenu>
+					        
 					    </p:panelMenu>
 					</h:form>
 
