@@ -30,6 +30,12 @@ public class User implements IPrimKey {
 	private String name;
 
 	/**
+	 * The password of the user
+	 */
+	@Column
+	private String password;
+
+	/**
 	 * The rank of the user
 	 */
 	@Column
@@ -46,7 +52,7 @@ public class User implements IPrimKey {
 	 * The points a user has made with his articles and comments
 	 */
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-	@OrderColumn(name="orderIndex")
+	@OrderColumn(name = "orderIndex")
 	private List<Point> points;
 
 	/**
@@ -139,6 +145,22 @@ public class User implements IPrimKey {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return The {@link User#password} of the user
+	 */
+	public String getPassword() {
+		return this.password;
+	}
+
+	/**
+	 *
+	 * @param name
+	 *            Sets the {@link User#password} of the user
+	 */
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	/**

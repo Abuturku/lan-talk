@@ -42,6 +42,7 @@ public abstract class TextComponent implements IPrimKey {
 	private String text;
 
 	@OneToMany(mappedBy = "textComponent", fetch = FetchType.EAGER)
+	@OrderColumn(name = "orderIndex")
 	private List<Point> pointList;
 
 	private int votes;
