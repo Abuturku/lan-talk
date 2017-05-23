@@ -162,10 +162,7 @@ public class PostManagerBean implements Serializable{
 	public void setShowAll(String showAll) {
 		this.showAll = showAll;
 	}
-	
-	public void handleToggleAddPost(ToggleEvent event) {
-		//todo
-    }
+
 	/*/UI*/
 
 }

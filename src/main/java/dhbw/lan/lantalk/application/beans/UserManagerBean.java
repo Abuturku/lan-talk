@@ -97,17 +97,7 @@ public class UserManagerBean implements Serializable {
 	}
 	
 	public int getAmountOfVotes(){
-		//TODO: get user point list
-		int amount = 0;
-		List<Point> pointList = pointFactory.getAll();
-		
-		for(int i = 0; i < pointList.size(); i++){
-			Point point = pointList.get(i);
-			if (point.getUser().getId() == userId) {
-				amount++;
-			}
-		}
-		
-		return amount;
+		User user = userFactory.get(userId);
+		return user.getPoints().size();
 	}
 }
