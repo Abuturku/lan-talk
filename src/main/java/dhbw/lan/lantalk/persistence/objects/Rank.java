@@ -1,5 +1,7 @@
 package dhbw.lan.lantalk.persistence.objects;
 
-public enum Rank {
-	Administrator, Moderator, User;
+public class Rank {
+	public final static String Administrator = "Administrator";
+	public final static String Moderator = "Moderator";
+	public final static String User = "User";
 }

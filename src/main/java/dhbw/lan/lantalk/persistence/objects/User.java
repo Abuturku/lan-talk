@@ -39,8 +39,7 @@ public class User implements IPrimKey {
 	 * The rank of the user
 	 */
 	@Column
-	@Enumerated(EnumType.STRING)
-	private Rank rank;
+	private String rank;
 
 	/**
 	 * Represents the registrationtime
@@ -196,18 +195,18 @@ public class User implements IPrimKey {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param rank
 	 *            Set the {@link User#rank} of the user
 	 */
-	public void setRank(Rank rank) {
+	public void setRank(String rank) {
 		this.rank = rank;
 	}
 
 	/**
 	 * @return The {@link User#rank} of the user
 	 */
-	public Rank getRank() {
+	public String getRank() {
 		return this.rank;
 	}
 
