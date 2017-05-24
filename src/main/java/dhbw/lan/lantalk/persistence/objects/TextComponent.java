@@ -11,7 +11,7 @@ import javax.persistence.*;
  *
  */
 @Entity(name = "TextComponent")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class TextComponent implements IPrimKey {
 
 	/**
