@@ -15,9 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-import org.primefaces.event.ToggleEvent;
 
-import dhbw.lan.lantalk.persistence.factory.CommentFactory;
 import dhbw.lan.lantalk.persistence.factory.PointFactory;
 import dhbw.lan.lantalk.persistence.factory.PostFactory;
 import dhbw.lan.lantalk.persistence.factory.UserFactory;
@@ -37,8 +35,8 @@ public class PostManagerBean implements Serializable{
 	@Inject
 	private PostFactory postFactory;
 	
-	@Inject
-	private CommentFactory commentFactory;
+//	@Inject
+//	private CommentFactory commentFactory;
 	
 	@Inject
 	private UserFactory userFactory;

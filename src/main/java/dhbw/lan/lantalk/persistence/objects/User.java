@@ -26,7 +26,7 @@ public class User implements IPrimKey {
 	/**
 	 * The name of the user
 	 */
-	@Column
+	@Column(nullable = false, unique = true, length = 32)
 	private String name;
 
 	/**

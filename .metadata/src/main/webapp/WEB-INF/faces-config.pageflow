@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14932264956440" configfile="/lan-talk/src/main/webapp/WEB-INF/faces-config.xml"/>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14932264956440" configfile="/lan-talk/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="178" id="pf14956463813850" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14956463813851 pf14956464205165" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/lan-talk.xhtml" x="338" y="178" id="pf14956463813853" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14956463813851" path="/pages/lan-talk.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" id="pf14956464205176" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf14956464205165" path="/login.xhtml"/>
+  <links id="pf14956463813851" target="pf14956463813853" source="pf14956463813850" outcome="home"/>
+  <links id="pf14956464205165" target="pf14956464205176" source="pf14956463813850" outcome="login"/>
+</pageflow:Pageflow>

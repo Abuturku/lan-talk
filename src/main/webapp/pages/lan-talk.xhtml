@@ -10,7 +10,6 @@
 	<ui:composition template="/templates/basic.xhtml">
 		<ui:define name="container">
 		
-		<p>Login was successful as user #{securityBean.loginName} (#{securityBean.user.name})</p>
 			<p:layout>
 			    <p:layoutUnit id="west" position="west" resizable="true" size="35%" minSize="40" maxSize="1000">
 					<img id="logo" alt="Lan-Talk Logo" src="./img/logo_lan_talk.png"/>
@@ -26,7 +25,7 @@
 					            <p:menuitem class="nonclickable" value="Talks: #{userManagerBean.getAmountOfPosts()}"/>
 					            <p:menuitem class="nonclickable" value="#{msgs['comments']}: #{userManagerBean.getAmountOfComments()}"/>
 					            <p:menuitem class="nonclickable" value="#{msgs['votes']}: #{userManagerBean.getAmountOfVotes()}"/>
-					            <p:menuitem value="#{msgs['logout']}"/>
+					            <p:menuitem value="#{msgs['logout']}" action="#{userManagerBean.logout()}" ajax="false"/>
 					        </p:submenu>
 					        <p:submenu label="#{msgs['Reports']}" class="modOnly">
 					        	<p:menuitem value="#{msgs['user']} #{msgs['reports']}" class="adminOnly"/>
