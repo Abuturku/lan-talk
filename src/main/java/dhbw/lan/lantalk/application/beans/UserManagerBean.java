@@ -50,7 +50,7 @@ public class UserManagerBean implements Serializable {
 	@RolesAllowed(value = {Rank.Administrator})
 	public void createUser() {
 		User user = new User();
-		user.setName(userName);
+		//TODO username
 		user.setPoints(new ArrayList<>());
 		user.setRank(Rank.User);
 		user.setRegTime(System.currentTimeMillis());
@@ -65,10 +65,6 @@ public class UserManagerBean implements Serializable {
 
 	public String getUserName() {
 		return userFactory.get(userId).getName();
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 	
 	public String getUserRank(){
