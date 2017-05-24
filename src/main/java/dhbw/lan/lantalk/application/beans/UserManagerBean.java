@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -46,9 +47,10 @@ public class UserManagerBean implements Serializable {
 		this.userId = user.getId();
 	}
 
+	@RolesAllowed(value = {Rank.Administrator})
 	public void createUser() {
 		User user = new User();
-		user.setName(userName);
+		//TODO username
 		user.setPoints(new ArrayList<>());
 		user.setRank(Rank.User);
 		user.setRegTime(System.currentTimeMillis());
@@ -63,10 +65,6 @@ public class UserManagerBean implements Serializable {
 
 	public String getUserName() {
 		return userFactory.get(userId).getName();
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 	
 	public String getUserRank(){
