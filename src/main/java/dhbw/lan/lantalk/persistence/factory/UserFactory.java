@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.List;
 
 import javax.annotation.security.PermitAll;
 import javax.enterprise.context.Dependent;
@@ -21,6 +22,17 @@ public class UserFactory extends AFactory<User> {
 		super(User.class);
 	}
 
+	public User getByName(String userName){
+		List<User> users = this.getAll();
+		for (int index = 0; index < users.size(); index++) {
+			User user = users.get(index);
+			if(user.getName().equals(userName)){
+				return user;
+			}
+		}
+		return null;
+	}
+	
 	@PermitAll
 	public void changePassword(User user, String password) {
 		String encodePassword;

@@ -38,6 +38,7 @@ public class UserManagerBean implements Serializable {
 	public void init() {
 		User user = new User();
 		user.setName("BreakableBratwurst");
+		userFactory.changePassword(user, "123456");
 		user.setPoints(new ArrayList<>());
 		user.setRank(Rank.User);
 		user.setRegTime(System.currentTimeMillis());

@@ -10,6 +10,7 @@
 	<ui:composition template="/templates/basic.xhtml">
 		<ui:define name="container">
 		
+		<p>Login was successful as user #{securityBean.loginName} (#{securityBean.user.name})</p>
 			<p:layout>
 			    <p:layoutUnit id="west" position="west" resizable="true" size="35%" minSize="40" maxSize="1000">
 					<img id="logo" alt="Lan-Talk Logo" src="./img/logo_lan_talk.png"/>
@@ -29,7 +30,6 @@
 					        </p:submenu>
 					        <p:submenu label="#{msgs['Reports']}" class="modOnly">
 					        	<p:menuitem value="#{msgs['user']} #{msgs['reports']}" class="adminOnly"/>
-					        	<!-- role dependant: rendered="#{securityBean.isUserInRole('admin')}" -->
 					        	<p:menuitem value="Talk #{msgs['reports']}" class="modOnly"/>
 					        	<p:menuitem value="#{msgs['comment']} #{msgs['reports']}" class="modOnly"/>
 					        </p:submenu>

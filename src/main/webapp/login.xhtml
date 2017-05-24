@@ -20,11 +20,11 @@
 		        			<p:inputText id="userName" name="j_username" required="true"/>
 			            
 					        <h:outputLabel for="pwd0" value="Password:" />
-					        <p:password id="pwd0" name="j_password" value="#{asdf.password1}" label="Password 0" required="true" />
+					        <p:password id="pwd0" name="j_password" label="Password 0" required="true" />
 					 	</h:panelGrid>
 					    <p:messages id="messages" showDetail="true" autoUpdate="true" />
 					 
-					    <p:commandButton update="matchGridL" value="Login" />
+					    <p:commandButton update="matchGridL" value="Login" id="submit" ajax="false" action="#{securityBean.login()}"/>
 		            </h:form>
 		        </p:tab>
 		        <p:tab title="Register">
@@ -34,10 +34,10 @@
 		        			<p:inputText id="userName" name="j_username" required="true"/>
 			            
 					        <h:outputLabel for="pwd1" value="Password:" />
-					        <p:password id="pwd1" name="j_password" value="#{asdf.password1}" match="pwd2" label="Password 1" required="true" />
+					        <p:password id="pwd1" name="j_password" match="pwd2" label="Password 1" required="true" />
 					 
 					        <h:outputLabel for="pwd2" value="Repeat password:" />
-					        <p:password id="pwd2" value="#{asdf.password2}" label="Password 2" required="true" />
+					        <p:password id="pwd2" label="Password 2" required="true" />
 					    </h:panelGrid>
 					    <p:messages id="messages" showDetail="true" autoUpdate="true" />
 					 
