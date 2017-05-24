@@ -26,7 +26,6 @@ public class UserManagerBean implements Serializable {
 	private static final long serialVersionUID = 3413209755795108052L;
 
 	private int userId;
-	private String userName;
 
 	@Inject
 	private UserFactory userFactory;
@@ -45,7 +44,6 @@ public class UserManagerBean implements Serializable {
 		user.setCommentList(new ArrayList<Comment>());
 		userFactory.create(user);
 		this.userId = user.getId();
-		this.userName = user.getName();
 	}
 
 	public void createUser() {
@@ -64,7 +62,7 @@ public class UserManagerBean implements Serializable {
 	}
 
 	public String getUserName() {
-		return userName;
+		return userFactory.get(userId).getName();
 	}
 
 	public void setUserName(String userName) {

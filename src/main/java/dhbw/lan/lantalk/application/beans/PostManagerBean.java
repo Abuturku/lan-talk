@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -51,15 +52,16 @@ public class PostManagerBean implements Serializable{
     
     private String showAll = "1";
     
+	final ResourceBundle msgs = FacesContext.getCurrentInstance().getApplication().getResourceBundle(FacesContext.getCurrentInstance(), "msgs");
 	/*/UI*/
 	
 	@PostConstruct
 	public void init(){	
 		/*UI*/
 		sortMethods  = new LinkedHashMap<String, Integer>();
-		sortMethods.put("#{msgs['newestFirst']}", 0);
-		sortMethods.put("Oldest first", 1);
-		sortMethods.put("Most popular first", 2);
+		sortMethods.put(msgs.getString("newestFirst"), 0);
+		sortMethods.put(msgs.getString("oldestFirst"), 1);
+		sortMethods.put(msgs.getString("mostPopFirst"), 2);
 		/*/UI*/
 		
 		refreshAllPosts();
