@@ -195,7 +195,7 @@ public class User implements IPrimKey {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param rank
 	 *            Set the {@link User#rank} of the user
 	 */
