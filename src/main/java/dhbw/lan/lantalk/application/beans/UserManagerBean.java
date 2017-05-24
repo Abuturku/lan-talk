@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,7 +27,6 @@ public class UserManagerBean implements Serializable {
 	private static final long serialVersionUID = 3413209755795108052L;
 
 	private int userId;
-	private String userName;
 
 	@Inject
 	private UserFactory userFactory;
@@ -45,9 +45,9 @@ public class UserManagerBean implements Serializable {
 		user.setCommentList(new ArrayList<Comment>());
 		userFactory.create(user);
 		this.userId = user.getId();
-		this.userName = user.getName();
 	}
 
+	@RolesAllowed(value = {Rank.Administrator})
 	public void createUser() {
 		User user = new User();
 		user.setName(userName);
@@ -64,7 +64,7 @@ public class UserManagerBean implements Serializable {
 	}
 
 	public String getUserName() {
-		return userName;
+		return userFactory.get(userId).getName();
 	}
 
 	public void setUserName(String userName) {
