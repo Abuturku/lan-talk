@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/basic.xhtml">
+
+	<ui:define name="container">
+
+			<h1>Welcome to LAN-Talk!</h1>
+			<p:tabView>
+		        <p:tab title="Login">
+		            <h:form name="loginForm" method="POST" action="j_security_check">
+		            	<h:panelGrid columns="2" id="matchGridL" cellpadding="5">      
+				            <p:outputLabel for="userName" value="Username:" />
+		        			<p:inputText id="userName" name="j_username" required="true"/>
+			            
+					        <h:outputLabel for="pwd0" value="Password:" />
+					        <p:password id="pwd0" name="j_password" value="#{asdf.password1}" label="Password 0" required="true" />
+					 	</h:panelGrid>
+					    <p:messages id="messages" showDetail="true" autoUpdate="true" />
+					 
+					    <p:commandButton update="matchGridL" value="Login" />
+		            </h:form>
+		        </p:tab>
+		        <p:tab title="Register">
+		        	<h:form name="registerForm" method="POST" action="j_security_check">
+		        	    <h:panelGrid columns="2" id="matchGridR" cellpadding="5">      
+				            <p:outputLabel for="userName" value="Username:" />
+		        			<p:inputText id="userName" name="j_username" required="true"/>
+			            
+					        <h:outputLabel for="pwd1" value="Password:" />
+					        <p:password id="pwd1" name="j_password" value="#{asdf.password1}" match="pwd2" label="Password 1" required="true" />
+					 
+					        <h:outputLabel for="pwd2" value="Repeat password:" />
+					        <p:password id="pwd2" value="#{asdf.password2}" label="Password 2" required="true" />
+					    </h:panelGrid>
+					    <p:messages id="messages" showDetail="true" autoUpdate="true" />
+					 
+					    <p:commandButton update="matchGridR" value="Register" />
+					</h:form>
+		        </p:tab>
+			</p:tabView>
+			
+	</ui:define>
+
+</ui:composition>
+
+</html>
