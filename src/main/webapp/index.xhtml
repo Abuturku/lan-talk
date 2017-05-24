@@ -25,6 +25,7 @@
 					            <p:menuitem class="nonclickable" value="Talks: #{userManagerBean.getAmountOfPosts()}"/>
 					            <p:menuitem class="nonclickable" value="#{msgs['comments']}: #{userManagerBean.getAmountOfComments()}"/>
 					            <p:menuitem class="nonclickable" value="#{msgs['votes']}: #{userManagerBean.getAmountOfVotes()}"/>
+					            <p:menuitem value="#{msgs['logout']}"/>
 					        </p:submenu>
 					        <p:submenu label="#{msgs['Reports']}" class="modOnly">
 					        	<p:menuitem value="#{msgs['user']} #{msgs['reports']}" class="adminOnly"/>
@@ -52,7 +53,7 @@
 			    	<h:form>
 			    	
 			    	<p:fieldset legend="#{msgs['addPost']}" toggleable="true" toggleSpeed="500">
-				        <p:ajax event="toggle" listener="#{postManagerBean.handleToggleAddPost}" />
+				        <p:ajax event="toggle"/>
 				        
 				        <p:inputTextarea id="newPostText" required="true" rows="2" cols="100" counter="display" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
 				 		<h:outputText id="display" />
@@ -61,7 +62,21 @@
 				    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost()}"/>
 				    </p:fieldset>
     
-    
+					<p:panel class="talk">
+	       				<p:toolbar>
+					        <f:facet name="left">
+					        	<span>1h ago</span>
+					        	<span class="modOnly">Author: Test</span>
+					        </f:facet>
+					        <f:facet name="right">
+						        <p:commandButton type="button" value="Report" icon="ui-icon-alert" />
+						        <p:commandButton type="button" value="Delete" icon="ui-icon-trash" />
+					        </f:facet>
+					    </p:toolbar>
+					    
+					    
+					    
+   					</p:panel>
 				    	
 			 		</h:form>
 			    </p:layoutUnit>
