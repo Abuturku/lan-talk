@@ -18,36 +18,52 @@
 					    <p:growl autoUpdate="true"/>
 					 
 					    <p:panelMenu id="menu">
-					        <p:submenu label="Logged in as #{userManagerBean.userName}">
-					            <p:menuitem class="nonclickable" value="Role: #[Admin]"/>
-					            <p:menuitem class="nonclickable" value="Rank: #[Beginner] (#[10] Points)"/>
-					            <p:menuitem class="nonclickable" value="Member since #[01.01.2001]"/>
-					            <p:menuitem class="nonclickable" value="Talks: #[2]"/>
-					            <p:menuitem class="nonclickable" value="Comments: #[3]"/>
-					            <p:menuitem class="nonclickable" value="Votes: #[12]"/>
+					        <p:submenu label="#{msgs['loginInfo']} #{userManagerBean.getUserName()}">
+					            <p:menuitem class="nonclickable" value="#{msgs['role']}: #{userManagerBean.getUserRole()}"/>
+					            <p:menuitem class="nonclickable" value="#{msgs['rank']}: #{userManagerBean.getUserRank()}"/>
+					            <p:menuitem class="nonclickable" value="#{msgs['memberSince']} #{userManagerBean.getUserRegTime()}"/>
+					            <p:menuitem class="nonclickable" value="Talks: #{userManagerBean.getAmountOfPosts()}"/>
+					            <p:menuitem class="nonclickable" value="#{msgs['comments']}: #{userManagerBean.getAmountOfComments()}"/>
+					            <p:menuitem class="nonclickable" value="#{msgs['votes']}: #{userManagerBean.getAmountOfVotes()}"/>
 					        </p:submenu>
-					        <p:submenu label="Sort by...">
-					        	<p:menuitem value="Date (descending)" actionListener="#{menuView.update}"/>
-					        	<p:menuitem value="Date (ascending)"/>
-					        	<p:menuitem value="Votes"/>
-					        </p:submenu>
-					        <p:submenu label="Talks">
-					        	<p:menuitem value="Start new talk"/>
-					        	<p:menuitem value="Show my talks"/>
-					        </p:submenu>
-					        <p:submenu label="Reports" class="modOnly">
-					        	<p:menuitem value="User reports" class="adminOnly"/>
-					        	<p:menuitem value="Talk reports" class="modOnly"/>
-					        	<p:menuitem value="Comment reports" class="modOnly"/>
+					        <p:submenu label="#{msgs['Reports']}" class="modOnly">
+					        	<p:menuitem value="#{msgs['user']} #{msgs['reports']}" class="adminOnly"/>
+					        	<p:menuitem value="Talk #{msgs['reports']}" class="modOnly"/>
+					        	<p:menuitem value="#{msgs['comment']} #{msgs['reports']}" class="modOnly"/>
 					        </p:submenu>
 					        
 					    </p:panelMenu>
+					
+						<p:selectOneMenu value="#{postManagerBean.sortBy}" style="width:150px">
+			                <p:ajax listener="#{postManagerBean.onSortByChange}"/>
+			                <f:selectItems value="#{postManagerBean.sortMethods}" />
+			            </p:selectOneMenu>
+						<p:selectOneButton value="#{postManagerBean.showAll}">
+				            <f:selectItem itemLabel="All Talks" itemValue="1" />
+				            <f:selectItem itemLabel="My Talks" itemValue="0" />
+				        </p:selectOneButton>
+				        
 					</h:form>
 
 			    </p:layoutUnit>
 			 
 			    <p:layoutUnit id="center" position="center">
-			 
+			    
+			    	<h:form>
+			    	
+			    	<p:fieldset legend="#{msgs['addPost']}" toggleable="true" toggleSpeed="500">
+				        <p:ajax event="toggle" listener="#{postManagerBean.handleToggleAddPost}" />
+				        
+				        <p:inputTextarea id="newPostText" required="true" rows="2" cols="100" counter="display" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
+				 		<h:outputText id="display" />
+				 		<p:message for="newPostText" display="tooltip"/>
+				 		
+				    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost()}"/>
+				    </p:fieldset>
+    
+    
+				    	
+			 		</h:form>
 			    </p:layoutUnit>
 			</p:layout>
 

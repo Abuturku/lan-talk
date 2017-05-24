@@ -40,7 +40,7 @@ public class UserManagerBean implements Serializable {
 		user.setName("BreakableBratwurst");
 		user.setPoints(new ArrayList<>());
 		user.setRank(Rank.User);
-		user.setRegTime(System.nanoTime());
+		user.setRegTime(System.currentTimeMillis());
 		user.setPostList(new ArrayList<Post>());
 		user.setCommentList(new ArrayList<Comment>());
 		userFactory.create(user);
@@ -97,16 +97,7 @@ public class UserManagerBean implements Serializable {
 	}
 	
 	public int getAmountOfVotes(){
-		int amount = 0;
-		List<Point> pointList = pointFactory.getAll();
-		
-		for(int i = 0; i <= pointList.size(); i++){
-			Point point = pointList.get(i);
-			if (point.getUser().getId() == userId) {
-				amount++;
-			}
-		}
-		
-		return amount;
+		User user = userFactory.get(userId);
+		return user.getPoints().size();
 	}
 }
