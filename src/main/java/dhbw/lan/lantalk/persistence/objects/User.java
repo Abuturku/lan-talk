@@ -36,10 +36,10 @@ public class User implements IPrimKey {
 	private String password;
 
 	/**
-	 * The rank of the user
+	 * The role of the user
 	 */
 	@Column
-	private String rank;
+	private String role;
 
 	/**
 	 * Represents the registrationtime
@@ -197,17 +197,17 @@ public class User implements IPrimKey {
 	/**
 	 * 
 	 * @param rank
-	 *            Set the {@link User#rank} of the user
+	 *            Set the {@link User#role} of the user
 	 */
-	public void setRank(String rank) {
-		this.rank = rank;
+	public void setRole(String rank) {
+		this.role = rank;
 	}
 
 	/**
-	 * @return The {@link User#rank} of the user
+	 * @return The {@link User#role} of the user
 	 */
-	public String getRank() {
-		return this.rank;
+	public String getRole() {
+		return this.role;
 	}
 
 	/**

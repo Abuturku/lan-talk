@@ -100,7 +100,7 @@ public class UserManagerBean implements Serializable {
 	}
 	
 	public String getUserRole(){
-		return userFactory.get(loggedInUser).getRank().toString();
+		return userFactory.get(loggedInUser).getRole().toString();
 	}
 	
 	public String getUserRegTime(){

@@ -10,7 +10,7 @@ import javax.inject.Named;
 import dhbw.lan.lantalk.persistence.factory.UserFactory;
 import dhbw.lan.lantalk.persistence.objects.Comment;
 import dhbw.lan.lantalk.persistence.objects.Post;
-import dhbw.lan.lantalk.persistence.objects.Rank;
+import dhbw.lan.lantalk.persistence.objects.Role;
 import dhbw.lan.lantalk.persistence.objects.User;
 
 @Named
@@ -33,7 +33,7 @@ public class NewUserBean implements Serializable{
 			User user = new User();
 			user.setName(userName);
 			user.setPoints(new ArrayList<>());
-			user.setRank(Rank.User);
+			user.setRole(Role.User);
 			user.setRegTime(System.currentTimeMillis());
 			user.setPostList(new ArrayList<Post>());
 			user.setCommentList(new ArrayList<Comment>());
