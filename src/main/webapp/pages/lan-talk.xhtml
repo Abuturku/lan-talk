@@ -11,8 +11,10 @@
 		<ui:define name="container">
 		
 			<p:layout>
-			    <p:layoutUnit id="west" position="west" resizable="true" size="35%" minSize="40" maxSize="1000">
-					<img id="logo" alt="Lan-Talk Logo" src="./img/logo_lan_talk.png"/>
+			    <p:layoutUnit id="west" position="west" resizable="true" size="20%" minSize="40" maxSize="1000">
+					<a href="/example.xhtml">
+						<img id="logo" alt="Lan-Talk Logo" src="./../img/logo_lan_talk.png"/>
+					</a>
 					
 					<h:form>
 					    <p:growl autoUpdate="true"/>
@@ -30,7 +32,7 @@
 					        <p:submenu label="#{msgs['Reports']}" class="modOnly">
 					        	<p:menuitem value="#{msgs['user']} #{msgs['reports']}" class="adminOnly"/>
 					        	<p:menuitem value="Talk #{msgs['reports']}" class="modOnly"/>
-					        	<p:menuitem value="#{msgs['comment']} #{msgs['reports']}" class="modOnly"/>
+					        	<p:menuitem value="#{msgs['Comment']} #{msgs['reports']}" class="modOnly"/>
 					        </p:submenu>
 					        
 					    </p:panelMenu>
@@ -48,36 +50,91 @@
 
 			    </p:layoutUnit>
 			 
+			 
+			 
+			 
 			    <p:layoutUnit id="center" position="center">
 			    
 			    	<h:form>
-			    	
-			    	<p:fieldset legend="#{msgs['addPost']}" toggleable="true" toggleSpeed="500">
-				        <p:ajax event="toggle"/>
-				        
-				        <p:inputTextarea id="newPostText" required="true" rows="2" cols="100" counter="display" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
-				 		<h:outputText id="display" />
-				 		<p:message for="newPostText" display="tooltip"/>
-				 		
-				    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost()}"/>
-				    </p:fieldset>
-    
-					<p:panel class="talk">
-	       				<p:toolbar>
-					        <f:facet name="left">
-					        	<span>1h ago</span>
-					        	<span class="modOnly">Author: Test</span>
-					        </f:facet>
-					        <f:facet name="right">
-						        <p:commandButton type="button" value="Report" icon="ui-icon-alert" />
-						        <p:commandButton type="button" value="Delete" icon="ui-icon-trash" />
-					        </f:facet>
-					    </p:toolbar>
-					    
-					    
-					    
-   					</p:panel>
-				    	
+				    	<p:fieldset legend="#{msgs['addPost']}" toggleable="true" toggleSpeed="500">
+					        <p:ajax event="toggle"/>
+					        
+					        <p:inputTextarea id="newPostText" required="true" rows="2" cols="100" counter="talkChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
+					 		<h:outputText id="talkChars" />
+					 		<p:message for="newPostText" display="tooltip"/>
+					 		
+					    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost()}"/>
+					    </p:fieldset>
+					</h:form>
+					<h:form>
+						<p:dataScroller value="#{postManagerBean.getAllPosts()}" var="post" chunkSize="10">
+						
+							<p:panel class="talk">
+			       				<p:toolbar class="talkInfo+Command">
+							        <f:facet name="left">
+							        	<h:outputText value="#{post.time} ago" />
+							        	<span class="modOnly">Author: #{post.user.name}</span>
+							        	<p:commandButton type="button" value="Report" icon="ui-icon-alert" />
+							        </f:facet>
+							        <f:facet name="right">
+								        <p:commandButton type="button" value="Report" icon="ui-icon-alert" />
+								        <p:commandButton type="button" value="Delete" icon="ui-icon-trash"/>
+							        </f:facet>
+							    </p:toolbar>
+							    
+							    <p:layout style="min-height:6rem">
+							    	<p:layoutUnit position="center">
+							    		<h:outputText value="#{post.text}" />
+							    	</p:layoutUnit>
+							    	<p:layoutUnit position="east" size="50">
+										<h:commandButton action="#{postManagerBean.upvotePost}" value="&#x02C4;">
+											<f:param name="postId" value="#{post.id}"/>
+										</h:commandButton>
+										
+							    		<h:outputText value="#{post.votes}"/>
+									
+										<h:commandButton action="#{postManagerBean.downvotePost}" value="&#x02C5;">
+											<f:param name="postId" value="#{post.id}"/>
+										</h:commandButton>
+							    	</p:layoutUnit>
+							    </p:layout>
+							    
+							    <p:panel header="3 Comments" toggleable="true" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
+							        <p:ajax event="toggle" listener="#{panelView.onToggle}" />
+		
+								    <p:panel>
+								        <p:inputTextarea id="newCommentText" required="true" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
+								 		<h:outputText id="commentChars" />
+								 		<p:message for="newCommentText" display="tooltip"/>
+								 		
+								    	<p:commandButton value="#{msgs['publish']} #{msgs['comment']}" actionListener="#{commentManagerBean.createComment()}"/>
+									</p:panel>
+									
+									<p:layout style="min-height:6rem">
+								    	<p:layoutUnit position="center">
+								    		<h:outputText value="xxx" />
+								    		<span id="authorC0" class="modOnly">
+								    			Author: asdf
+								    		</span>
+								    		<p:commandButton type="button" value="Report" icon="ui-icon-alert" />
+								    	</p:layoutUnit>
+								    	<p:layoutUnit position="east" size="50">
+											<h:commandButton action="xxx" value="&#x02C4;">
+												<f:param name="postId" value="xxx"/>
+											</h:commandButton>
+											
+								    		<h:outputText value="x"/>
+								    		
+											<h:commandButton action="xxx" value="&#x02C5;">
+												<f:param name="postId" value="xxx"/>
+											</h:commandButton>
+								    	</p:layoutUnit>
+								    </p:layout>
+								    
+							    </p:panel>
+							    
+		   					</p:panel>
+				    	</p:dataScroller>
 			 		</h:form>
 			    </p:layoutUnit>
 			</p:layout>
