@@ -84,6 +84,10 @@ public class UserManagerBean implements Serializable {
 
 		return "login";
 	}
+	
+	public User getLoggedInUser() {
+		return loggedInUser;
+	}
 
 	public String getUserName() {
 		return userFactory.get(loggedInUser).getName();

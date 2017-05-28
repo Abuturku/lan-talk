@@ -64,7 +64,7 @@
 					 		<p:message for="newPostText" display="tooltip"/>
 					 		
 					    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost()}">
-					    		<f:param name="userId" value="#{userManagerBean.user.id}"/>
+					    		<f:param name="userId" value="#{userManagerBean.loggedInUser.id}"/>
 					    	</p:commandButton>
 					    </p:fieldset>
 					</h:form>

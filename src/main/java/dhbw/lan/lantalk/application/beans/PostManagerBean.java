@@ -76,7 +76,7 @@ public class PostManagerBean implements Serializable{
 		Post newPost = new Post();
 		newPost.setText(newPostText);
 		newPost.setUser(user);
-		newPost.setTime(System.nanoTime());
+		newPost.setTime(System.currentTimeMillis());
 		newPost.setCommentList(new ArrayList<>());
 		newPost.setPointList(new ArrayList<>());
 //		user.addPost(newPost);
