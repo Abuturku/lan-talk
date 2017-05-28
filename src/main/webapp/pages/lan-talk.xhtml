@@ -55,15 +55,17 @@
 			 
 			    <p:layoutUnit id="center" position="center">
 			    
-			    	<h:form>
+			    	<h:form id="createNewPost">
 				    	<p:fieldset legend="#{msgs['addPost']}" toggleable="true" toggleSpeed="500">
 					        <p:ajax event="toggle"/>
 					        
-					        <p:inputTextarea id="newPostText" required="true" rows="2" cols="100" counter="talkChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
+					        <p:inputTextarea value="#{postManagerBean.newPostText}" id="newPostText" required="true" rows="2" cols="100" counter="talkChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
 					 		<h:outputText id="talkChars" />
 					 		<p:message for="newPostText" display="tooltip"/>
 					 		
-					    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost()}"/>
+					    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost()}">
+					    		<f:param name="userId" value="#{userManagerBean.user.id}"/>
+					    	</p:commandButton>
 					    </p:fieldset>
 					</h:form>
 					<h:form>
