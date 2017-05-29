@@ -84,7 +84,5 @@ public class CommentManagerBean implements Serializable {
 
 	public void setCommentText(String commentText) {
 		this.commentText = commentText;
-	}
-	
-	
+	}	
 }
