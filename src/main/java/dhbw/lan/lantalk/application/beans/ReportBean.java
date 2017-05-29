@@ -1,5 +1,6 @@
 package dhbw.lan.lantalk.application.beans;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -12,6 +13,7 @@ import dhbw.lan.lantalk.persistence.factory.UserFactory;
 import dhbw.lan.lantalk.persistence.objects.Comment;
 import dhbw.lan.lantalk.persistence.objects.Post;
 import dhbw.lan.lantalk.persistence.objects.Report;
+import dhbw.lan.lantalk.persistence.objects.Role;
 import dhbw.lan.lantalk.persistence.objects.User;
 
 @Named
@@ -58,6 +60,7 @@ public class ReportBean {
 	}
 	
 	@Transactional
+	@RolesAllowed(value = {Role.Moderator, Role.Administrator})
 	public void reportUser(User reportedUser, User reporter){
 		reporter = userFactory.get(reporter);
 		reportedUser = userFactory.get(reportedUser);
