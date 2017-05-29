@@ -17,8 +17,8 @@ public class CommentFactory extends AFactory<Comment> {
 	}
 
 	public Comment create(Comment comment, User user) {
-		 comment.setUser(user);
-		 user.addComment(comment);
+		comment.setUser(user);
+		user.addComment(comment);
 		return super.create(comment);
 	}
 }

@@ -17,7 +17,8 @@ public class Post extends TextComponent {
 	/**
 	 * Represents a list of comments of the post
 	 */
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+	@OrderColumn(name = "orderIndex")
 	private List<Comment> commentList;
 
 	/**

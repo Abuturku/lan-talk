@@ -105,11 +105,11 @@
 							        <p:ajax event="toggle" listener="#{panelView.onToggle}" />
 		
 								    <p:panel>
-								        <p:inputTextarea id="newCommentText" required="true" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
-								 		<h:outputText id="commentChars" />
+								        <p:inputTextarea id="newCommentText" value="#{commentManagerBean.commentText}" required="true" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
+								 		<h:outputText id="commentChars"/>
 								 		<p:message for="newCommentText" display="tooltip"/>
 								 		
-								    	<p:commandButton value="#{msgs['publish']} #{msgs['comment']}" actionListener="#{commentManagerBean.createComment()}"/>
+								    	<p:commandButton value="#{msgs['publish']} #{msgs['comment']}" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
 									</p:panel>
 									
 									<p:layout style="min-height:6rem">

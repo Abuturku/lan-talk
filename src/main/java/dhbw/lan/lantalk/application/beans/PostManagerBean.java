@@ -104,7 +104,7 @@ public class PostManagerBean implements Serializable{
 		
 		Point point = new Point();
 		point.setVote(true);
-		point.setTime(System.nanoTime());
+		point.setTime(System.currentTimeMillis());
 		
 		pointFactory.create(point, post.getUser(), post);
 		postFactory.update(post);
@@ -121,7 +121,7 @@ public class PostManagerBean implements Serializable{
 		
 		Point point = new Point();
 		point.setVote(false);
-		point.setTime(System.nanoTime());
+		point.setTime(System.currentTimeMillis());
 		
 		pointFactory.create(point, post.getUser(), post);
 		postFactory.update(post);
