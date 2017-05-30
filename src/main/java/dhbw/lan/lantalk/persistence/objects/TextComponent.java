@@ -41,6 +41,12 @@ public abstract class TextComponent implements IPrimKey {
 	@Column
 	private String text;
 
+	/**
+	 * The points of the textcomponent
+	 */
+	@Enumerated(EnumType.STRING)
+	private TextType textType;
+
 	@OneToMany(mappedBy = "textComponent", fetch = FetchType.EAGER)
 	@OrderColumn(name = "orderIndex")
 	private List<Point> pointList;
@@ -114,6 +120,22 @@ public abstract class TextComponent implements IPrimKey {
 	 */
 	public String getText() {
 		return this.text;
+	}
+
+	/**
+	 *
+	 * @param text
+	 *            set the {@link TextComponent#textType} of the textcomponent
+	 */
+	public void setTextType(TextType textType) {
+		this.textType = textType;
+	}
+
+	/**
+	 * @return the {@link TextComponent#textType} of the textcomponent
+	 */
+	public TextType getTextType() {
+		return this.textType;
 	}
 
 	/**

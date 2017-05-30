@@ -4,6 +4,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Named;
 
 import dhbw.lan.lantalk.persistence.objects.Comment;
+import dhbw.lan.lantalk.persistence.objects.TextType;
 import dhbw.lan.lantalk.persistence.objects.User;
 
 @Named("commentFactory")
@@ -17,6 +18,7 @@ public class CommentFactory extends AFactory<Comment> {
 	}
 
 	public Comment create(Comment comment, User user) {
+		comment.setTextType(TextType.Comment);
 		comment.setUser(user);
 		user.addComment(comment);
 		return super.create(comment);
