@@ -263,5 +263,7 @@ public class PostManagerBean implements Serializable {
 	}
 
 	/* /UI */
+	
+	//TODO calc time difference. returns string
 
 }

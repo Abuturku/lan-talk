@@ -21,6 +21,7 @@ import dhbw.lan.lantalk.persistence.objects.TextType;
 import dhbw.lan.lantalk.persistence.objects.User;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 
 @Named
@@ -106,7 +107,17 @@ public class CommentManagerBean implements Serializable {
 	}
 
 	public List<Comment> getComments(Post post) {
-		return post.getCommentList();
+		List<Comment> commentList = post.getCommentList();
+		
+		commentList.sort(new Comparator<Comment>() {
+
+			@Override
+			public int compare(Comment comment1, Comment comment2) {
+				return (comment1.getTime() > comment2.getTime()) ? 1 : (comment1.getTime() < comment2.getTime()) ? -1 : 0;
+			}
+		});
+		
+		return commentList;
 	}
 
 	public String getCommentText() {
