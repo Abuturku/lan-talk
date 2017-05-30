@@ -127,4 +127,22 @@ public class Report implements IPrimKey {
 	public ReportType getReportType() {
 		return this.reportType;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Post)) {
+			return false;
+		}
+		Report report = (Report) obj;
+		if (id != report.id) {
+			return false;
+		}
+		return true;
+	}
 }

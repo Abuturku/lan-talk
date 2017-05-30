@@ -126,4 +126,23 @@ public class Point implements IPrimKey {
 	public TextComponent getTextComponent() {
 		return this.textComponent;
 	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Post)) {
+			return false;
+		}
+		Point point = (Point) obj;
+		if (id != point.id) {
+			return false;
+		}
+		return true;
+	}
 }
