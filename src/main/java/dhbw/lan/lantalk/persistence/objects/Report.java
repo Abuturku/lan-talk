@@ -114,10 +114,10 @@ public class Report implements IPrimKey {
 
 	/**
 	 *
-	 * @param textComponent
+	 * @param reportType
 	 *            set the {@link Report#reportType} of the report
 	 */
-	public void setTextComponent(ReportType reportType) {
+	public void setReportType(ReportType reportType) {
 		this.reportType = reportType;
 	}
 
