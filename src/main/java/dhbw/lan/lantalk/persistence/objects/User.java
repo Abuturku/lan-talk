@@ -223,4 +223,22 @@ public class User implements IPrimKey {
 	public long getRegTime() {
 		return this.regTime;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Post)) {
+			return false;
+		}
+		User user = (User) obj;
+		if (id != user.id) {
+			return false;
+		}
+		return true;
+	}
 }

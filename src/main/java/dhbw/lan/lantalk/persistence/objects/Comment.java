@@ -35,4 +35,21 @@ public class Comment extends TextComponent {
 		return this.post;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Post)) {
+			return false;
+		}
+		Comment comment = (Comment) obj;
+		if (!post.equals(comment.post)) {
+			return false;
+		}
+		return true;
+	}
 }

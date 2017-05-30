@@ -186,4 +186,21 @@ public abstract class TextComponent implements IPrimKey {
 		}
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Post)) {
+			return false;
+		}
+		TextComponent textComponent = (TextComponent) obj;
+		if (id != textComponent.id) {
+			return false;
+		}
+		return true;
+	}
 }
