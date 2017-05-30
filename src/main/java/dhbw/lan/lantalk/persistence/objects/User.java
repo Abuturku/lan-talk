@@ -54,18 +54,37 @@ public class User implements IPrimKey {
 	@OrderColumn(name = "orderIndex")
 	private List<Point> points;
 
+//	/**
+//	 * All the articles the user has written.
+//	 */
+//	@OneToMany(mappedBy = "user", targetEntity = TextComponent.class, fetch = FetchType.EAGER)
+//	private List<Post> postList;
+//
+//	/**
+//	 * Represents a list of comments the user has written
+//	 */
+//	@OneToMany(mappedBy = "user", targetEntity = TextComponent.class, fetch = FetchType.EAGER)
+//	private List<Comment> commentList;
+
 	/**
 	 * All the articles the user has written.
 	 */
-	@OneToMany(mappedBy = "user", targetEntity = TextComponent.class, fetch = FetchType.EAGER)
+	// @OneToMany(mappedBy = "user", targetEntity = TextComponent.class, cascade
+	// = {
+	// CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@OrderColumn(name = "orderIndex")
 	private List<Post> postList;
 
 	/**
 	 * Represents a list of comments the user has written
 	 */
-	@OneToMany(mappedBy = "user", targetEntity = TextComponent.class, fetch = FetchType.EAGER)
+	// @OneToMany(mappedBy = "user", targetEntity = TextComponent.class, cascade
+	// = {
+	// CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@OrderColumn(name = "orderIndex")
 	private List<Comment> commentList;
-
 	/**
 	 * 
 	 * @param postList
