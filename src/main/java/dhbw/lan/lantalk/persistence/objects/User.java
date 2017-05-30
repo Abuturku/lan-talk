@@ -51,21 +51,19 @@ public class User implements IPrimKey {
 	 * The points a user has made with his articles and comments
 	 */
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-	@OrderColumn(name = "orderIndex")
+	@OrderColumn(name = "orderIndexPointList")
 	private List<Point> points;
 
 	/**
 	 * All the articles the user has written.
 	 */
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, targetEntity = TextComponent.class)
-	@OrderColumn(name = "orderIndex")
 	private List<Post> postList;
 
 	/**
 	 * Represents a list of comments the user has written
 	 */
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, targetEntity = TextComponent.class)
-	@OrderColumn(name = "orderIndex")
 	private List<Comment> commentList;
 
 	/**

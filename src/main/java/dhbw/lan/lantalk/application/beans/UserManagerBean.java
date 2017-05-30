@@ -5,17 +5,25 @@ import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import dhbw.lan.lantalk.persistence.factory.UserFactory;
+import dhbw.lan.lantalk.persistence.objects.Comment;
+import dhbw.lan.lantalk.persistence.objects.Post;
+import dhbw.lan.lantalk.persistence.objects.Role;
+import dhbw.lan.lantalk.persistence.objects.TextComponent;
+import dhbw.lan.lantalk.persistence.objects.TextType;
 import dhbw.lan.lantalk.persistence.objects.User;
 
 @Named
@@ -85,6 +93,22 @@ public class UserManagerBean implements Serializable {
 		return "login";
 	}
 	
+	@Transactional
+	@RolesAllowed(value = {Role.Administrator})
+	public void promoteUserToMod(User user){
+		user = userFactory.get(user);
+		user.setRole(Role.Moderator);
+		userFactory.update(user);
+	}
+	
+	@Transactional
+	@RolesAllowed(value = {Role.Administrator})
+	public void deleteUser(User user){
+		user = userFactory.get(user);
+		userFactory.delete(user);
+		
+	}
+	
 	public User getLoggedInUser() {
 		return loggedInUser;
 	}
@@ -110,14 +134,35 @@ public class UserManagerBean implements Serializable {
 		return format.format(date);
 	}
 	
+	@Transactional
 	public int getAmountOfPosts(){
-		return userFactory.get(loggedInUser).getPostList().size();
+		int amount = 0;
+		List<Post> posts = userFactory.get(loggedInUser).getPostList();
+		
+		for (TextComponent post : posts) {
+			if (post.getTextType() == TextType.Post) {
+				amount++;
+			}
+		}
+		
+		return amount;
 	}
 	
+	@Transactional
 	public int getAmountOfComments(){
-		return userFactory.get(loggedInUser).getCommentList().size();
+		int amount = 0;
+		List<Comment> comments = userFactory.get(loggedInUser).getCommentList();
+		
+		for (TextComponent comment : comments) {
+			if (comment.getTextType() == TextType.Comment) {
+				amount++;
+			}
+		}
+		
+		return amount;
 	}
 	
+	@Transactional
 	public int getAmountOfVotes(){
 		User user = userFactory.get(loggedInUser);
 		return user.getPoints().size();

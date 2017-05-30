@@ -38,10 +38,11 @@
 					    </p:panelMenu>
 					
 						<p:selectOneMenu value="#{postManagerBean.sortBy}" style="width:150px">
-			                <p:ajax listener="#{postManagerBean.onSortByChange}"/>
+			                <p:ajax listener="#{postManagerBean.sortAllPosts()}"/>
 			                <f:selectItems value="#{postManagerBean.sortMethods}" />
 			            </p:selectOneMenu>
 						<p:selectOneButton value="#{postManagerBean.showAll}">
+							<p:ajax listener="#{postManagerBean.sortAllPosts()}"/>
 				            <f:selectItem itemLabel="All Talks" itemValue="1" />
 				            <f:selectItem itemLabel="My Talks" itemValue="0" />
 				        </p:selectOneButton>
@@ -63,13 +64,13 @@
 					 		<h:outputText id="talkChars" />
 					 		<p:message for="newPostText" display="tooltip"/>
 					 		
-					    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost()}">
+					    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost(userManagerBean.loggedInUser)}">
 					    		<f:param name="userId" value="#{userManagerBean.loggedInUser.id}"/>
 					    	</p:commandButton>
 					    </p:fieldset>
 					</h:form>
 					<h:form>
-						<p:dataScroller value="#{postManagerBean.getAllPosts()}" var="post" chunkSize="10">
+						<p:dataScroller value="#{postManagerBean.getAllPosts(userManagerBean.loggedInUser)}" var="post" chunkSize="10">
 						
 							<p:panel class="talk">
 			       				<p:toolbar class="talkInfo+Command">
@@ -79,8 +80,8 @@
 							        	<p:commandButton type="button" value="Report" icon="ui-icon-alert" />
 							        </f:facet>
 							        <f:facet name="right">
-								        <p:commandButton type="button" value="Report" icon="ui-icon-alert" />
-								        <p:commandButton type="button" value="Delete" icon="ui-icon-trash"/>
+								        <p:commandButton value="Report" icon="ui-icon-alert" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser)}" />				       
+								        <p:commandButton value="Delete" icon="ui-icon-trash" actionListener="#{postManagerBean.deletePost(post, userManagerBean.loggedInUser)}"/>
 							        </f:facet>
 							    </p:toolbar>
 							    
@@ -89,15 +90,11 @@
 							    		<h:outputText value="#{post.text}" />
 							    	</p:layoutUnit>
 							    	<p:layoutUnit position="east" size="50">
-										<h:commandButton action="#{postManagerBean.upvotePost}" value="&#x02C4;">
-											<f:param name="postId" value="#{post.id}"/>
-										</h:commandButton>
+										<h:commandButton action="#{postManagerBean.upvotePost(post)}" value="&#x02C4;"/>
 										
 							    		<h:outputText value="#{post.votes}"/>
 									
-										<h:commandButton action="#{postManagerBean.downvotePost}" value="&#x02C5;">
-											<f:param name="postId" value="#{post.id}"/>
-										</h:commandButton>
+										<h:commandButton action="#{postManagerBean.downvotePost(post)}" value="&#x02C5;"/>
 							    	</p:layoutUnit>
 							    </p:layout>
 							    
@@ -109,7 +106,7 @@
 								 		<h:outputText id="commentChars"/>
 								 		<p:message for="newCommentText" display="tooltip"/>
 								 		
-								    	<p:commandButton value="#{msgs['publish']} #{msgs['comment']}" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
+								    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
 									</p:panel>
 									
 									<p:layout style="min-height:6rem">
