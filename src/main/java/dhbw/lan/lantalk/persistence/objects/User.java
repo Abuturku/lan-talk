@@ -57,15 +57,13 @@ public class User implements IPrimKey {
 	/**
 	 * All the articles the user has written.
 	 */
-	@OneToMany(mappedBy = "user", targetEntity = TextComponent.class, cascade = {
-			CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", targetEntity = TextComponent.class, fetch = FetchType.EAGER)
 	private List<Post> postList;
 
 	/**
 	 * Represents a list of comments the user has written
 	 */
-	@OneToMany(mappedBy = "user", targetEntity = TextComponent.class, cascade = {
-			CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", targetEntity = TextComponent.class, fetch = FetchType.EAGER)
 	private List<Comment> commentList;
 
 	/**
