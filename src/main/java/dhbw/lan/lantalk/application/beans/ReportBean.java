@@ -1,5 +1,7 @@
 package dhbw.lan.lantalk.application.beans;
 
+import java.io.Serializable;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -16,7 +18,8 @@ import dhbw.lan.lantalk.persistence.objects.User;
 
 @Named
 @RequestScoped
-public class ReportBean {
+public class ReportBean implements Serializable{
+	private static final long serialVersionUID = -6770456571006529147L;
 
 	@Inject
 	private ReportFactory reportFactory;
