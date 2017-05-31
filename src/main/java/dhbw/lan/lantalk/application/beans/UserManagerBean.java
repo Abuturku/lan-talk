@@ -73,12 +73,12 @@ public class UserManagerBean implements Serializable {
 	}
 
 	public boolean isUserInRole(String role) {
-		return getRequest().isUserInRole(role);
+		return getRequest().isUserInRole(role) || loggedInUser.getRole().equals(role);
 	}
 
-	public boolean isUserOwnerOrMod(Post post) {
+	public boolean isUserOwnerOrMod(TextComponent textcomponent) {
 
-		if (post.getUser().getName().equals(loggedInUser.getName()) || loggedInUser.getRole().equals(Role.Administrator)
+		if (textcomponent.getUser().getName().equals(loggedInUser.getName()) || loggedInUser.getRole().equals(Role.Administrator)
 				|| loggedInUser.getRole().equals(Role.Moderator)) {
 			return true;
 		}

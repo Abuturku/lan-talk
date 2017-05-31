@@ -7,55 +7,9 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:composition template="/templates/basic.xhtml">
-		<ui:define name="container">
-		
-			<p:layout>
-			    <p:layoutUnit id="west" position="west" resizable="true" size="20%" minSize="40" maxSize="1000">
-					<a href="/example.xhtml">
-						<img id="logo" alt="Lan-Talk Logo" src="./../img/logo_lan_talk.png"/>
-					</a>
-					
-					<h:form>
-					    <p:growl autoUpdate="true"/>
-					 
-					    <p:panelMenu id="menu">
-					        <p:submenu label="#{msgs['loginInfo']} #{userManagerBean.getUserName()}">
-					            <p:menuitem class="nonclickable" value="#{msgs['role']}: #{userManagerBean.getUserRole()}"/>
-					            <p:menuitem class="nonclickable" value="#{msgs['rank']}: #{userManagerBean.getUserRank()}"/>
-					            <p:menuitem class="nonclickable" value="#{msgs['memberSince']} #{userManagerBean.getUserRegTime()}"/>
-					            <p:menuitem class="nonclickable" value="Talks: #{userManagerBean.getAmountOfPosts()}"/>
-					            <p:menuitem class="nonclickable" value="#{msgs['comments']}: #{userManagerBean.getAmountOfComments()}"/>
-					            <p:menuitem class="nonclickable" value="#{msgs['votes']}: #{userManagerBean.getAmountOfVotes()}"/>
-					            <p:menuitem value="#{msgs['logout']}" action="#{userManagerBean.logout()}" ajax="false"/>
-					        </p:submenu>
-					        <p:submenu label="#{msgs['Reports']}" class="modOnly">
-					        	<p:menuitem value="#{msgs['user']} #{msgs['reports']}" class="adminOnly"/>
-					        	<p:menuitem value="Talk #{msgs['reports']}" class="modOnly"/>
-					        	<p:menuitem value="#{msgs['Comment']} #{msgs['reports']}" class="modOnly"/>
-					        </p:submenu>
-					        
-					    </p:panelMenu>
-					
-						<p:selectOneMenu value="#{postManagerBean.sortBy}" style="width:150px">
-			                <p:ajax listener="#{postManagerBean.sortAllPosts()}"/>
-			                <f:selectItems value="#{postManagerBean.sortMethods}" />
-			            </p:selectOneMenu>
-						<p:selectOneButton value="#{postManagerBean.showAll}">
-							<p:ajax listener="#{postManagerBean.sortAllPosts()}"/>
-				            <f:selectItem itemLabel="All Talks" itemValue="1" />
-				            <f:selectItem itemLabel="My Talks" itemValue="0" />
-				        </p:selectOneButton>
-				        
-					</h:form>
+	<ui:composition template="/templates/lan-talk-menu.xhtml">
+		<ui:define name="lt-main-content">
 
-			    </p:layoutUnit>
-			 
-			 
-			 
-			 
-			    <p:layoutUnit id="center" position="center">
-			    
 			    	<h:form id="createNewPost">
 				    	<p:fieldset legend="#{msgs['addPost']}" toggleable="true" toggleSpeed="500">
 					        <p:ajax event="toggle"/>
@@ -101,43 +55,42 @@
 							    <p:panel header="3 Comments" toggleable="true" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
 							        <p:ajax event="toggle" listener="#{panelView.onToggle}" />
 		
-								    <p:panel>
-								        <p:inputTextarea id="newCommentText" value="#{commentManagerBean.commentText}" required="true" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
-								 		<h:outputText id="commentChars"/>
-								 		<p:message for="newCommentText" display="tooltip"/>
-								 		
-								    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
-									</p:panel>
+									<h:form>
+									    <p:panel>
+									        <p:inputTextarea id="newCommentText" value="#{commentManagerBean.commentText}" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
+									 		<h:outputText id="commentChars"/>
+									 		<p:message for="newCommentText" display="tooltip"/>
+									 		
+									    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
+										</p:panel>
+									</h:form>
 									
-									<p:layout style="min-height:6rem">
-								    	<p:layoutUnit position="center">
-								    		<h:outputText value="xxx" />
-								    		<span id="authorC0" class="modOnly">
-								    			Author: asdf
-								    		</span>
-								    		<p:commandButton type="button" value="Report" icon="ui-icon-alert" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser)}"/>
-								    	</p:layoutUnit>
-								    	<p:layoutUnit position="east" size="50">
-											<h:commandButton action="xxx" value="&#x02C4;">
-												<f:param name="postId" value="xxx"/>
-											</h:commandButton>
-											
-								    		<h:outputText value="x"/>
-								    		
-											<h:commandButton action="xxx" value="&#x02C5;">
-												<f:param name="postId" value="xxx"/>
-											</h:commandButton>
-								    	</p:layoutUnit>
-								    </p:layout>
-								    
+									<p:dataScroller value="#{commentManagerBean.getComments(post)}" var="comment" chunkSize="10">
+									
+										<p:layout style="min-height:6rem">
+									    	<p:layoutUnit position="center">
+									    		<h:outputText value="#{comment.text}" />
+									    		<h:outputText value="#{commentManagerBean.getTimeDiff(comment)}" />
+									    		<span id="authorC0" class="modOnly">
+									    			Author: #{comment.user.name}
+									    		</span>
+									    		<p:commandButton value="Report" icon="ui-icon-alert" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser)}"/>
+									    		<p:commandButton value="Delete" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
+							        		</p:layoutUnit>
+									    	<p:layoutUnit position="east" size="50">
+												<h:commandButton action="#{commentManagerBean.upvoteComment(comment, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
+												
+									    		<h:outputText value="#{comment.votes}"/>
+									    		
+												<h:commandButton action="#{commentManagerBean.downvoteComment(comment, userManagerBean.loggedInUser)}" value="&#x02C5;"/>
+									    	</p:layoutUnit>
+									    </p:layout>
+								    </p:dataScroller>
 							    </p:panel>
 							    
 		   					</p:panel>
 				    	</p:dataScroller>
 			 		</h:form>
-			    </p:layoutUnit>
-			</p:layout>
-
 		
 		</ui:define>
 	</ui:composition>

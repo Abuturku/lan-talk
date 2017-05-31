@@ -44,7 +44,7 @@ public class CommentManagerBean implements Serializable {
 
 	@Inject
 	private PostFactory postFactory;
-	
+
 	@Inject
 	private ReportFactory reportFactory;
 
@@ -52,15 +52,20 @@ public class CommentManagerBean implements Serializable {
 
 	@Transactional
 	public void createComment(User user, Post post) {
-		user = userFactory.get(user);
-		Comment comment = new Comment();
-		comment.setText(this.commentText);
-		comment.setPost(post);
-		comment.setTime(System.currentTimeMillis());
-		post.getCommentList().add(comment);
-		commentFactory.create(comment, user);
-		userFactory.update(user);
-		postFactory.update(post);
+		if (commentText.equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null,
+            		new FacesMessage(FacesMessage.SEVERITY_ERROR, "You can't submit an empty comment", ""));
+		} else {
+			user = userFactory.get(user);
+			Comment comment = new Comment();
+			comment.setText(this.commentText);
+			comment.setPost(post);
+			comment.setTime(System.currentTimeMillis());
+			post.getCommentList().add(comment);
+			commentFactory.create(comment, user);
+			userFactory.update(user);
+			postFactory.update(post);
+		}
 	}
 
 	@Transactional
@@ -75,7 +80,8 @@ public class CommentManagerBean implements Serializable {
 			Point point = allPoints.get(i);
 			if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment) && point.isUpVote()) {
 				isVoteAllowed = false;
-			} else if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment) && !point.isUpVote()) {
+			} else if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment)
+					&& !point.isUpVote()) {
 				point.setVote(true);
 				pointFactory.update(point);
 				comment.addPoint(point);
@@ -113,7 +119,8 @@ public class CommentManagerBean implements Serializable {
 			Point point = allPoints.get(i);
 			if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment) && !point.isUpVote()) {
 				isVoteAllowed = false;
-			} else if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment) && point.isUpVote()) {
+			} else if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment)
+					&& point.isUpVote()) {
 				point.setVote(true);
 				pointFactory.update(point);
 				comment.addPoint(point);
@@ -145,15 +152,20 @@ public class CommentManagerBean implements Serializable {
 		User commentUser = userFactory.get(comment.getUser());
 
 		List<Report> reports = reportFactory.getAll();
-		
-		if (commentUser.equals(loggedInUser) || loggedInUser.getRole().equals(Role.Administrator) || loggedInUser.getRole().equals(Role.Moderator)) {
-			
+
+		if (commentUser.equals(loggedInUser) || loggedInUser.getRole().equals(Role.Administrator)
+				|| loggedInUser.getRole().equals(Role.Moderator)) {
+
 			for (int i = 0; i < reports.size(); i++) {
-				if (reports.get(i).getTextComponent().getTextType() == TextType.Comment && reports.get(i).getTextComponent().getId() == comment.getId()) {
+				if (reports.get(i).getTextComponent().getTextType() == TextType.Comment
+						&& reports.get(i).getTextComponent().getId() == comment.getId()) {
 					reportFactory.delete(reports.get(i));
 				}
 			}
-			
+
+			commentFactory.delete(comment);
+			comment.getPost().getCommentList().remove(comment);
+			postFactory.update(comment.getPost());
 			commentFactory.delete(comment);
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -163,15 +175,16 @@ public class CommentManagerBean implements Serializable {
 
 	public List<Comment> getComments(Post post) {
 		List<Comment> commentList = post.getCommentList();
-		
+
 		commentList.sort(new Comparator<Comment>() {
 
 			@Override
 			public int compare(Comment comment1, Comment comment2) {
-				return (comment1.getTime() > comment2.getTime()) ? 1 : (comment1.getTime() < comment2.getTime()) ? -1 : 0;
+				return (comment1.getTime() > comment2.getTime()) ? 1
+						: (comment1.getTime() < comment2.getTime()) ? -1 : 0;
 			}
 		});
-		
+
 		return commentList;
 	}
 
@@ -182,9 +195,10 @@ public class CommentManagerBean implements Serializable {
 	public void setCommentText(String commentText) {
 		this.commentText = commentText;
 	}
-	
-	public String getTimeDiff(Comment comment){
-		PrettyTime prettyTime = new PrettyTime(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+
+	public String getTimeDiff(Comment comment) {
+		PrettyTime prettyTime = new PrettyTime(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
 		return prettyTime.format(new Date(comment.getTime()));
 	}
 }
