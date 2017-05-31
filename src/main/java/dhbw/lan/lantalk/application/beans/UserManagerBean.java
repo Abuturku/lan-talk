@@ -23,6 +23,7 @@ import dhbw.lan.lantalk.persistence.factory.PostFactory;
 import dhbw.lan.lantalk.persistence.factory.ReportFactory;
 import dhbw.lan.lantalk.persistence.factory.UserFactory;
 import dhbw.lan.lantalk.persistence.objects.Comment;
+import dhbw.lan.lantalk.persistence.objects.Point;
 import dhbw.lan.lantalk.persistence.objects.Post;
 import dhbw.lan.lantalk.persistence.objects.Report;
 import dhbw.lan.lantalk.persistence.objects.Role;
@@ -203,7 +204,17 @@ public class UserManagerBean implements Serializable {
 	@Transactional
 	public int getAmountOfVotes() {
 		User user = userFactory.get(loggedInUser);
-		return user.getPoints().size();
+		
+		int amount = 0;
+		List<Point> pointList = user.getPoints();
+		
+		for (int i = 0; i < pointList.size(); i++) {
+			if (pointList.get(i).isUpVote()) {
+				amount++;
+			}
+		}
+		
+		return amount;
 	}
 
 	@Transactional
