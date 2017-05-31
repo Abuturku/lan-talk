@@ -3,6 +3,7 @@ package dhbw.lan.lantalk.application.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
+
+import org.ocpsoft.prettytime.PrettyTime;
 
 import dhbw.lan.lantalk.persistence.factory.CommentFactory;
 import dhbw.lan.lantalk.persistence.factory.PointFactory;
@@ -264,6 +267,9 @@ public class PostManagerBean implements Serializable {
 
 	/* /UI */
 	
-	//TODO calc time difference. returns string
+	public String getTimeDiff(Post post){
+		PrettyTime prettyTime = new PrettyTime(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+		return prettyTime.format(new Date(post.getTime()));
+	}
 
 }

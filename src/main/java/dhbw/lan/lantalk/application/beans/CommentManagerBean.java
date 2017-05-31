@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import dhbw.lan.lantalk.persistence.factory.CommentFactory;
 import dhbw.lan.lantalk.persistence.factory.PointFactory;
 import dhbw.lan.lantalk.persistence.factory.PostFactory;
@@ -22,6 +24,7 @@ import dhbw.lan.lantalk.persistence.objects.User;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @Named
@@ -126,5 +129,10 @@ public class CommentManagerBean implements Serializable {
 
 	public void setCommentText(String commentText) {
 		this.commentText = commentText;
+	}
+	
+	public String getTimeDiff(Comment comment){
+		PrettyTime prettyTime = new PrettyTime(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+		return prettyTime.format(new Date(comment.getTime()));
 	}
 }
