@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -30,15 +32,21 @@ public class NewUserBean implements Serializable{
 	public String register(){
 		
 		if (password1.equals(password2)) {
-			User user = new User();
-			user.setName(userName);
-			user.setPoints(new ArrayList<>());
-			user.setRole(Role.User);
-			user.setRegTime(System.currentTimeMillis());
-			user.setPostList(new ArrayList<Post>());
-			user.setCommentList(new ArrayList<Comment>());
-			userFactory.changePassword(user, password1);
-			userFactory.create(user);
+			try {
+				User user = new User();
+				user.setName(userName);
+				user.setPoints(new ArrayList<>());
+				user.setRole(Role.User);
+				user.setRegTime(System.currentTimeMillis());
+				user.setPostList(new ArrayList<Post>());
+				user.setCommentList(new ArrayList<Comment>());
+				userFactory.changePassword(user, password1);
+				userFactory.create(user);
+			} catch (Exception e) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Username already assigned. Please choose another Username.", ""));
+			}
+			
 			return "login";
 		}else{
 			return null;
