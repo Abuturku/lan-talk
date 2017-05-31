@@ -145,13 +145,20 @@ public abstract class TextComponent implements IPrimKey {
 	 *            text-component
 	 */
 	public void addPoint(Point point) {
-		if (point.isUpVote()) {
-			this.votes++;
-		} else {
-			this.votes--;
+		int amount = 2;
+		
+		if (!pointList.contains(point)) {
+			amount = 1;
+			this.pointList.add(point);
 		}
-
-		this.pointList.add(point);
+		
+		
+		if (point.isUpVote()) {
+			this.votes+= amount;
+		} else {
+			this.votes-= amount;
+		}
+		
 	}
 
 	/**

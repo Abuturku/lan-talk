@@ -64,27 +64,79 @@ public class CommentManagerBean implements Serializable {
 	}
 
 	@Transactional
-	public void upvoteComment(Comment comment) {
+	public void upvoteComment(Comment comment, User votingUser) {
+		votingUser = userFactory.get(votingUser);
 		comment = commentFactory.get(comment);
-		Point point = new Point();
-		point.setVote(true);
-		point.setTime(System.currentTimeMillis());
 
-		pointFactory.create(point, comment.getUser(), comment);
-		commentFactory.update(comment);
-		userFactory.update(comment.getUser());
+		List<Point> allPoints = comment.getPointList();
+
+		boolean isVoteAllowed = true;
+		for (int i = 0; i < allPoints.size(); i++) {
+			Point point = allPoints.get(i);
+			if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment) && point.isUpVote()) {
+				isVoteAllowed = false;
+			} else if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment) && !point.isUpVote()) {
+				point.setVote(true);
+				pointFactory.update(point);
+				comment.addPoint(point);
+				commentFactory.update(comment);
+				userFactory.update(votingUser);
+				userFactory.update(comment.getUser());
+				return;
+			}
+		}
+
+		if (isVoteAllowed) {
+			Point point = new Point();
+			point.setVote(true);
+			point.setTime(System.currentTimeMillis());
+
+			pointFactory.create(point, comment.getUser(), comment);
+			commentFactory.update(comment);
+			userFactory.update(comment.getUser());
+
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "You already upvoted this comment.", ""));
+		}
 	}
 
 	@Transactional
-	public void downvoteComment(Comment comment) {
+	public void downvoteComment(Comment comment, User votingUser) {
+		votingUser = userFactory.get(votingUser);
 		comment = commentFactory.get(comment);
-		Point point = new Point();
-		point.setVote(false);
-		point.setTime(System.currentTimeMillis());
 
-		pointFactory.create(point, comment.getUser(), comment);
-		commentFactory.update(comment);
-		userFactory.update(comment.getUser());
+		List<Point> allPoints = comment.getPointList();
+
+		boolean isVoteAllowed = true;
+		for (int i = 0; i < allPoints.size(); i++) {
+			Point point = allPoints.get(i);
+			if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment) && !point.isUpVote()) {
+				isVoteAllowed = false;
+			} else if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment) && point.isUpVote()) {
+				point.setVote(true);
+				pointFactory.update(point);
+				comment.addPoint(point);
+				commentFactory.update(comment);
+				userFactory.update(votingUser);
+				userFactory.update(comment.getUser());
+				return;
+			}
+		}
+
+		if (isVoteAllowed) {
+			Point point = new Point();
+			point.setVote(true);
+			point.setTime(System.currentTimeMillis());
+
+			pointFactory.create(point, comment.getUser(), comment);
+			commentFactory.update(comment);
+			userFactory.update(comment.getUser());
+
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "You already downvoted this comment.", ""));
+		}
 	}
 
 	@Transactional

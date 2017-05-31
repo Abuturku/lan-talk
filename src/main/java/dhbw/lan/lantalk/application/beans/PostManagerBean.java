@@ -142,7 +142,7 @@ public class PostManagerBean implements Serializable {
 		votingUser = userFactory.get(votingUser);
 		post = postFactory.get(post);
 
-		List<Point> allPoints = pointFactory.getAll();
+		List<Point> allPoints = post.getPointList();
 
 		boolean isVoteAllowed = true;
 		for (int i = 0; i < allPoints.size(); i++) {
@@ -152,7 +152,10 @@ public class PostManagerBean implements Serializable {
 			} else if (point.getUser().equals(votingUser) && point.getTextComponent().equals(post) && !point.isUpVote()) {
 				point.setVote(true);
 				pointFactory.update(point);
+				post.addPoint(point);
 				postFactory.update(post);
+				userFactory.update(votingUser);
+				userFactory.update(post.getUser());
 				return;
 			}
 		}
@@ -179,7 +182,7 @@ public class PostManagerBean implements Serializable {
 		votingUser = userFactory.get(votingUser);
 		post = postFactory.get(post);
 
-		List<Point> allPoints = pointFactory.getAll();
+		List<Point> allPoints = post.getPointList();
 
 		boolean isVoteAllowed = true;
 		for (int i = 0; i < allPoints.size(); i++) {
@@ -189,7 +192,10 @@ public class PostManagerBean implements Serializable {
 			} else if (point.getUser().equals(votingUser) && point.getTextComponent().equals(post) && point.isUpVote()) {
 				point.setVote(false);
 				pointFactory.update(point);
+				post.addPoint(point);
 				postFactory.update(post);
+				userFactory.update(votingUser);
+				userFactory.update(post.getUser());
 				return;
 			}
 		}
