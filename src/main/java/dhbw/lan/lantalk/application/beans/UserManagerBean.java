@@ -18,9 +18,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import dhbw.lan.lantalk.persistence.factory.CommentFactory;
+import dhbw.lan.lantalk.persistence.factory.PostFactory;
+import dhbw.lan.lantalk.persistence.factory.ReportFactory;
 import dhbw.lan.lantalk.persistence.factory.UserFactory;
 import dhbw.lan.lantalk.persistence.objects.Comment;
 import dhbw.lan.lantalk.persistence.objects.Post;
+import dhbw.lan.lantalk.persistence.objects.Report;
 import dhbw.lan.lantalk.persistence.objects.Role;
 import dhbw.lan.lantalk.persistence.objects.TextComponent;
 import dhbw.lan.lantalk.persistence.objects.TextType;
@@ -35,14 +39,22 @@ public class UserManagerBean implements Serializable {
 
 	@Inject
 	private UserFactory userFactory;
-	
+
+	@Inject
+	private ReportFactory reportFactory;
+
+	@Inject
+	private CommentFactory commentFactory;
+
+	@Inject
+	private PostFactory postFactory;
+
 	@PostConstruct
 	public void init() {
 
 		this.loggedInUser = getUser();
 	}
 
-	
 	private HttpServletRequest getRequest() {
 		return (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	}
@@ -62,31 +74,29 @@ public class UserManagerBean implements Serializable {
 	public boolean isUserInRole(String role) {
 		return getRequest().isUserInRole(role);
 	}
-	
-	public boolean isUserOwnerOrMod(Post post){
-		
-		if (post.getUser().getName().equals(loggedInUser.getName()) || loggedInUser.getRole().equals(Role.Administrator) || loggedInUser.getRole().equals(Role.Moderator)) {
+
+	public boolean isUserOwnerOrMod(Post post) {
+
+		if (post.getUser().getName().equals(loggedInUser.getName()) || loggedInUser.getRole().equals(Role.Administrator)
+				|| loggedInUser.getRole().equals(Role.Moderator)) {
 			return true;
 		}
 		return false;
-		
+
 	}
-	
-	
-	public User getUser(){
+
+	public User getUser() {
 		final Optional<Principal> principal = getPrincipal();
-		if (principal.isPresent())
-		{
-			if ((loggedInUser == null) || !principal.get().getName().equals(loggedInUser.getName()))
-			{
-				
+		if (principal.isPresent()) {
+			if ((loggedInUser == null) || !principal.get().getName().equals(loggedInUser.getName())) {
+
 				loggedInUser = userFactory.getByName(principal.get().getName());
 				return loggedInUser;
 			}
 		}
 		return null;
 	}
-	
+
 	public String logout() {
 		final HttpServletRequest request = getRequest();
 
@@ -101,23 +111,42 @@ public class UserManagerBean implements Serializable {
 
 		return "login";
 	}
-	
+
 	@Transactional
-	@RolesAllowed(value = {Role.Administrator})
-	public void promoteUserToMod(User user){
+	@RolesAllowed(value = { Role.Administrator })
+	public void promoteUserToMod(User user) {
 		user = userFactory.get(user);
 		user.setRole(Role.Moderator);
 		userFactory.update(user);
 	}
-	
+
 	@Transactional
-	@RolesAllowed(value = {Role.Administrator})
-	public void deleteUser(User user){
+	@RolesAllowed(value = { Role.Administrator })
+	public void deleteUser(User user) {
 		user = userFactory.get(user);
-		userFactory.delete(user);
+
+		List<Report> reports = reportFactory.getAll();
+
+		List<Comment> commentList = getUserComments(user);
+		List<Post> postList = getUserPosts(user);
 		
+		for (int i = 0; i < reports.size(); i++) {
+			if (reports.get(i).getTextComponent().getUser().equals(user) || reports.get(i).getReporter().equals(user)) {
+				reportFactory.delete(reports.get(i));
+			}
+		}
+		
+		for (int i = 0; i < commentList.size(); i++) {
+			commentFactory.delete(commentList.get(i));
+		}
+		
+		for (int i = 0; i < postList.size(); i++) {
+			postFactory.delete(postList.get(i));
+		}
+
+		userFactory.delete(user);
 	}
-	
+
 	public User getLoggedInUser() {
 		return loggedInUser;
 	}
@@ -125,55 +154,82 @@ public class UserManagerBean implements Serializable {
 	public String getUserName() {
 		return userFactory.get(loggedInUser).getName();
 	}
-	
-	public String getUserRank(){
-		//TODO calculate user rank
-		//Beginner, Advanced, Professional, Godlike
+
+	public String getUserRank() {
+		// TODO calculate user rank
+		// Beginner, Advanced, Professional, Godlike
 		return "Beginner";
 	}
-	
-	public String getUserRole(){
+
+	public String getUserRole() {
 		return userFactory.get(loggedInUser).getRole().toString();
 	}
-	
-	public String getUserRegTime(){
+
+	public String getUserRegTime() {
 		Date date = new Date(userFactory.get(loggedInUser).getRegTime());
 		String pattern = "dd.MM.yyyy";
-	    DateFormat format = new SimpleDateFormat(pattern);
+		DateFormat format = new SimpleDateFormat(pattern);
 		return format.format(date);
 	}
-	
+
 	@Transactional
-	public int getAmountOfPosts(){
+	public int getAmountOfPosts() {
 		int amount = 0;
 		List<Post> posts = userFactory.get(loggedInUser).getPostList();
-		
+
 		for (TextComponent post : posts) {
 			if (post.getTextType() == TextType.Post) {
 				amount++;
 			}
 		}
-		
+
 		return amount;
 	}
-	
+
 	@Transactional
-	public int getAmountOfComments(){
+	public int getAmountOfComments() {
 		int amount = 0;
 		List<Comment> comments = userFactory.get(loggedInUser).getCommentList();
-		
+
 		for (TextComponent comment : comments) {
 			if (comment.getTextType() == TextType.Comment) {
 				amount++;
 			}
 		}
-		
+
 		return amount;
 	}
-	
+
 	@Transactional
-	public int getAmountOfVotes(){
+	public int getAmountOfVotes() {
 		User user = userFactory.get(loggedInUser);
 		return user.getPoints().size();
 	}
+
+	@Transactional
+	public List<Comment> getUserComments(User user) {
+		user = userFactory.get(user);
+		List<Comment> commentList = user.getCommentList();
+		for (int i = 0; i < commentList.size(); i++) {
+			if (commentList.get(i).getTextType() != TextType.Comment && !commentList.get(i).getUser().equals(user)) {
+				commentList.remove(commentList.get(i));
+			}
+		}
+
+		return commentList;
+	}
+
+	@Transactional
+	public List<Post> getUserPosts(User user) {
+		user = userFactory.get(user);
+		List<Post> postList = user.getPostList();
+		for (int i = 0; i < postList.size(); i++) {
+			if (postList.get(i).getTextType() != TextType.Post && !postList.get(i).getUser().equals(user)) {
+				postList.remove(postList.get(i));
+			}
+		}
+
+		return postList;
+	}
+
 }
