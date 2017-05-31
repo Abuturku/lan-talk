@@ -75,7 +75,7 @@
 							<p:panel class="talk">
 			       				<p:toolbar class="talkInfo+Command">
 							        <f:facet name="left">
-							        	<h:outputText value="#{post.time} ago" />
+							        	<h:outputText value="#{postManagerBean.getTimeDiff(post)}" />
 							        	<span class="modOnly">Author: #{post.user.name}</span>
 							        	<p:commandButton type="button" value="Report" icon="ui-icon-alert" />
 							        </f:facet>
@@ -90,11 +90,11 @@
 							    		<h:outputText value="#{post.text}" />
 							    	</p:layoutUnit>
 							    	<p:layoutUnit position="east" size="50">
-										<h:commandButton action="#{postManagerBean.upvotePost(post)}" value="&#x02C4;"/>
+										<h:commandButton action="#{postManagerBean.upvotePost(post, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
 										
 							    		<h:outputText value="#{post.votes}"/>
 									
-										<h:commandButton action="#{postManagerBean.downvotePost(post)}" value="&#x02C5;"/>
+										<h:commandButton action="#{postManagerBean.downvotePost(post, userManagerBean.loggedInUser)}" value="&#x02C5;"/>
 							    	</p:layoutUnit>
 							    </p:layout>
 							    
