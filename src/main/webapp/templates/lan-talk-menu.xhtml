@@ -29,7 +29,7 @@
 					        </p:submenu>
 					    </p:panelMenu>
 					    
-					    <p:commandButton rendered="#{userManagerBean.isUserInRole('Moderator')}" action="./../pages/reports.xhtml?faces-redirect=true" value="Show reports"/>
+					    <p:commandButton rendered="#{userManagerBean.isUserInRole('Moderator')}" action="./reports.xhtml?faces-redirect=true" value="Show reports"/>
 					
 						<p:selectOneMenu value="#{postManagerBean.sortBy}" style="width:150px">
 			                <p:ajax listener="#{postManagerBean.sortAllPosts()}"/>

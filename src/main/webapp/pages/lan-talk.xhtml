@@ -15,12 +15,14 @@
 					        <p:ajax event="toggle"/>
 					        
 					        <p:inputTextarea value="#{postManagerBean.newPostText}" id="newPostText" required="true" rows="2" cols="100" counter="talkChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
-					 		<h:outputText id="talkChars" />
-					 		<p:message for="newPostText" display="tooltip"/>
+					 		<div>
+						 		<h:outputText id="talkChars" />
+						 		<p:message for="newPostText" display="tooltip"/>
 					 		
-					    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost(userManagerBean.loggedInUser)}">
-					    		<f:param name="userId" value="#{userManagerBean.loggedInUser.id}"/>
-					    	</p:commandButton>
+						    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost(userManagerBean.loggedInUser)}">
+						    		<f:param name="userId" value="#{userManagerBean.loggedInUser.id}"/>
+						    	</p:commandButton>
+					 		</div>
 					    </p:fieldset>
 					</h:form>
 					<h:form>
@@ -31,7 +33,6 @@
 							        <f:facet name="left">
 							        	<h:outputText value="#{postManagerBean.getTimeDiff(post)}" />
 							        	<span class="modOnly">Author: #{post.user.name}</span>
-							        	<p:commandButton type="button" value="Report" icon="ui-icon-alert" />
 							        </f:facet>
 							        <f:facet name="right">
 								        <p:commandButton value="Report" icon="ui-icon-alert" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser)}" />				       
@@ -52,16 +53,16 @@
 							    	</p:layoutUnit>
 							    </p:layout>
 							    
-							    <p:panel header="3 Comments" toggleable="true" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
-							        <p:ajax event="toggle" listener="#{panelView.onToggle}" />
-		
+							    <p:panel header="#{post.commentList.size()} comment(s)" toggleable="true" collapsed="true" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
 									<h:form>
 									    <p:panel>
 									        <p:inputTextarea id="newCommentText" value="#{commentManagerBean.commentText}" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
-									 		<h:outputText id="commentChars"/>
-									 		<p:message for="newCommentText" display="tooltip"/>
-									 		
-									    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
+									 		<div>
+										 		<h:outputText id="commentChars"/>
+										 		<p:message for="newCommentText" display="tooltip"/>
+										 		
+										    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
+									    	</div>
 										</p:panel>
 									</h:form>
 									
@@ -70,12 +71,14 @@
 										<p:layout style="min-height:6rem">
 									    	<p:layoutUnit position="center">
 									    		<h:outputText value="#{comment.text}" />
-									    		<h:outputText value="#{commentManagerBean.getTimeDiff(comment)}" />
-									    		<span id="authorC0" class="modOnly">
-									    			Author: #{comment.user.name}
-									    		</span>
-									    		<p:commandButton value="Report" icon="ui-icon-alert" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser)}"/>
-									    		<p:commandButton value="Delete" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
+									    		<div>
+										    		<h:outputText value="#{commentManagerBean.getTimeDiff(comment)}" />
+										    		<span id="authorC0" class="modOnly">
+										    			Author: #{comment.user.name}
+										    		</span>
+										    		<p:commandButton value="Report" icon="ui-icon-alert" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser)}"/>
+										    		<p:commandButton value="Delete" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
+							        			</div>
 							        		</p:layoutUnit>
 									    	<p:layoutUnit position="east" size="50">
 												<h:commandButton action="#{commentManagerBean.upvoteComment(comment, userManagerBean.loggedInUser)}" value="&#x02C4;"/>

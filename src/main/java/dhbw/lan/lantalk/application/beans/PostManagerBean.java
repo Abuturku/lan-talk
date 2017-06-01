@@ -74,9 +74,9 @@ public class PostManagerBean implements Serializable {
 		// sortMethods.put(msgs.getString("newestFirst"), 0);
 		// sortMethods.put(msgs.getString("oldestFirst"), 1);
 		// sortMethods.put(msgs.getString("mostPopFirst"), 2);
-		sortMethods.put("newestFirst", 0);
-		sortMethods.put("oldestFirst", 1);
-		sortMethods.put("mostPopFirst", 2);
+		sortMethods.put("Newest first", 0);
+		sortMethods.put("Oldest first", 1);
+		sortMethods.put("Most popular first", 2);
 		/* /UI */
 
 		allPosts = postFactory.getAll();
