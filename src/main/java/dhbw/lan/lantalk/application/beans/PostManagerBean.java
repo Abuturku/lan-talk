@@ -238,7 +238,13 @@ public class PostManagerBean implements Serializable {
 						reportFactory.delete(reports.get(j));
 					}
 				}
-
+				
+				//delete all comment points
+				List<Point> commentPointList = commentList.get(i).getPointList();
+				for (int j = 0; j < commentPointList.size(); j++) {
+					pointFactory.delete(commentPointList.get(j));
+				}
+				
 				commentFactory.delete(commentList.get(i));
 			}
 
@@ -249,7 +255,12 @@ public class PostManagerBean implements Serializable {
 					reportFactory.delete(reports.get(i));
 				}
 			}
-
+			
+			List<Point> postPointList = post.getPointList();
+			for (int i = 0; i < postPointList.size(); i++) {
+				pointFactory.delete(postPointList.get(i));
+			}
+			
 			postFactory.delete(post);
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,

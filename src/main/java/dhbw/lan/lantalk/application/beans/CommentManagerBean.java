@@ -119,8 +119,7 @@ public class CommentManagerBean implements Serializable {
 			Point point = allPoints.get(i);
 			if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment) && !point.isUpVote()) {
 				isVoteAllowed = false;
-			} else if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment)
-					&& point.isUpVote()) {
+			} else if (point.getUser().equals(votingUser) && point.getTextComponent().equals(comment) && point.isUpVote()) {
 				point.setVote(true);
 				pointFactory.update(point);
 				comment.addPoint(point);
@@ -162,6 +161,13 @@ public class CommentManagerBean implements Serializable {
 					reportFactory.delete(reports.get(i));
 				}
 			}
+			
+			//delete all comment points
+			List<Point> commentPointList = comment.getPointList();
+			for (int j = 0; j < commentPointList.size(); j++) {
+				pointFactory.delete(commentPointList.get(j));
+			}
+			
 			commentFactory.delete(comment);
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,

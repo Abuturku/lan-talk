@@ -23,7 +23,7 @@ public class Point implements IPrimKey {
 	/**
 	 * Represents the user who created the point
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn
 	private User user;
 
