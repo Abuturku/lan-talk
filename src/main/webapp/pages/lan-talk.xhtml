@@ -26,7 +26,7 @@
 					    </p:fieldset>
 					</h:form>
 					<h:form>
-						<p:dataScroller value="#{postManagerBean.getAllPosts(userManagerBean.loggedInUser)}" var="post" chunkSize="10">
+						<p:dataScroller id="talkScroller" value="#{postManagerBean.getAllPosts(userManagerBean.loggedInUser)}" var="post" chunkSize="10">
 						
 							<p:panel class="talk">
 			       				<p:toolbar class="talkInfo+Command">
@@ -35,8 +35,8 @@
 							        	<span class="modOnly">Author: #{post.user.name}</span>
 							        </f:facet>
 							        <f:facet name="right">
-								        <p:commandButton value="Report" icon="ui-icon-alert" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser)}" />				       
-								        <p:commandButton value="Delete" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(post)}" actionListener="#{postManagerBean.deletePost(post, userManagerBean.loggedInUser)}"/>
+								        <p:commandButton value="Report" icon="ui-icon-alert" update="talkScroller" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser)}" />				       
+								        <p:commandButton value="Delete" icon="ui-icon-trash" update="talkScroller" rendered="#{userManagerBean.isUserOwnerOrMod(post)}" actionListener="#{postManagerBean.deletePost(post, userManagerBean.loggedInUser)}"/>
 							        </f:facet>
 							    </p:toolbar>
 							    
@@ -66,7 +66,7 @@
 										</p:panel>
 									</h:form>
 									
-									<p:dataScroller value="#{commentManagerBean.getComments(post)}" var="comment" chunkSize="10">
+									<p:dataScroller id="commentScroller" value="#{commentManagerBean.getComments(post)}" var="comment" chunkSize="10">
 									
 										<p:layout style="min-height:6rem">
 									    	<p:layoutUnit position="center">
@@ -76,8 +76,8 @@
 										    		<span id="authorC0" class="modOnly">
 										    			Author: #{comment.user.name}
 										    		</span>
-										    		<p:commandButton value="Report" icon="ui-icon-alert" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser)}"/>
-										    		<p:commandButton value="Delete" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
+										    		<p:commandButton value="Report" update="commentScroller" icon="ui-icon-alert" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser)}"/>
+										    		<p:commandButton value="Delete" update="commentScroller" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
 							        			</div>
 							        		</p:layoutUnit>
 									    	<p:layoutUnit position="east" size="50">
