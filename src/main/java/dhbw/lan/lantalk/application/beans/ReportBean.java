@@ -1,6 +1,8 @@
 package dhbw.lan.lantalk.application.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -14,6 +16,8 @@ import dhbw.lan.lantalk.persistence.factory.UserFactory;
 import dhbw.lan.lantalk.persistence.objects.Comment;
 import dhbw.lan.lantalk.persistence.objects.Post;
 import dhbw.lan.lantalk.persistence.objects.Report;
+import dhbw.lan.lantalk.persistence.objects.TextComponent;
+import dhbw.lan.lantalk.persistence.objects.TextType;
 import dhbw.lan.lantalk.persistence.objects.User;
 
 @Named
@@ -59,4 +63,37 @@ public class ReportBean implements Serializable{
 		report.setTime(System.currentTimeMillis());
 		reportFactory.create(report);
 	}
+	
+	public List<Report> getAllReportsSubmittedByUser(User user){
+		user = userFactory.get(user);
+		List<Report> reports = reportFactory.getAll();
+		
+		for (int i = 0; i < reports.size(); i++) {
+			if (!reports.get(i).getReporter().equals(user)) {
+				reports.remove(reports.get(i));
+			}
+		}
+		
+		return reports;
+	}
+	
+	public List<Report> getAllReportsToTextComponent(TextComponent component){
+		List<Report> reports = reportFactory.getAll(); 
+		
+		if (component.getTextType() == TextType.Post) {
+			component = postFactory.get((Post)component);
+		}else{
+			component = commentFactory.get((Comment)component);
+		}
+		
+		for (int i = 0; i < reports.size(); i++) {
+			if (reports.get(i).getTextComponent().equals(component)) {
+				reports.remove(reports.get(i));
+			}
+		}
+		
+		return reports;
+	}
+	
+	
 }
