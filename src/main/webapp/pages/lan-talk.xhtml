@@ -10,90 +10,90 @@
 	<ui:composition template="/templates/lan-talk-menu.xhtml">
 		<ui:define name="lt-main-content">
 
-			    	<h:form id="createNewPost">
-				    	<p:fieldset legend="#{msgs['addPost']}" toggleable="true" toggleSpeed="500">
-					        <p:ajax event="toggle"/>
-					        
-					        <p:inputTextarea value="#{postManagerBean.newPostText}" id="newPostText" required="true" rows="2" cols="100" counter="talkChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
-					 		<div>
-						 		<h:outputText id="talkChars" />
-						 		<p:message for="newPostText" display="tooltip"/>
-					 		
-						    	<p:commandButton value="#{msgs['publish']}" actionListener="#{postManagerBean.createPost(userManagerBean.loggedInUser)}">
-						    		<f:param name="userId" value="#{userManagerBean.loggedInUser.id}"/>
-						    	</p:commandButton>
-					 		</div>
-					    </p:fieldset>
-					</h:form>
-					<h:form>
-						<p:dataScroller id="talkScroller" value="#{postManagerBean.getAllPosts(userManagerBean.loggedInUser)}" var="post" chunkSize="10">
-						
-							<p:panel class="talk">
-			       				<p:toolbar class="talkInfo+Command">
-							        <f:facet name="left">
-							        	<h:outputText value="#{postManagerBean.getTimeDiff(post)}" />
-							        	<span class="modOnly">Author: #{post.user.name}</span>
-							        </f:facet>
-							        <f:facet name="right">
-								        <p:commandButton value="Report" icon="ui-icon-alert" update="talkScroller" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser)}" />				       
-								        <p:commandButton value="Delete" icon="ui-icon-trash" update="talkScroller" rendered="#{userManagerBean.isUserOwnerOrMod(post)}" actionListener="#{postManagerBean.deletePost(post, userManagerBean.loggedInUser)}"/>
-							        </f:facet>
-							    </p:toolbar>
-							    
-							    <p:layout style="min-height:6rem">
+	    	<h:form id="createNewPost">
+		    	<p:fieldset legend="#{msgs['addPost']}" toggleable="true" toggleSpeed="500">
+			        <p:ajax event="toggle"/>
+			        
+			        <p:inputTextarea value="#{postManagerBean.newPostText}" id="newPostText" required="true" rows="2" cols="100" counter="talkChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
+			 		<div>
+				 		<h:outputText id="talkChars" />
+				 		<p:message for="newPostText" display="tooltip"/>
+			 		
+				    	<p:commandButton value="#{msgs['publish']}" update="talksAndComments:talkScroller" actionListener="#{postManagerBean.createPost(userManagerBean.loggedInUser)}">
+				    		<f:param name="userId" value="#{userManagerBean.loggedInUser.id}"/>
+				    	</p:commandButton>
+			 		</div>
+			    </p:fieldset>
+			</h:form>
+			<h:form id="talksAndComments">
+				<p:dataScroller id="talkScroller" value="#{postManagerBean.getAllPosts(userManagerBean.loggedInUser)}" var="post" chunkSize="10">
+				
+					<p:panel class="talk">
+	       				<p:toolbar class="talkInfo+Command">
+					        <f:facet name="left">
+					        	<h:outputText value="#{postManagerBean.getTimeDiff(post)}" />
+					        	<span class="modOnly">Author: #{post.user.name}</span>
+					        </f:facet>
+					        <f:facet name="right">
+						        <p:commandButton value="Report" icon="ui-icon-alert" update="talkScroller" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser)}" />				       
+						        <p:commandButton value="Delete" icon="ui-icon-trash" update="talkScroller" rendered="#{userManagerBean.isUserOwnerOrMod(post)}" actionListener="#{postManagerBean.deletePost(post, userManagerBean.loggedInUser)}"/>
+					        </f:facet>
+					    </p:toolbar>
+					    
+					    <p:layout style="min-height:6rem">
+					    	<p:layoutUnit position="center">
+					    		<h:outputText value="#{post.text}" />
+					    	</p:layoutUnit>
+					    	<p:layoutUnit position="east" size="50">
+								<h:commandButton action="#{postManagerBean.upvotePost(post, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
+								
+					    		<h:outputText value="#{post.votes}"/>
+							
+								<h:commandButton action="#{postManagerBean.downvotePost(post, userManagerBean.loggedInUser)}" value="&#x02C5;"/>
+					    	</p:layoutUnit>
+					    </p:layout>
+					    
+					    <p:panel name="commentsOfTalk_#{post.getId()}" header="#{post.commentList.size()} comment(s)" toggleable="true" collapsed="true" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
+							<h:form>
+							    <p:panel>
+							        <p:inputTextarea id="newCommentText" value="#{commentManagerBean.commentText}" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
+							 		<div>
+								 		<h:outputText id="commentChars"/>
+								 		<p:message for="newCommentText" display="tooltip"/>
+								 		
+								    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" update="talksAndComments:talkScroller" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
+							    	</div>
+								</p:panel>
+							</h:form>
+							
+							<p:dataScroller id="commentScroller" value="#{commentManagerBean.getComments(post)}" var="comment" chunkSize="10">
+							
+								<p:layout style="min-height:6rem">
 							    	<p:layoutUnit position="center">
-							    		<h:outputText value="#{post.text}" />
-							    	</p:layoutUnit>
+							    		<h:outputText value="#{comment.text}" />
+							    		<div>
+								    		<h:outputText value="#{commentManagerBean.getTimeDiff(comment)}" />
+								    		<span id="authorC0" class="modOnly">
+								    			Author: #{comment.user.name}
+								    		</span>
+								    		<p:commandButton value="Report" update="talksAndComments:talkScroller" icon="ui-icon-alert" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser)}"/>
+								    		<p:commandButton value="Delete" update="talksAndComments:talkScroller" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
+					        			</div>
+					        		</p:layoutUnit>
 							    	<p:layoutUnit position="east" size="50">
-										<h:commandButton action="#{postManagerBean.upvotePost(post, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
+										<h:commandButton action="#{commentManagerBean.upvoteComment(comment, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
 										
-							    		<h:outputText value="#{post.votes}"/>
-									
-										<h:commandButton action="#{postManagerBean.downvotePost(post, userManagerBean.loggedInUser)}" value="&#x02C5;"/>
+							    		<h:outputText value="#{comment.votes}"/>
+							    		
+										<h:commandButton action="#{commentManagerBean.downvoteComment(comment, userManagerBean.loggedInUser)}" value="&#x02C5;"/>
 							    	</p:layoutUnit>
 							    </p:layout>
-							    
-							    <p:panel header="#{post.commentList.size()} comment(s)" toggleable="true" collapsed="true" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
-									<h:form>
-									    <p:panel>
-									        <p:inputTextarea id="newCommentText" value="#{commentManagerBean.commentText}" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
-									 		<div>
-										 		<h:outputText id="commentChars"/>
-										 		<p:message for="newCommentText" display="tooltip"/>
-										 		
-										    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
-									    	</div>
-										</p:panel>
-									</h:form>
-									
-									<p:dataScroller id="commentScroller" value="#{commentManagerBean.getComments(post)}" var="comment" chunkSize="10">
-									
-										<p:layout style="min-height:6rem">
-									    	<p:layoutUnit position="center">
-									    		<h:outputText value="#{comment.text}" />
-									    		<div>
-										    		<h:outputText value="#{commentManagerBean.getTimeDiff(comment)}" />
-										    		<span id="authorC0" class="modOnly">
-										    			Author: #{comment.user.name}
-										    		</span>
-										    		<p:commandButton value="Report" update="commentScroller" icon="ui-icon-alert" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser)}"/>
-										    		<p:commandButton value="Delete" update="commentScroller" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
-							        			</div>
-							        		</p:layoutUnit>
-									    	<p:layoutUnit position="east" size="50">
-												<h:commandButton action="#{commentManagerBean.upvoteComment(comment, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
-												
-									    		<h:outputText value="#{comment.votes}"/>
-									    		
-												<h:commandButton action="#{commentManagerBean.downvoteComment(comment, userManagerBean.loggedInUser)}" value="&#x02C5;"/>
-									    	</p:layoutUnit>
-									    </p:layout>
-								    </p:dataScroller>
-							    </p:panel>
-							    
-		   					</p:panel>
-				    	</p:dataScroller>
-			 		</h:form>
+						    </p:dataScroller>
+					    </p:panel>
+					    
+   					</p:panel>
+		    	</p:dataScroller>
+	 		</h:form>
 		
 		</ui:define>
 	</ui:composition>
