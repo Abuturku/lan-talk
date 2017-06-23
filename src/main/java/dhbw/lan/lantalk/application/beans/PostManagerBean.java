@@ -103,6 +103,7 @@ public class PostManagerBean implements Serializable {
 		allPosts.add(newPost);
 		postFactory.create(newPost, user);
 		sortAllPosts();
+		toggleStates.put(newPost.getId(), false);
 		newPostText = "";
 	}
 

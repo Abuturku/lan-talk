@@ -1,6 +1,6 @@
 package dhbw.lan.lantalk.application.beans;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -23,12 +23,13 @@ import dhbw.lan.lantalk.persistence.objects.TextType;
 import dhbw.lan.lantalk.persistence.objects.User;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 @Named
-@RequestScoped
+@SessionScoped
 public class CommentManagerBean implements Serializable {
 
 	private static final long serialVersionUID = 822448000842189585L;
@@ -52,19 +53,21 @@ public class CommentManagerBean implements Serializable {
 
 	@Transactional
 	public void createComment(User user, Post post) {
+		System.out.println("adding comment with text: " + commentText + " to " + post.getText());
 		if (commentText.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null,
             		new FacesMessage(FacesMessage.SEVERITY_ERROR, "You can't submit an empty comment", ""));
 		} else {
 			user = userFactory.get(user);
+			post = postFactory.get(post);
 			Comment comment = new Comment();
 			comment.setText(this.commentText);
 			comment.setPost(post);
 			comment.setTime(System.currentTimeMillis());
+			comment.setPointList(new ArrayList<Point>());
 			post.getCommentList().add(comment);
 			commentFactory.create(comment, user);
-			userFactory.update(user);
-			postFactory.update(post);
+			commentText = "";
 		}
 	}
 
@@ -176,6 +179,7 @@ public class CommentManagerBean implements Serializable {
 	}
 
 	public List<Comment> getComments(Post post) {
+		post = postFactory.get(post);
 		List<Comment> commentList = post.getCommentList();
 
 		commentList.sort(new Comparator<Comment>() {
