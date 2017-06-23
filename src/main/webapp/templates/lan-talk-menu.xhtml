@@ -28,18 +28,9 @@
 					            <p:menuitem value="#{msgs['logout']}" action="#{userManagerBean.logout()}" ajax="false"/>
 					        </p:submenu>
 					    </p:panelMenu>
-					    
-					    <p:commandButton rendered="#{userManagerBean.isUserInRole('Moderator')}" action="./reports.xhtml?faces-redirect=true" value="Show reports"/>
-					
-						<p:selectOneMenu value="#{postManagerBean.sortBy}" style="width:150px">
-			                <p:ajax listener="#{postManagerBean.sortAllPosts()}"/>
-			                <f:selectItems value="#{postManagerBean.sortMethods}" />
-			            </p:selectOneMenu>
-						<p:selectOneButton value="#{postManagerBean.showAll}">
-							<p:ajax listener="#{postManagerBean.sortAllPosts()}"/>
-				            <f:selectItem itemLabel="All Talks" itemValue="1" />
-				            <f:selectItem itemLabel="My Talks" itemValue="0" />
-				        </p:selectOneButton>
+					    <div id="lt-menu-specifics"> 
+							<ui:insert name="lt-menu-specifics-content"></ui:insert>
+						</div>
 				        
 					</h:form>
 

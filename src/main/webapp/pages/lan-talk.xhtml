@@ -8,6 +8,21 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:composition template="/templates/lan-talk-menu.xhtml">
+	
+		<ui:define name="lt-menu-specifics-content">
+		    <p:commandButton rendered="#{userManagerBean.isUserInRole('Moderator')}" action="./reports.xhtml?faces-redirect=true" value="Show reports"/>
+		
+			<p:selectOneMenu value="#{postManagerBean.sortBy}" style="width:150px">
+                <p:ajax update="talksAndComments:talkScroller" listener="#{postManagerBean.sortAllPosts()}"/>
+                <f:selectItems value="#{postManagerBean.sortMethods}" />
+            </p:selectOneMenu>
+			<p:selectOneButton value="#{postManagerBean.showAll}">
+				<p:ajax update="talksAndComments:talkScroller" listener="#{postManagerBean.sortAllPosts()}"/>
+	            <f:selectItem itemLabel="All Talks" itemValue="1" />
+	            <f:selectItem itemLabel="My Talks" itemValue="0" />
+	        </p:selectOneButton>
+		</ui:define>
+		
 		<ui:define name="lt-main-content">
 
 	    	<h:form id="createNewPost">
