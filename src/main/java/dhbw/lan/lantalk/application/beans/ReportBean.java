@@ -77,7 +77,7 @@ public class ReportBean implements Serializable{
 		return reports;
 	}
 	
-	public List<Report> getAllReportsToTextComponent(TextComponent component){
+	public List<Report> getAllReportsOfTextComponent(TextComponent component){
 		List<Report> reports = reportFactory.getAll(); 
 		
 		if (component.getTextType() == TextType.Post) {

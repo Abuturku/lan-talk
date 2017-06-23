@@ -68,7 +68,8 @@
 					    	</p:layoutUnit>
 					    </p:layout>
 					    
-					    <p:panel name="commentsOfTalk_#{post.getId()}" header="#{post.commentList.size()} comment(s)" toggleable="true" collapsed="true" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
+					    <p:panel header="#{post.commentList.size()} comment(s)" toggleable="true" collapsed="#{postManagerBean.getToggleState(post.getId())}" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
+							<p:ajax event="toggle" listener="#{postManagerBean.switchToggleState(post.getId())}" update="msgs" />
 							<h:form>
 							    <p:panel>
 							        <p:inputTextarea id="newCommentText" value="#{commentManagerBean.commentText}" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />

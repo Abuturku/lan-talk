@@ -8,6 +8,10 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:composition template="/templates/lan-talk-menu.xhtml">
+		<ui:define name="lt-menu-specifics-content">
+		    <p:commandButton action="./lan-talk.xhtml?faces-redirect=true" value="Show Talks"/>
+		</ui:define>
+		
 		<ui:define name="lt-main-content">
 		Content coming soon!
 		</ui:define>
