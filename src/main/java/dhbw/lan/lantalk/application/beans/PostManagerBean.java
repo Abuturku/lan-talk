@@ -40,7 +40,9 @@ public class PostManagerBean implements Serializable {
 	private List<Post> allPosts;
 
 	private String newPostText;
-
+	
+	private Map<Integer, Boolean> toggleStates;
+	
 	@Inject
 	private PostFactory postFactory;
 
@@ -80,6 +82,11 @@ public class PostManagerBean implements Serializable {
 		/* /UI */
 
 		allPosts = postFactory.getAll();
+		
+		for (int i = 0; i < allPosts.size(); i++) {
+			toggleStates.put(allPosts.get(i).getId(), false);
+		}
+		
 		sortAllPosts();
 	}
 
@@ -329,6 +336,15 @@ public class PostManagerBean implements Serializable {
 	}
 
 	/* /UI */
+	
+	public boolean getToggleState(int id){
+		return toggleStates.get(id);
+	}
+	
+	public void switchToggleState(int id){
+		boolean currentState = getToggleState(id);
+		toggleStates.replace(id, !currentState);
+	}
 
 	public String getTimeDiff(Post post) {
 		PrettyTime prettyTime = new PrettyTime(
