@@ -70,8 +70,12 @@
 					    	</p:layoutUnit>
 					    </p:layout>
 					    
-					    <p:panel header="#{post.commentList.size()} comment(s)" toggleable="true" collapsed="#{postManagerBean.getToggleState(post.getId())}" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
-							<p:ajax event="toggle" update="talksAndComments:talkScroller" listener="#{postManagerBean.switchToggleState(post.getId())}" />
+					    <p:panel header="#{post.commentList.size()} comment(s)" widgetVar="panel" icon="ui-icon-comment">
+							
+							<f:facet name="actions">
+								<p:commandButton actionListener="#{postManagerBean.switchToggleState(post.getId())}" id="iconOnly" update="talksAndComments:talkScroller" icon="ui-icon-minusthick" title="Toggle" />
+            				</f:facet>
+            				
 							<h:form>
 							    <p:panel>
 							        <p:inputTextarea id="newCommentText" value="#{commentManagerBean.commentText}" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
@@ -84,7 +88,7 @@
 								</p:panel>
 							</h:form>
 							
-							<p:dataScroller id="commentScroller" value="#{commentManagerBean.getComments(post)}" var="comment" chunkSize="10">
+							<p:dataScroller rendered="#{postManagerBean.getToggleState(post.getId())}"  id="commentScroller" value="#{commentManagerBean.getComments(post)}" var="comment" chunkSize="10">
 							
 								<p:layout style="min-height:6rem">
 							    	<p:layoutUnit position="center">
@@ -107,7 +111,7 @@
 							    	</p:layoutUnit>
 							    </p:layout>
 						    </p:dataScroller>
-					    </p:panel>
+						 </p:panel>
 					    
    					</p:panel>
 		    	</p:dataScroller>

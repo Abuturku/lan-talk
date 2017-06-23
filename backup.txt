@@ -1,0 +1,21 @@
+<p:panel id="toggleable" header="Toggleable" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px">
+ 
+        <p:ajax event="close" listener="#{panelView.onClose}" update="msgs" />
+        <p:ajax event="toggle" listener="#{panelView.onToggle}" update="msgs" />
+ 
+         <h:panelGrid columns="2" cellpadding="10">
+ 
+        <f:facet name="actions">
+            <h:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"><h:outputText styleClass="ui-icon ui-icon-minusthick" /></h:commandLink>
+            
+    		<p:commandButton actionListener="#{}" id="iconOnly" update="talksAndComments:talkScroller" icon="ui-icon-minusthick" title="Toggle" />
+ 
+            </f:facet>
+    </p:panel>
+    
+    
+    
+    
+    <p:panel header="#{post.commentList.size()} comment(s)" toggleable="true" collapsed="#{postManagerBean.getToggleState(post.getId())}" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
+							<p:ajax event="toggle" update="talksAndComments:talkScroller" listener="#{postManagerBean.switchToggleState(post.getId())}" />
+							
