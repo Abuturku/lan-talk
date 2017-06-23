@@ -6,16 +6,48 @@
          <h:panelGrid columns="2" cellpadding="10">
  
         <f:facet name="actions">
-            <h:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"><h:outputText styleClass="ui-icon ui-icon-minusthick" /></h:commandLink>
+            <h:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+            	<h:outputText styleClass="ui-icon ui-icon-minusthick" />
+            </h:commandLink>
             
     		<p:commandButton actionListener="#{}" id="iconOnly" update="talksAndComments:talkScroller" icon="ui-icon-minusthick" title="Toggle" />
  
             </f:facet>
     </p:panel>
     
-    
-    
+----------------   
     
     <p:panel header="#{post.commentList.size()} comment(s)" toggleable="true" collapsed="#{postManagerBean.getToggleState(post.getId())}" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
 							<p:ajax event="toggle" update="talksAndComments:talkScroller" listener="#{postManagerBean.switchToggleState(post.getId())}" />
+
+---------
+
+ <p:panel id="toggleable" header="Toggleable" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px">
+        <f:facet name="options">
+            <p:menu>
+                <p:submenu label="Settings">
+                    <p:menuitem value="Toggle" url="#" icon="ui-icon-newwin" onclick="PF('panel').toggle();PF('panel').collapse();" />
+                </p:submenu>
+            </p:menu>
+        </f:facet>
+    </p:panel>				
+				
+				
+-----------------
+
+<p:accordionPanel>
+    <p:tab title="#{post.commentList.size()} comment(s)" toggleable="true" icon="ui-icon-comment" >
+        
+    </p:tab>
+</p:accordionPanel>
+							
+------------------
+							
+<f:facet name="actions">
+	<p:commandButton actionListener="#{postManagerBean.switchToggleState(post.getId())}" id="iconOnly" update="talksAndComments:talkScroller" icon="ui-icon-minusthick" title="Toggle" />
+</f:facet>		
+
+
+
+<p:dataScroller rendered="#{postManagerBean.getToggleState(post.getId())}"  id="commentScroller" value="#{commentManagerBean.getComments(post)}" var="comment" chunkSize="10">
 							
