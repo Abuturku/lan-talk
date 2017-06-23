@@ -64,6 +64,10 @@ public class ReportBean implements Serializable{
 		reportFactory.create(report);
 	}
 	
+	public List<Report> getAllReports(){
+		return reportFactory.getAll();
+	}
+	
 	public List<Report> getAllReportsSubmittedByUser(User user){
 		user = userFactory.get(user);
 		List<Report> reports = reportFactory.getAll();
