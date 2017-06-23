@@ -97,7 +97,7 @@ public class CommentManagerBean implements Serializable {
 			point.setVote(true);
 			point.setTime(System.currentTimeMillis());
 
-			pointFactory.create(point, comment.getUser(), comment);
+			pointFactory.create(point, votingUser, comment);
 			commentFactory.update(comment);
 			userFactory.update(comment.getUser());
 
@@ -135,7 +135,7 @@ public class CommentManagerBean implements Serializable {
 			point.setVote(true);
 			point.setTime(System.currentTimeMillis());
 
-			pointFactory.create(point, comment.getUser(), comment);
+			pointFactory.create(point, votingUser, comment);
 			commentFactory.update(comment);
 			userFactory.update(comment.getUser());
 
