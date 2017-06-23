@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +84,7 @@ public class PostManagerBean implements Serializable {
 
 		allPosts = postFactory.getAll();
 		
+		toggleStates = new HashMap<>();
 		for (int i = 0; i < allPosts.size(); i++) {
 			toggleStates.put(allPosts.get(i).getId(), false);
 		}
