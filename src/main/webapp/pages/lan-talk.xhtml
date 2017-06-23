@@ -58,6 +58,8 @@
 					    <p:layout style="min-height:6rem">
 					    	<p:layoutUnit position="center">
 					    		<h:outputText value="#{post.text}" />
+					    		<h:outputText value="#{postManagerBean.getToggleState(post.getId())}"/>
+					    		<h:outputText value="#{post.getId()}" />
 					    	</p:layoutUnit>
 					    	<p:layoutUnit position="east" size="50">
 								<h:commandButton action="#{postManagerBean.upvotePost(post, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
@@ -69,7 +71,7 @@
 					    </p:layout>
 					    
 					    <p:panel header="#{post.commentList.size()} comment(s)" toggleable="true" collapsed="#{postManagerBean.getToggleState(post.getId())}" toggleSpeed="500" widgetVar="panel" icon="ui-icon-comment">
-							<p:ajax event="toggle" listener="#{postManagerBean.switchToggleState(post.getId())}" update="msgs" />
+							<p:ajax event="toggle" update="talksAndComments:talkScroller" listener="#{postManagerBean.switchToggleState(post.getId())}" />
 							<h:form>
 							    <p:panel>
 							        <p:inputTextarea id="newCommentText" value="#{commentManagerBean.commentText}" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
