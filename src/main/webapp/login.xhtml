@@ -10,44 +10,43 @@
 <ui:composition template="/templates/basic.xhtml">
 
 	<ui:define name="container">
+		<div id="loginContent">
+			<h1 id="welcomeText">Welcome to LAN-Talk!</h1>
+			<p:tabView id="loginOrRegister">
+				<p:tab title="Login">
+					<form name="loginForm" method="POST" action="j_security_check">
+						<p>
+							<p:outputLabel>Username: </p:outputLabel>
+							<input class="lorInput" type="text" name="j_username" size="15" />
+						</p>
+						<p>
+							<p:outputLabel>Password: </p:outputLabel>
+							<input class="lorInput" type="password" size="15" name="j_password" />
+						</p>
+						<p>
+							<input id="loginSubmit" class=".ui-state-default" type="submit" value="Submit" />
+						</p>
+					</form>
+				</p:tab>
+				<p:tab title="Register">
+					<h:form name="registerForm" method="POST">
+						<h:panelGrid columns="2" id="matchGridR" cellpadding="5">
+							<p:outputLabel for="userName" value="Username:" />
+							<p:inputText class="lorInput" id="userName" value="#{newUserBean.userName}" required="true" />
 
-		<h1>Welcome to LAN-Talk!</h1>
-		<p:tabView>
-			<p:tab title="Login">
-				<form name="loginForm" method="POST" action="j_security_check">
-					<p>
-						<strong>Username: </strong> <input type="text" name="j_username"
-							size="15" />
-					</p>
-					<p>
-						<strong>Password: </strong> <input type="password" size="15"
-							name="j_password" />
-					</p>
-					<p>
-						<input type="submit" value="Submit" />
-					</p>
-				</form>
-			</p:tab>
-			<p:tab title="Register">
-				<h:form name="registerForm" method="POST">
-					<h:panelGrid columns="2" id="matchGridR" cellpadding="5">
-						<p:outputLabel for="userName" value="Username:" />
-						<p:inputText id="userName" value="#{newUserBean.userName}" required="true" />
+							<h:outputLabel for="pwd1" value="Password:" />
+							<p:password class="lorInput" id="pwd1" name="j_password" match="pwd2" label="Password 1" value="#{newUserBean.password1}" required="true" />
 
-						<h:outputLabel for="pwd1" value="Password:" />
-						<p:password id="pwd1" name="j_password" match="pwd2"
-							label="Password 1" value="#{newUserBean.password1}" required="true" />
+							<h:outputLabel for="pwd2" value="Repeat password:" />
+							<p:password class="lorInput" id="pwd2" value="#{newUserBean.password2}" label="Password 2" required="true" />
+						</h:panelGrid>
+						<p:messages id="messages" showDetail="true" autoUpdate="true" />
 
-						<h:outputLabel for="pwd2" value="Repeat password:" />
-						<p:password id="pwd2" value="#{newUserBean.password2}" label="Password 2" required="true" />
-					</h:panelGrid>
-					<p:messages id="messages" showDetail="true" autoUpdate="true" />
-
-					<p:commandButton update="matchGridR" value="Register" action="#{newUserBean.register()}"/>
-				</h:form>
-			</p:tab>
-		</p:tabView>
-
+						<p:commandButton id="loginSubmit" update="matchGridR" value="Register" action="#{newUserBean.register()}" />
+					</h:form>
+				</p:tab>
+			</p:tabView>
+		</div>
 	</ui:define>
 
 </ui:composition>

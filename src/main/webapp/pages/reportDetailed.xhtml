@@ -18,16 +18,16 @@
 					        <f:facet name="left">
 					        	<h:outputText value="#{reportBean.getTimeDiff(report.textComponent)}" />
 					        	<span>Author: #{report.textComponent.user.name}</span>
-					        	<span>Reporter: #{report.reporter.name}</span>
-					        	<span>Reason: #{report.reportType}</span>
 					        </f:facet>
 					        <f:facet name="right">
-						        <p:commandButton value="Reject Report" update="reportScroller" actionListener="#{reportBean.removeReport(report)}" />				       
-						        <p:commandButton value="Delete" icon="ui-icon-trash" update="reportScroller" actionListener="#{reportBean.acceptReport(report, userManagerBean.loggedInUser)}"/>
+						        <p:commandButton value="Reject report" update="reportScroller" actionListener="#{reportBean.removeReport(report)}" />				       
+						        <p:commandButton value="Accept report"  update="reportScroller" actionListener="#{reportBean.acceptReport(report)}"/>
 					        </f:facet>
 					    </p:toolbar>
 					    
 					    <div style="min-height:6rem">
+					    	<h:outputText value="Reporter: #{report.reporter.name}" />
+					    	<h:outputText value="Reason: #{report.reportType}" />
 				    		<h:outputText value="#{report.getTextComponent().text}" />
 					    </div>
 					    

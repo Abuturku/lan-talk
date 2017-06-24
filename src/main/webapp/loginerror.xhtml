@@ -10,8 +10,10 @@
 <ui:composition template="/templates/basic.xhtml">
 
 	<ui:define name="container">
-
-			<h1>Wrong username or password</h1>
+		<div id="loginContent">
+			<h1 id="welcomeText">Wrong username or password</h1>
+			<p:commandButton onclick="window.history.back();" value="Back"/>
+		</div>
 	</ui:define>
 
 </ui:composition>

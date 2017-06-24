@@ -41,11 +41,11 @@
 					</h:form>
 				</p:layoutUnit>
 				
-				<p:layoutUnit position="east">
+				<p:layoutUnit position="east" resizable="true" size="40%" minSize="40" maxSize="1000">
 					<ui:insert name="commentSection"></ui:insert>
 				</p:layoutUnit>
 			
-				<p:layoutUnit position="center">
+				<p:layoutUnit position="center" >
 					<h:form id="talks">
 						<p:dataScroller id="talkScroller" value="#{postManagerBean.getAllPosts(userManagerBean.loggedInUser)}" var="post" chunkSize="10">
 						
