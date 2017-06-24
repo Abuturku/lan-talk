@@ -20,6 +20,7 @@ import dhbw.lan.lantalk.persistence.factory.UserFactory;
 import dhbw.lan.lantalk.persistence.objects.Comment;
 import dhbw.lan.lantalk.persistence.objects.Post;
 import dhbw.lan.lantalk.persistence.objects.Report;
+import dhbw.lan.lantalk.persistence.objects.ReportType;
 import dhbw.lan.lantalk.persistence.objects.Role;
 import dhbw.lan.lantalk.persistence.objects.TextComponent;
 import dhbw.lan.lantalk.persistence.objects.TextType;
@@ -84,14 +85,15 @@ public class ReportBean implements Serializable {
 	 *            The {@link User}, that submitted the report
 	 */
 	@Transactional
-	public void reportPost(Post post, User reporter) {
+	public void reportPost(Post post, User reporter, String reason) {
+		System.out.println("Reported post: " + post.getText() + " by user: " + reporter.getName() + " for reason: " + reason);
 		reporter = userFactory.get(reporter);
 		post = postFactory.get(post);
 
-		// TODO add report reason
 		Report report = new Report();
 		report.setTextComponent(post);
 		report.setReporter(reporter);
+		report.setReportType(ReportType.fromString(reason));
 		report.setTime(System.currentTimeMillis());
 		reportFactory.create(report);
 	}

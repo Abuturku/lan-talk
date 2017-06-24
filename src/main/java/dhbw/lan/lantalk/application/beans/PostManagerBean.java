@@ -192,7 +192,6 @@ public class PostManagerBean implements Serializable {
 		}
 
 		if (isVoteAllowed) {
-			System.out.println("creating new vote");
 			Point point = new Point();
 			point.setVote(true);
 			point.setTime(System.currentTimeMillis());
