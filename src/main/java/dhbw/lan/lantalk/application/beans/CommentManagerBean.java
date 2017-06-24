@@ -49,8 +49,17 @@ public class CommentManagerBean implements Serializable {
 	@Inject
 	private ReportFactory reportFactory;
 
+	//This is the comment field in the gui
 	private String commentText;
 
+	/**
+	 * Create a comment.
+	 * 
+	 * @param user 
+	 * 					The {@link User} that is creating the comment
+	 * @param post 
+	 * 					The {@link Post} that the {@link User} is commenting on
+	 */
 	@Transactional
 	public void createComment(User user, Post post) {
 		System.out.println("adding comment with text: " + commentText + " to " + post.getText());
@@ -71,6 +80,18 @@ public class CommentManagerBean implements Serializable {
 		}
 	}
 
+	/**
+	 * Upvoting of a comment. 
+	 * It is important that one user can only vote once on a TextComponent.
+	 * This functions checks, if the user already upvoted the comment and discards the operation in this case.
+	 * In the second case a user already downvoted a comment. An upvote is allowed in this case. Therefore the {@link Point} record in the database is updated from upvote = 0 to upvote = 1
+	 * If a user neither up- or downvoted a comment a new Point will be created.
+	 * 
+	 * @param comment 
+	 * 					The {@link Comment} to be upvoted
+	 * @param votingUser 
+	 * 					The {@link User} that votes
+	 */
 	@Transactional
 	public void upvoteComment(Comment comment, User votingUser) {
 		votingUser = userFactory.get(votingUser);
@@ -110,6 +131,19 @@ public class CommentManagerBean implements Serializable {
 		}
 	}
 
+	
+	/**
+	 * Downvoting of a comment. 
+	 * It is important that one user can only vote once on a TextComponent.
+	 * This functions checks, if the user already downvoted the comment and discards the operation in this case.
+	 * In the second case a user already upvoted a comment. A downvote is allowed in this case. Therefore the {@link Point} record in the database is updated from upvote = 1 to upvote = 0
+	 * If a user neither up- or downvoted a comment a new Point will be created.
+	 * 
+	 * @param comment 
+	 * 					The {@link Comment} to be upvoted
+	 * @param votingUser 
+	 * 					The {@link User} that votes
+	 */
 	@Transactional
 	public void downvoteComment(Comment comment, User votingUser) {
 		votingUser = userFactory.get(votingUser);
@@ -148,6 +182,14 @@ public class CommentManagerBean implements Serializable {
 		}
 	}
 
+	/**
+	 * Deletion of a comment. All corresponding objects ({@link Report}s, {@link Point}s) will be deleted too.
+	 * 
+	 * @param comment 
+	 * 					The {@link Comment} that will be deleted.
+	 * @param loggedInUser 
+	 * 					The {@link User} that is currently logged in. Only the creator of the comment, Administrators and Moderators are allowed to delete a comment.
+	 */
 	@Transactional
 	public void deleteComment(Comment comment, User loggedInUser) {
 		loggedInUser = userFactory.get(loggedInUser);
@@ -155,6 +197,7 @@ public class CommentManagerBean implements Serializable {
 
 		List<Report> reports = reportFactory.getAll();
 
+		//A user should be able to delete his own post, that's why the annotation @RolesAllowed is not used here
 		if (commentUser.equals(loggedInUser) || loggedInUser.getRole().equals(Role.Administrator)
 				|| loggedInUser.getRole().equals(Role.Moderator)) {
 
@@ -178,6 +221,13 @@ public class CommentManagerBean implements Serializable {
 		}
 	}
 
+	/**
+	 * 
+	 * @param post
+	 * 				The {@link Post}
+	 * @return 
+	 * 				A list of all comments that have been submitted to a {@link Post}.
+	 */
 	public List<Comment> getComments(Post post) {
 		post = postFactory.get(post);
 		List<Comment> commentList = post.getCommentList();
@@ -194,6 +244,7 @@ public class CommentManagerBean implements Serializable {
 		return commentList;
 	}
 
+	
 	public String getCommentText() {
 		return commentText;
 	}
@@ -202,6 +253,11 @@ public class CommentManagerBean implements Serializable {
 		this.commentText = commentText;
 	}
 
+	/**
+	 * 
+	 * @param comment {@link Comment}
+	 * @return Human readable String of the time difference between now and the creation time of the Comment, e.g. "3 hours ago"
+	 */
 	public String getTimeDiff(Comment comment) {
 		PrettyTime prettyTime = new PrettyTime(
 				FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());

@@ -24,11 +24,18 @@ public class NewUserBean implements Serializable{
 	@Inject
 	private UserFactory userFactory;
 	
-	
+	//The attributes used by the inputs in the GUI
 	private String userName;
 	private String password1;
 	private String password2;
 	
+	/**
+	 * Registers a new {@link User}. Checks if the given passwords match. If they do not or the username already exists, a FacesMessage will be drawn to users screen.
+	 * A username is unique (defined in the {@link User} class).
+	 * 
+	 * @return
+	 * 				The navigation rule as String
+	 */
 	public String register(){
 		
 		if (password1.equals(password2)) {
@@ -49,6 +56,8 @@ public class NewUserBean implements Serializable{
 			
 			return "login";
 		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Passwords do not match.", ""));
 			return null;
 		}
 	}

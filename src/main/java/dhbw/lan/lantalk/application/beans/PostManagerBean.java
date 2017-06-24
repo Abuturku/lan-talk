@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +41,6 @@ public class PostManagerBean implements Serializable {
 
 	private String newPostText;
 	
-	private Map<Integer, Boolean> toggleStates;
-	
 	@Inject
 	private PostFactory postFactory;
 
@@ -58,6 +55,8 @@ public class PostManagerBean implements Serializable {
 
 	@Inject
 	private CommentFactory commentFactory;
+	
+	private Post selectedPost;
 
 	/* UI */
 	private int sortBy;
@@ -69,11 +68,17 @@ public class PostManagerBean implements Serializable {
 			.getResourceBundle(FacesContext.getCurrentInstance(), "msgs");
 	/* /UI */
 
+	
+	/**
+	 * This method will be called, as soon as the user logs in and a session is created. 
+	 * It sets up the sortMethods (Posts) and the toggleStates of Comments. 
+	 * Furthermore it loads all {@link Post}s and sorts them according to the chosen sortMethod.
+	 */
 	@PostConstruct
 	public void init() {
 		/* UI */
 		sortMethods = new LinkedHashMap<String, Integer>();
-		// TODO
+		// TODO internationalization
 		// sortMethods.put(msgs.getString("newestFirst"), 0);
 		// sortMethods.put(msgs.getString("oldestFirst"), 1);
 		// sortMethods.put(msgs.getString("mostPopFirst"), 2);
@@ -84,14 +89,15 @@ public class PostManagerBean implements Serializable {
 
 		allPosts = postFactory.getAll();
 		
-		toggleStates = new HashMap<>();
-		for (int i = 0; i < allPosts.size(); i++) {
-			toggleStates.put(allPosts.get(i).getId(), false);
-		}
-		
 		sortAllPosts();
 	}
 
+	/**
+	 * Creates  a new {@link Post}
+	 * 
+	 * @param user
+	 * 				The {@link User} that creates the {@link Post}
+	 */
 	@Transactional
 	public void createPost(User user) {
 		user = userFactory.get(user);
@@ -103,10 +109,13 @@ public class PostManagerBean implements Serializable {
 		allPosts.add(newPost);
 		postFactory.create(newPost, user);
 		sortAllPosts();
-		toggleStates.put(newPost.getId(), false);
 		newPostText = "";
 	}
 
+	/**
+	 * Sorts all {@link Post}s according to chosen sortMethod. The default comparator compares in a way, that newest {@link Post}s will be the first in the list.
+	 * The comparator is altered according to chosen sortMethod and applied to the list in the end.
+	 */
 	public void sortAllPosts() {
 		Comparator<Post> comparator = new Comparator<Post>() {
 
@@ -147,6 +156,18 @@ public class PostManagerBean implements Serializable {
 		allPosts.sort(comparator);
 	}
 
+	/**
+	 * Upvoting of a {@link Post}. 
+	 * It is important that one user can only vote once on a TextComponent.
+	 * This functions checks, if the user already upvoted the Post and discards the operation in this case.
+	 * In the second case a user already downvoted a post. An upvote is allowed in this case. Therefore the {@link Point} record in the database is updated from upvote = 0 to upvote = 1
+	 * If a user neither up- or downvoted a post a new Point will be created.
+	 * 
+	 * @param post 
+	 * 					The {@link Post} to be upvoted
+	 * @param votingUser 
+	 * 					The {@link User} that votes
+	 */
 	@Transactional
 	public void upvotePost(Post post, User votingUser) {
 		votingUser = userFactory.get(votingUser);
@@ -187,6 +208,18 @@ public class PostManagerBean implements Serializable {
 
 	}
 
+	/**
+	 * Downvoting of a comment. 
+	 * It is important that one user can only vote once on a TextComponent.
+	 * This functions checks, if the user already downvoted the comment and discards the operation in this case.
+	 * In the second case a user already upvoted a post. A downvote is allowed in this case. Therefore the {@link Point} record in the database is updated from upvote = 1 to upvote = 0
+	 * If a user neither up- or downvoted a post a new Point will be created.
+	 * 
+	 * @param post 
+	 * 					The {@link Post} to be upvoted
+	 * @param votingUser 
+	 * 					The {@link User} that votes
+	 */
 	@Transactional
 	public void downvotePost(Post post, User votingUser) {
 		votingUser = userFactory.get(votingUser);
@@ -225,6 +258,14 @@ public class PostManagerBean implements Serializable {
 		}
 	}
 
+	/**
+	 * Deletion of a {@link Post}. All corresponding objects (@{@link Comment}s, {@link Report}s, {@link Point}s) will be deleted too.
+	 * 
+	 * @param post 
+	 * 					The {@link Post} that will be deleted.
+	 * @param loggedInUser 
+	 * 					The {@link User} that is currently logged in. Only the creator of the comment, Administrators and Moderators are allowed to delete a comment.
+	 */
 	@Transactional
 	public void deletePost(Post post, User loggedInUser) {
 		loggedInUser = userFactory.get(loggedInUser);
@@ -232,7 +273,8 @@ public class PostManagerBean implements Serializable {
 		post = postFactory.get(post);
 
 		List<Report> reports = reportFactory.getAll();
-
+		
+		//A user should be able to delete his own post, that's why the annotation @RolesAllowed is not used here
 		if (postUser.getName().equals(loggedInUser.getName()) || loggedInUser.getRole().equals(Role.Administrator)
 				|| loggedInUser.getRole().equals(Role.Moderator)) {
 			List<Comment> commentList = post.getCommentList();
@@ -275,13 +317,21 @@ public class PostManagerBean implements Serializable {
 			informUser("You do not have permission to delete this post.");
 		}
 	}
-
+	
+	/**
+	 * Sets {@link #allPosts} according to attribute {@link #showAll}. If {@link #showAll} equals 1 it means, that all {@link Post}s will be fetched from the database and sorted.
+	 * Otherwise only the {@link Post}s of logged in user will be fetched and sorted.
+	 * 
+	 * @param user
+	 * 				The {@link User}
+	 * @return
+	 * 				A sorted list (according to {@link #sortBy}) of {@link Post}s that got fetched from the database
+	 */
 	@Transactional
 	public List<Post> getAllPosts(User user) {
 		if (showAll.equals("1")) {
 			allPosts = postFactory.getAll();
-			sortAllPosts();
-			return allPosts;
+
 
 		} else {
 			user = userFactory.get(user);
@@ -297,9 +347,10 @@ public class PostManagerBean implements Serializable {
 
 			allPosts = new ArrayList<>();
 			allPosts.addAll(posts);
-			sortAllPosts();
-			return allPosts;
 		}
+		
+		sortAllPosts();
+		return allPosts;
 	}
 
 	public String getNewPostText() {
@@ -323,10 +374,6 @@ public class PostManagerBean implements Serializable {
 		return sortMethods;
 	}
 
-	public void onSortByChange() {
-		// todo: reload displayed posts
-	}
-
 	public String getShowAll() {
 		return showAll;
 	}
@@ -334,42 +381,34 @@ public class PostManagerBean implements Serializable {
 	public void setShowAll(String showAll) {
 		this.showAll = showAll;
 	}
+	
+	public Post getSelectedPost() {
+		return selectedPost;
+	}
 
-	/* /UI */
-	/*
-	public boolean getToggleState(int id){
-		return toggleStates.get(id);
+	public void setSelectedPost(Post post) {
+		this.selectedPost = post;
 	}
 	
-	public void setToggleState(int id){
-		toggleStates.replace(id, !getToggleState(id));
-	}
-*/
-	/*
-	public void collapseAllComments(){
-		FacesContext context = FacesContext.getCurrentInstance(); 
-	    UIViewRoot root = context.getViewRoot();
-	    root.visitTree(VisitContext.createVisitContext(context), new VisitCallback() {
-	    	@Override
-	    	public VisitResult visit(VisitContext context, UIComponent component){
-	    		if(component.getId().contains("commentList")){
-	    			AccordionPanel panel = (AccordionPanel) component;
-	    			panel.setActiveIndex(null);
-	    		}
-	    		return VisitResult.ACCEPT;
-	    	}
-	    });
-	    
-	    informUser("collapse!");
-	}
-	*/
-	
+	/**
+	 * 
+	 * @param comment 
+	 * 				{@link Post}
+	 * @return 
+	 * 				Human readable String of the time difference between now and the creation time of the Post, e.g. "3 hours ago"
+	 */
 	public String getTimeDiff(Post post) {
 		PrettyTime prettyTime = new PrettyTime(
 				FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
 		return prettyTime.format(new Date(post.getTime()));
 	}
 	
+	/**
+	 * Creates a new FacesMessage to inform the user in the GUI.
+	 * 
+	 * @param message
+	 * 				The message to be shown in the GUI.
+	 */
 	private void informUser(String message){
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, ""));
 	}
