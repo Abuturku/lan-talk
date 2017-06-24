@@ -182,8 +182,7 @@ public class PostManagerBean implements Serializable {
 
 			sortAllPosts();
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "You already upvoted this post.", ""));
+			informUser("You already upvoted this post.");
 		}
 
 	}
@@ -222,8 +221,7 @@ public class PostManagerBean implements Serializable {
 
 			sortAllPosts();
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "You already downvoted this post.", ""));
+			informUser("You already downvoted this post.");
 		}
 	}
 
@@ -274,8 +272,7 @@ public class PostManagerBean implements Serializable {
 			
 			postFactory.delete(post);
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"You do not have permission to delete this post.", ""));
+			informUser("You do not have permission to delete this post.");
 		}
 	}
 
@@ -339,20 +336,42 @@ public class PostManagerBean implements Serializable {
 	}
 
 	/* /UI */
-	
+	/*
 	public boolean getToggleState(int id){
 		return toggleStates.get(id);
 	}
 	
-	public void switchToggleState(int id){
-		boolean currentState = getToggleState(id);
-		toggleStates.replace(id, !currentState);
+	public void setToggleState(int id){
+		toggleStates.replace(id, !getToggleState(id));
 	}
-
+*/
+	/*
+	public void collapseAllComments(){
+		FacesContext context = FacesContext.getCurrentInstance(); 
+	    UIViewRoot root = context.getViewRoot();
+	    root.visitTree(VisitContext.createVisitContext(context), new VisitCallback() {
+	    	@Override
+	    	public VisitResult visit(VisitContext context, UIComponent component){
+	    		if(component.getId().contains("commentList")){
+	    			AccordionPanel panel = (AccordionPanel) component;
+	    			panel.setActiveIndex(null);
+	    		}
+	    		return VisitResult.ACCEPT;
+	    	}
+	    });
+	    
+	    informUser("collapse!");
+	}
+	*/
+	
 	public String getTimeDiff(Post post) {
 		PrettyTime prettyTime = new PrettyTime(
 				FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
 		return prettyTime.format(new Date(post.getTime()));
+	}
+	
+	private void informUser(String message){
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, ""));
 	}
 
 }

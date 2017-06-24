@@ -24,7 +24,6 @@
 		</ui:define>
 		
 		<ui:define name="lt-main-content">
-
 	    	<h:form id="createNewPost">
 		    	<p:fieldset legend="#{msgs['addPost']}" toggleable="true" toggleSpeed="500">
 			        <p:ajax event="toggle"/>
@@ -34,12 +33,13 @@
 				 		<h:outputText id="talkChars" />
 				 		<p:message for="newPostText" display="tooltip"/>
 			 		
-				    	<p:commandButton value="#{msgs['publish']}" update="talksAndComments:talkScroller" actionListener="#{postManagerBean.createPost(userManagerBean.loggedInUser)}">
+				    	<p:commandButton value="#{msgs['publish']}" update="talksAndComments:talkScroller createNewPost:newPostText" actionListener="#{postManagerBean.createPost(userManagerBean.loggedInUser)}">
 				    		<f:param name="userId" value="#{userManagerBean.loggedInUser.id}"/>
 				    	</p:commandButton>
 			 		</div>
 			    </p:fieldset>
 			</h:form>
+						
 			<h:form id="talksAndComments">
 				<p:dataScroller id="talkScroller" value="#{postManagerBean.getAllPosts(userManagerBean.loggedInUser)}" var="post" chunkSize="10">
 				
@@ -58,7 +58,6 @@
 					    <p:layout style="min-height:6rem">
 					    	<p:layoutUnit position="center">
 					    		<h:outputText value="#{post.text}" />
-					    		<h:outputText value="#{postManagerBean.getToggleState(post.getId())}"/>
 					    		<h:outputText value="#{post.getId()}" />
 					    	</p:layoutUnit>
 					    	<p:layoutUnit position="east" size="50">
@@ -70,7 +69,7 @@
 					    	</p:layoutUnit>
 					    </p:layout>
 					    
-						<p:accordionPanel activeIndex="false">
+						<p:accordionPanel id="commentList">
 						    <p:tab title="#{post.commentList.size()} comment(s)" toggleable="true" icon="ui-icon-comment" >			
 							            				
 								<h:form>
@@ -80,7 +79,7 @@
 									 		<h:outputText id="commentChars"/>
 									 		<p:message for="newCommentText" display="tooltip"/>
 									 		
-									    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" update="talksAndComments:talkScroller" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
+									    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" update="talksAndComments:talkScroller:0:commentList" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
 								    	</div>
 									</p:panel>
 								</h:form>

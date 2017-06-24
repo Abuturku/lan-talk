@@ -14,9 +14,7 @@
 					<a href="./../pages/lan-talk.xhtml">
 						<img id="logo" alt="Lan-Talk Logo" src="./../img/logo_lan_talk.png"/>
 					</a>
-					<h:form>
-					    <p:growl autoUpdate="true"/>
-					 
+					<h:form>					 
 					    <p:panelMenu id="menu">
 					        <p:submenu label="#{msgs['loginInfo']} #{userManagerBean.getUserName()}">
 					            <p:menuitem class="nonclickable" value="#{msgs['role']}: #{userManagerBean.getUserRole()}"/>
@@ -31,7 +29,6 @@
 					    <div id="lt-menu-specifics"> 
 							<ui:insert name="lt-menu-specifics-content"></ui:insert>
 						</div>
-				        
 					</h:form>
 
 			    </p:layoutUnit>
