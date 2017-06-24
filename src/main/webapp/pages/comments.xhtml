@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="./lan-talk.xhtml">
+		<ui:define name="commentSection">
+			<h:outputText value="Selected Talk: " />
+			<h:outputText value="#{postManagerBean.selectedPost.text}" />
+			<h:form>
+			    <p:panel>
+			        <p:inputTextarea id="newCommentText" value="#{commentManagerBean.commentText}" rows="2" cols="100" counter="commentChars" maxlength="255" counterTemplate="{0} characters remaining." autoResize="false" />
+			 		<div>
+				 		<h:outputText id="commentChars"/>
+				 		<p:message for="newCommentText" display="tooltip"/>
+				 											 		
+				    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" update="commentScroller" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, postManagerBean.selectedPost)}"/>
+			    	</div>
+				</p:panel>
+			</h:form>
+			
+			<p:dataScroller id="commentScroller" value="#{commentManagerBean.getComments(postManagerBean.selectedPost)}" var="comment" chunkSize="10">
+			
+				<p:layout style="min-height:6rem">
+			    	<p:layoutUnit position="center">
+			    		<h:outputText value="#{comment.text}" />
+			    		<div>
+				    		<h:outputText value="#{commentManagerBean.getTimeDiff(comment)}" />
+				    		<span id="authorC0" class="modOnly">
+				    			Author: #{comment.user.name}
+				    		</span>
+				    		<p:commandButton value="Report" update="commentScroller" icon="ui-icon-alert" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser)}"/>
+				    		<p:commandButton value="Delete" update="commentScroller" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
+	        			</div>
+	        		</p:layoutUnit>
+			    	<p:layoutUnit position="east" size="50">
+						<h:commandButton action="#{commentManagerBean.upvoteComment(comment, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
+						
+			    		<h:outputText value="#{comment.votes}"/>
+			    		
+						<h:commandButton action="#{commentManagerBean.downvoteComment(comment, userManagerBean.loggedInUser)}" value="&#x02C5;"/>
+			    	</p:layoutUnit>
+			    </p:layout>
+	    	</p:dataScroller>
+		</ui:define>
+	</ui:composition>
+</html>
