@@ -33,13 +33,11 @@
 				 		<h:outputText id="talkChars" />
 				 		<p:message for="newPostText" display="tooltip"/>
 			 		
-				    	<p:commandButton value="#{msgs['publish']}" update="talksAndComments:talkScroller createNewPost:newPostText" actionListener="#{postManagerBean.createPost(userManagerBean.loggedInUser)}">
-				    		<f:param name="userId" value="#{userManagerBean.loggedInUser.id}"/>
-				    	</p:commandButton>
+				    	<p:commandButton value="#{msgs['publish']}" update="talksAndComments:talkScroller createNewPost:newPostText" actionListener="#{postManagerBean.createPost(userManagerBean.loggedInUser)}" />
 			 		</div>
 			    </p:fieldset>
 			</h:form>
-						
+
 			<h:form id="talksAndComments">
 				<p:dataScroller id="talkScroller" value="#{postManagerBean.getAllPosts(userManagerBean.loggedInUser)}" var="post" chunkSize="10">
 				
@@ -78,8 +76,8 @@
 								 		<div>
 									 		<h:outputText id="commentChars"/>
 									 		<p:message for="newCommentText" display="tooltip"/>
-									 		
-									    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" update="talksAndComments:talkScroller:0:commentList" actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
+									 											 		
+									    	<p:commandButton value="#{msgs['publish']} #{msgs['Comment']}" update="talksAndComments:talkScroller:0:commentList"  actionListener="#{commentManagerBean.createComment(userManagerBean.loggedInUser, post)}"/>
 								    	</div>
 									</p:panel>
 								</h:form>

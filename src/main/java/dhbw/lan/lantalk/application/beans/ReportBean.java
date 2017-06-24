@@ -2,12 +2,16 @@ package dhbw.lan.lantalk.application.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
+
+import org.ocpsoft.prettytime.PrettyTime;
 
 import dhbw.lan.lantalk.persistence.factory.CommentFactory;
 import dhbw.lan.lantalk.persistence.factory.PostFactory;
@@ -62,6 +66,22 @@ public class ReportBean implements Serializable{
 		report.setReporter(reporter);
 		report.setTime(System.currentTimeMillis());
 		reportFactory.create(report);
+	}
+	
+	@Transactional
+	public void removeReport(Report report){
+		reportFactory.delete(report);
+	}
+	
+	 @Transactional
+	public void acceptReport(Report report, User loggedInUser){
+		 //todo: delete report + textcomponent and everything attached to it
+	 }
+	
+	public String getTimeDiff(TextComponent textComponent) {
+		PrettyTime prettyTime = new PrettyTime(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+		return prettyTime.format(new Date(textComponent.getTime()));
 	}
 	
 	public List<Report> getAllReports(){

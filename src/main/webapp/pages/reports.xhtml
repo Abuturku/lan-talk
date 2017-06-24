@@ -13,7 +13,31 @@
 		</ui:define>
 		
 		<ui:define name="lt-main-content">
-		Content coming soon!
+			<h:form id="allReports">
+				<p:dataScroller id="reportScroller" value="#{reportBean.getAllReports()}" var="report" chunkSize="10">
+				
+					<p:panel class="reports">
+	       				<p:toolbar class="reportInfo+Command">
+					        <f:facet name="left">
+					        	<h:outputText value="#{reportBean.getTimeDiff(report.textComponent)}" />
+					        	<span>Author: #{report.textComponent.user.name}</span>
+					        	<span>Reporter: #{report.reporter.name}</span>
+					        	<span>Reason: #{report.reportType}</span>
+					        </f:facet>
+					        <f:facet name="right">
+						        <p:commandButton value="Reject Report" update="reportScroller" actionListener="#{reportBean.removeReport(report)}" />				       
+						        <p:commandButton value="Delete" icon="ui-icon-trash" update="reportScroller" actionListener="#{reportBean.acceptReport(report, userManagerBean.loggedInUser)}"/>
+					        </f:facet>
+					    </p:toolbar>
+					    
+					    <div style="min-height:6rem">
+					    		<h:outputText value="#{report.getTextComponent().text}" />
+					    		<h:outputText value="#{report.getTextComponent().getId()}" />
+					    </div>
+					    
+				 	</p:panel>
+		    	</p:dataScroller>
+		    </h:form>
 		</ui:define>
 	</ui:composition>
 </html>
