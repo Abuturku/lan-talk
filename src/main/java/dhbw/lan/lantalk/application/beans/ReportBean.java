@@ -39,9 +39,6 @@ public class ReportBean implements Serializable {
 	private PostManagerBean postManagerBean;
 	
 	@Inject
-	private UserManagerBean userManagerBean;
-	
-	@Inject
 	private ReportFactory reportFactory;
 
 	@Inject
@@ -121,16 +118,17 @@ public class ReportBean implements Serializable {
 	 */
 	@Transactional
 	@RolesAllowed(value = {Role.Administrator, Role.Moderator})
-	public void acceptReport(Report report) {
+	public void acceptReport(Report report, User loggedInUser) {
 		report = reportFactory.get(report);
+		loggedInUser = userFactory.get(loggedInUser);
 		
 		if (report.getTextComponent().getTextType() == TextType.Comment) {
-			commentManagerBean.deleteComment((Comment)report.getTextComponent(), userManagerBean.getLoggedInUser());
+			commentManagerBean.deleteComment((Comment)report.getTextComponent(), loggedInUser);
 		}else{
-			postManagerBean.deletePost((Post) report.getTextComponent(), userManagerBean.getLoggedInUser());
+			postManagerBean.deletePost((Post) report.getTextComponent(), loggedInUser);
 		}
 		
-		userManagerBean.deleteUser(report.getTextComponent().getUser());
+//		reportFactory.delete(report);
 	}
 
 	

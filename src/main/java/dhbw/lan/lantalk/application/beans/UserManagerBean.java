@@ -175,6 +175,10 @@ public class UserManagerBean implements Serializable {
 	public User getLoggedInUser() {
 		return loggedInUser;
 	}
+	
+	public void setLoggedInUser(User user){
+		this.loggedInUser = user;
+	}
 
 	public String getUserName() {
 		return userFactory.get(loggedInUser).getName();
