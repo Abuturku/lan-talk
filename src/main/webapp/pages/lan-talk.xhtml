@@ -53,10 +53,10 @@
 			       				<p:toolbar class="talkInfo+Command">
 							        <f:facet name="left">
 							        	<h:outputText value="#{postManagerBean.getTimeDiff(post)}" />
-							        	<span class="modOnly">Author: #{post.user.name}</span>
+							        	<h:outputText value="Author: #{post.user.name}" rendered="#{userManagerBean.isUserInRole('Moderator')}" />
 							        </f:facet>
 							        <f:facet name="right">
-								        <p:menuButton value="Report" >
+								        <p:menuButton rendered="#{userManagerBean.isUserOwnerOrMod(post)}" value="Report" >
 								        	<p:menuitem value="Spam content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'spam')}" />
 								        	<p:menuitem value="Insult in content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'insult')}" />
 								        	<p:menuitem value="Inappropriate content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'inappropriate')}" />
@@ -68,7 +68,6 @@
 							    <p:layout style="min-height:6rem">
 							    	<p:layoutUnit position="center">
 							    		<h:outputText value="#{post.text}" />
-							    		<h:outputText value="#{post.getId()}" />
 							    	</p:layoutUnit>
 							    	<p:layoutUnit position="east" size="50">
 										<h:commandButton action="#{postManagerBean.upvotePost(post, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
