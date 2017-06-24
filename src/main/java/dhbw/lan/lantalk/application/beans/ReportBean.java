@@ -133,14 +133,18 @@ public class ReportBean implements Serializable {
 	
 	/**
 	 * 
-	 * @param report  
+	 * @param post  
 	 * @return Human readable String of the time difference between now and the creation time of the Report, e.g. "3 hours ago"
 	 */
-	public String getTimeDiff(Report report) {
-		reportFactory.get(report);
+	public String getTimeDiff(TextComponent textComponent) {
+		if (textComponent.getTextType() == TextType.Post) {
+			postFactory.get((Post)textComponent);
+		}else{
+			commentFactory.get((Comment)textComponent);
+		}
 		PrettyTime prettyTime = new PrettyTime(
 				FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
-		return prettyTime.format(new Date(report.getTime()));
+		return prettyTime.format(new Date(textComponent.getTime()));
 	}
 
 	/**
