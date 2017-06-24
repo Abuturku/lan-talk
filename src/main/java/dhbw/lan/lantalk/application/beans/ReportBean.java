@@ -1,10 +1,10 @@
 package dhbw.lan.lantalk.application.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -20,15 +20,25 @@ import dhbw.lan.lantalk.persistence.factory.UserFactory;
 import dhbw.lan.lantalk.persistence.objects.Comment;
 import dhbw.lan.lantalk.persistence.objects.Post;
 import dhbw.lan.lantalk.persistence.objects.Report;
+import dhbw.lan.lantalk.persistence.objects.Role;
 import dhbw.lan.lantalk.persistence.objects.TextComponent;
 import dhbw.lan.lantalk.persistence.objects.TextType;
 import dhbw.lan.lantalk.persistence.objects.User;
 
 @Named
 @RequestScoped
-public class ReportBean implements Serializable{
+public class ReportBean implements Serializable {
 	private static final long serialVersionUID = -6770456571006529147L;
 
+	@Inject
+	private CommentManagerBean commentManagerBean;
+	
+	@Inject
+	private PostManagerBean postManagerBean;
+	
+	@Inject
+	private UserManagerBean userManagerBean;
+	
 	@Inject
 	private ReportFactory reportFactory;
 
@@ -41,6 +51,15 @@ public class ReportBean implements Serializable{
 	@Inject
 	private UserFactory userFactory;
 
+	/**
+	 * Add a report to a Comment.
+	 * 
+	 * @param comment
+	 *            The {@link Comment} of the comment
+	 * 
+	 * @param reporter
+	 *            The {@link User}, that submitted the report
+	 */
 	@Transactional
 	public void reportComment(Comment comment, User reporter) {
 		reporter = userFactory.get(reporter);
@@ -55,6 +74,15 @@ public class ReportBean implements Serializable{
 		reportFactory.create(report);
 	}
 
+	/**
+	 * Add a report to a Post.
+	 * 
+	 * @param post
+	 *            The {@link Post} of the comment
+	 * 
+	 * @param reporter
+	 *            The {@link User}, that submitted the report
+	 */
 	@Transactional
 	public void reportPost(Post post, User reporter) {
 		reporter = userFactory.get(reporter);
@@ -67,57 +95,102 @@ public class ReportBean implements Serializable{
 		report.setTime(System.currentTimeMillis());
 		reportFactory.create(report);
 	}
-	
+
+	/**
+	 * Deletes a report.
+	 * 
+	 * @param report
+	 *            The {@link Report} that will be deleted
+	 */
 	@Transactional
-	public void removeReport(Report report){
+	public void removeReport(Report report) {
 		reportFactory.delete(report);
 	}
+
 	
-	 @Transactional
-	public void acceptReport(Report report, User loggedInUser){
-		 //todo: delete report + textcomponent and everything attached to it
-	 }
+	/**
+	 * If a report is justified, this function will be called and the {@link Report} + {@link TextComponent} and everything attached to it will be deleted.
+	 * 
+	 * @param report The report that
+	 * @param loggedInUser
+	 */
+	@Transactional
+	@RolesAllowed(value = {Role.Administrator, Role.Moderator})
+	public void acceptReport(Report report) {
+		report = reportFactory.get(report);
+		
+		if (report.getTextComponent().getTextType() == TextType.Comment) {
+			commentManagerBean.deleteComment((Comment)report.getTextComponent(), userManagerBean.getLoggedInUser());
+		}else{
+			postManagerBean.deletePost((Post) report.getTextComponent(), userManagerBean.getLoggedInUser());
+		}
+		
+		userManagerBean.deleteUser(report.getTextComponent().getUser());
+	}
+
 	
-	public String getTimeDiff(TextComponent textComponent) {
+	/**
+	 * 
+	 * @param report  
+	 * @return Human readable String of the time difference between now and the creation time of the Report, e.g. "3 hours ago"
+	 */
+	public String getTimeDiff(Report report) {
+		reportFactory.get(report);
 		PrettyTime prettyTime = new PrettyTime(
 				FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
-		return prettyTime.format(new Date(textComponent.getTime()));
+		return prettyTime.format(new Date(report.getTime()));
 	}
-	
-	public List<Report> getAllReports(){
+
+	/**
+	 * 
+	 * 
+	 * @return All reports that are stored in the database
+	 */
+	public List<Report> getAllReports() {
 		return reportFactory.getAll();
 	}
+
 	
-	public List<Report> getAllReportsSubmittedByUser(User user){
+	/**
+	 * 
+	 * 
+	 * @param user {@link User}
+	 * @return All reports that have been submitted by {@link User}
+	 */
+	public List<Report> getAllReportsSubmittedByUser(User user) {
 		user = userFactory.get(user);
 		List<Report> reports = reportFactory.getAll();
-		
+
 		for (int i = 0; i < reports.size(); i++) {
 			if (!reports.get(i).getReporter().equals(user)) {
 				reports.remove(reports.get(i));
 			}
 		}
-		
+
 		return reports;
 	}
-	
-	public List<Report> getAllReportsOfTextComponent(TextComponent component){
-		List<Report> reports = reportFactory.getAll(); 
-		
+
+	/**
+	 * 
+	 * @param component The {@link TextComponent}
+	 * @return All reports that are linked to the {@link TextComponent}
+	 */
+	public List<Report> getAllReportsOfTextComponent(TextComponent component) {
+		List<Report> reports = reportFactory.getAll();
+
 		if (component.getTextType() == TextType.Post) {
-			component = postFactory.get((Post)component);
-		}else{
-			component = commentFactory.get((Comment)component);
+			component = postFactory.get((Post) component);
+		} else {
+			component = commentFactory.get((Comment) component);
 		}
-		
+
 		for (int i = 0; i < reports.size(); i++) {
 			if (reports.get(i).getTextComponent().equals(component)) {
 				reports.remove(reports.get(i));
 			}
 		}
-		
+
 		return reports;
 	}
-	
-	
+
 }

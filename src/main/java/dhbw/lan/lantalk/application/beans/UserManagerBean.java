@@ -72,10 +72,21 @@ public class UserManagerBean implements Serializable {
 		return getPrincipal().isPresent();
 	}
 
+	/**
+	 * Checks if the logged in user is in a role
+	 * 
+	 * @param role 
+	 * 				The role that a user is checked against
+	 */
 	public boolean isUserInRole(String role) {
 		return (loggedInUser.getRole().equals(Role.Administrator) || loggedInUser.getRole().equals(role));
 	}
 
+	/**
+	 * Checks if the logged in user is owner of a {@link TextComponent} or a Administrator/Moderator
+	 * @param textcomponent 
+	 * 					The {@link TextComponent} to check.
+	 */
 	public boolean isUserOwnerOrMod(TextComponent textcomponent) {
 
 		if (textcomponent.getUser().getName().equals(loggedInUser.getName()) || loggedInUser.getRole().equals(Role.Administrator)
@@ -113,6 +124,12 @@ public class UserManagerBean implements Serializable {
 		return "login";
 	}
 
+	/**
+	 * Promotes a user to Moderator role. Only Administrator are allowed to do this.
+	 * 
+	 * @param user 
+	 * 				The {@link User} to be promoted
+	 */
 	@Transactional
 	@RolesAllowed(value = { Role.Administrator })
 	public void promoteUserToMod(User user) {
@@ -121,6 +138,13 @@ public class UserManagerBean implements Serializable {
 		userFactory.update(user);
 	}
 
+	/**
+	 * Deletes a user and of all his {@link Post}s, {@link Comment}s, {@link Report}s.
+	 * Only Administrators are allowed to execute this.
+	 * 
+	 * @param user 
+	 * 				The {@link User} that will be deleted.
+	 */
 	@Transactional
 	@RolesAllowed(value = { Role.Administrator })
 	public void deleteUser(User user) {
@@ -166,41 +190,67 @@ public class UserManagerBean implements Serializable {
 		return userFactory.get(loggedInUser).getRole().toString();
 	}
 
+	/**
+	 * 
+	 * @return
+	 * 				The registration date of the logged in user in "dd.MM.yyyy"-format.
+	 */
 	public String getUserRegTime() {
 		Date date = new Date(userFactory.get(loggedInUser).getRegTime());
 		String pattern = "dd.MM.yyyy";
 		DateFormat format = new SimpleDateFormat(pattern);
 		return format.format(date);
 	}
-
+	
+	/**
+	 * Counts the amounts of posts a user published by iterating through the users postList.
+	 * @return
+	 * 				The amount of posts the logged in user published.
+	 */
 	@Transactional
 	public int getAmountOfPosts() {
 		int amount = 0;
 		List<Post> posts = userFactory.get(loggedInUser).getPostList();
 
+		//Workaround because users postList contains post...
 		for (TextComponent post : posts) {
 			if (post.getTextType() == TextType.Post) {
 				amount++;
 			}
 		}
 
+		//return posts.size();
+		
 		return amount;
 	}
 
+	/**
+	 * Counts the amounts of posts a user published by iterating through the users commentList.
+	 * @return
+	 * 				The amount of comments the logged in user published.
+	 */
 	@Transactional
 	public int getAmountOfComments() {
 		int amount = 0;
 		List<Comment> comments = userFactory.get(loggedInUser).getCommentList();
 
 		for (TextComponent comment : comments) {
+			//Workaround because users commentList contains post...
 			if (comment.getTextType() == TextType.Comment) {
 				amount++;
 			}
 		}
+		
+		//return comments.size();
 
 		return amount;
 	}
 
+	/**
+	 * Counts the amounts of upvotes a user gained by iterating through the users pointList.
+	 * @return
+	 * 				The amount of points the logged in user published.
+	 */
 	@Transactional
 	public int getAmountOfVotes() {
 		User user = userFactory.get(loggedInUser);
@@ -217,6 +267,13 @@ public class UserManagerBean implements Serializable {
 		return amount;
 	}
 
+	/**
+	 * 
+	 * @param user
+	 * 				The {@link User} to get the list from
+	 * @return
+	 * 				A list of {@link Comment}s the user published
+	 */
 	@Transactional
 	public List<Comment> getUserComments(User user) {
 		user = userFactory.get(user);
@@ -230,6 +287,14 @@ public class UserManagerBean implements Serializable {
 		return commentList;
 	}
 
+	
+	/**
+	 * 
+	 * @param user
+	 * 				The {@link User} to get the list from
+	 * @return
+	 * 				A list of {@link Post}s the user published
+	 */
 	@Transactional
 	public List<Post> getUserPosts(User user) {
 		user = userFactory.get(user);
