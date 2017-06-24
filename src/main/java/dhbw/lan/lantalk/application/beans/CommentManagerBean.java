@@ -214,6 +214,8 @@ public class CommentManagerBean implements Serializable {
 				pointFactory.delete(commentPointList.get(j));
 			}
 			
+			comment.getPost().getCommentList().remove(comment);
+			postFactory.update(comment.getPost());
 			commentFactory.delete(comment);
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,

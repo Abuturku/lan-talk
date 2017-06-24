@@ -56,6 +56,8 @@ public class ReportBean implements Serializable {
 
 	@Inject
 	private UserFactory userFactory;
+	
+	private TextComponent selectedTextComponent;
 
 	/**
 	 * Add a report to a Comment.
@@ -225,6 +227,14 @@ public class ReportBean implements Serializable {
 		
 		s.addAll(textComponents);
 		return Arrays.asList(s.toArray());
+	}
+	
+	public TextComponent getSelectedTextComponent() {
+		return selectedTextComponent;
+	}
+
+	public void setSelectedTextComponent(TextComponent selectedTextComponent) {
+		this.selectedTextComponent = selectedTextComponent;
 	}
 
 }
