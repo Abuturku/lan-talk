@@ -10,7 +10,6 @@ import javax.persistence.*;
  * @author Niklas Nikisch
  *
  */
-
 @Entity
 @Table(name = "Users")
 public class User implements IPrimKey {
