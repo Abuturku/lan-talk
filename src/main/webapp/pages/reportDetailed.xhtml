@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="./reports.xhtml">
+		<ui:define name="reportDetails">
+			
+			<h:form id="allReports">
+				<p:dataScroller id="reportScroller" value="#{reportBean.getAllReportsOfTextComponent(reportBean.getSelectedReport())}" var="report" chunkSize="10">
+				
+					<p:panel class="reports">
+	       				<p:toolbar class="reportInfo+Command">
+					        <f:facet name="left">
+					        	<h:outputText value="#{reportBean.getTimeDiff(report.textComponent)}" />
+					        	<span>Author: #{report.textComponent.user.name}</span>
+					        	<span>Reporter: #{report.reporter.name}</span>
+					        	<span>Reason: #{report.reportType}</span>
+					        </f:facet>
+					        <f:facet name="right">
+						        <p:commandButton value="Reject Report" update="reportScroller" actionListener="#{reportBean.removeReport(report)}" />				       
+						        <p:commandButton value="Delete" icon="ui-icon-trash" update="reportScroller" actionListener="#{reportBean.acceptReport(report, userManagerBean.loggedInUser)}"/>
+					        </f:facet>
+					    </p:toolbar>
+					    
+					    <div style="min-height:6rem">
+				    		<h:outputText value="#{report.getTextComponent().text}" />
+					    </div>
+					    
+				 	</p:panel>
+		    	</p:dataScroller>
+		    </h:form>
+		</ui:define>
+	</ui:composition>
+</html>

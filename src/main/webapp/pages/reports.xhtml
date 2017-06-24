@@ -13,30 +13,33 @@
 		</ui:define>
 		
 		<ui:define name="lt-main-content">
-			<h:form id="allReports">
-				<p:dataScroller id="reportScroller" value="#{reportBean.getAllReports()}" var="report" chunkSize="10">
+			<p:layout>
+				<p:layoutUnit position="center">
+					<h:form id="groupedReports">
+						<p:dataScroller id="groupedReportsScroller" value="#{reportBean.getAllDistinctTextComponents()}" var="reportedTC" chunkSize="10">
+							<p:panel class="reportedTC">
+								<p:toolbar class="reportedTC+Command">
+									<f:facet name="left">
+										<span>Author: #{reportedTC.user.name}</span>
+										<span>Number of Reports: #{reportBean.getAllReportsOfTextComponent(reportedTC).size()}</span>
+									</f:facet>
+									<f:facet name="right">
+										<p:commandButton action="./reportDetailed.xhtml?faces-redirect=true" value="Show reports" icon="ui-icon-alert" actionListener="#{reportBean.setSelectedTextComponent(reportedTC) }" />
+									</f:facet>
+								</p:toolbar>
+								
+							    <div style="min-height:6rem">
+						    		<h:outputText value="#{reportedTC.text}" />
+							    </div>
+							</p:panel>
+						</p:dataScroller>
+					</h:form>
+				</p:layoutUnit>
 				
-					<p:panel class="reports">
-	       				<p:toolbar class="reportInfo+Command">
-					        <f:facet name="left">
-					        	<h:outputText value="#{reportBean.getTimeDiff(report.textComponent)}" />
-					        	<span>Author: #{report.textComponent.user.name}</span>
-					        	<span>Reporter: #{report.reporter.name}</span>
-					        	<span>Reason: #{report.reportType}</span>
-					        </f:facet>
-					        <f:facet name="right">
-						        <p:commandButton value="Reject Report" update="reportScroller" actionListener="#{reportBean.removeReport(report)}" />				       
-						        <p:commandButton value="Delete" icon="ui-icon-trash" update="reportScroller" actionListener="#{reportBean.acceptReport(report, userManagerBean.loggedInUser)}"/>
-					        </f:facet>
-					    </p:toolbar>
-					    
-					    <div style="min-height:6rem">
-				    		<h:outputText value="#{report.getTextComponent().text}" />
-					    </div>
-					    
-				 	</p:panel>
-		    	</p:dataScroller>
-		    </h:form>
+				<p:layoutUnit position="east">
+					<ui:insert name="reportDetails"></ui:insert>
+				</p:layoutUnit>
+			</p:layout>
 		</ui:define>
 	</ui:composition>
 </html>
