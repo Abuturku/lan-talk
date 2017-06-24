@@ -1,6 +1,7 @@
 package dhbw.lan.lantalk.application.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
@@ -205,18 +206,23 @@ public class ReportBean implements Serializable {
 	
 	public List<Object> getAllDistinctReports(){
 		List<Report> reports = reportFactory.getAll();
+		List<TextComponent> textComponents = new ArrayList<>();
 		
-		Set<Report> s = new TreeSet<Report>(new Comparator<Report>() {
+		for (int i = 0; i < reports.size(); i++) {
+			textComponents.add(reports.get(i).getTextComponent());
+		}
+		
+		Set<TextComponent> s = new TreeSet<TextComponent>(new Comparator<TextComponent>() {
 			@Override
-			public int compare(Report o1, Report o2) {
-				if (o1.getTextComponent().equals(o2.getTextComponent())) {
+			public int compare(TextComponent component1, TextComponent component2) {
+				if (component1.equals(component2)) {
 					return 0;
 				}
 				return -1;
 			}
 		});
 		
-		s.addAll(reports);
+		s.addAll(textComponents);
 		return Arrays.asList(s.toArray());
 	}
 
