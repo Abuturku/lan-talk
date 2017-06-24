@@ -67,13 +67,13 @@ public class ReportBean implements Serializable {
 	 *            The {@link User}, that submitted the report
 	 */
 	@Transactional
-	public void reportComment(Comment comment, User reporter) {
+	public void reportComment(Comment comment, User reporter, String reason) {
 		reporter = userFactory.get(reporter);
 		comment = commentFactory.get(comment);
 
 		// TODO add report reason
 		Report report = new Report();
-
+		report.setReportType(ReportType.fromString(reason));
 		report.setTextComponent(comment);
 		report.setReporter(reporter);
 		report.setTime(System.currentTimeMillis());
