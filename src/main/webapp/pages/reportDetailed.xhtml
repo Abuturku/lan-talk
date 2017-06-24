@@ -21,7 +21,7 @@
 					        </f:facet>
 					        <f:facet name="right">
 						        <p:commandButton value="Reject report" update="allReports:reportScroller" actionListener="#{reportBean.removeReport(report)}" />				       
-						        <p:commandButton value="Accept report"  update="allReports:reportScroller" actionListener="#{reportBean.acceptReport(report)}"/>
+						        <p:commandButton value="Accept report"  update="allReports:reportScroller" actionListener="#{reportBean.acceptReport(report, userManagerBean.loggedInUser)}"/>
 					        </f:facet>
 					    </p:toolbar>
 					    
