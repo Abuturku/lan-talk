@@ -14,7 +14,8 @@
 					<a href="./../pages/lan-talk.xhtml">
 						<img id="logo" alt="Lan-Talk Logo" src="./../img/logo_lan_talk.png"/>
 					</a>
-					<h:form>					 
+					<h:form>		
+					<p:growl autoUpdate="true"/>			 
 					    <p:panelMenu id="menu">
 					        <p:submenu label="#{msgs['loginInfo']} #{userManagerBean.getUserName()}">
 					            <p:menuitem class="nonclickable" value="#{msgs['role']}: #{userManagerBean.getUserRole()}"/>
