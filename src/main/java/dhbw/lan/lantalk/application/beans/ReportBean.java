@@ -1,8 +1,12 @@
 package dhbw.lan.lantalk.application.beans;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
@@ -197,6 +201,23 @@ public class ReportBean implements Serializable {
 		}
 
 		return reports;
+	}
+	
+	public List<Object> getAllDistinctReports(){
+		List<Report> reports = reportFactory.getAll();
+		
+		Set<Report> s = new TreeSet<Report>(new Comparator<Report>() {
+			@Override
+			public int compare(Report o1, Report o2) {
+				if (o1.getTextComponent().equals(o2.getTextComponent())) {
+					return 0;
+				}
+				return -1;
+			}
+		});
+		
+		s.addAll(reports);
+		return Arrays.asList(s.toArray());
 	}
 
 }
