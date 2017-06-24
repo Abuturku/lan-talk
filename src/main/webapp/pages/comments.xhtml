@@ -34,8 +34,12 @@
 					    		<span id="authorC0" class="modOnly">
 					    			Author: #{comment.user.name}
 					    		</span>
-					    		<p:commandButton value="Report" update="commentScroller" icon="ui-icon-alert" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser)}"/>
-					    		<p:commandButton value="Delete" update="commentScroller" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
+					    		<p:menuButton value="Report" >
+						        	<p:menuitem value="Spam content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'spam')}" />
+						        	<p:menuitem value="Insult in content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'insult')}" />
+						        	<p:menuitem value="Inappropriate content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'inappropriate')}" />
+						        </p:menuButton>
+								<p:commandButton value="Delete" update="commentScroller" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
 		        			</div>
 	        			
 		        		</p:layoutUnit>
