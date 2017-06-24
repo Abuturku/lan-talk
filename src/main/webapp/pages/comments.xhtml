@@ -34,9 +34,9 @@
 						    			Author: #{comment.user.name}
 						    		</span>
 						    		<p:menuButton value="Report" >
-							        	<p:menuitem value="Spam content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'spam')}" />
-							        	<p:menuitem value="Insult in content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'insult')}" />
-							        	<p:menuitem value="Inappropriate content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'inappropriate')}" />
+							        	<p:menuitem value="Spam content" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser, 'spam')}" />
+							        	<p:menuitem value="Insult in content" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser, 'insult')}" />
+							        	<p:menuitem value="Inappropriate content" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser, 'inappropriate')}" />
 							        </p:menuButton>
 									<p:commandButton value="Delete" update="comments:commentScroller" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
 			        			</div>
