@@ -136,10 +136,48 @@ html, body {
 	width: 100%;
 }
 
+#lt-menu-specifics {
+	text-align: center;
+}
+
+#lt-menu-specifics button, #lt-menu-specifics>div {
+	display: block;
+	width: 100%;
+	margin-top: 0.5rem;
+}
+
 /***talks***/
+textarea {
+	width: 100% !important;
+	margin: 0.1rem !important;
+}
+
+.ui-datascroller-item {
+	overflow: hidden !important;
+}
+
+.ui-datascroller-item div div {
+	overflow: hidden !important;
+}
+
+.votingArea div {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.votingArea div * {
+	display: block !important;
+	margin: auto;
+	padding: 0.1rem 0.3rem;
+}
 
 /***comments***/
 .ui-datascroller-content, ui-widget-content, ui-corner-all {
 	background: transparent !important;
-	border:none !important;
+	border: none !important;
+}
+
+/***reports***/
+#reportInfoArea * {
+	display: block !important;
 }

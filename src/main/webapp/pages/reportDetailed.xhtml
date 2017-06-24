@@ -20,15 +20,15 @@
 					        	<span>Author: #{report.textComponent.user.name}</span>
 					        </f:facet>
 					        <f:facet name="right">
-						        <p:commandButton value="Reject report" update="reportScroller" actionListener="#{reportBean.removeReport(report)}" />				       
-						        <p:commandButton value="Accept report"  update="reportScroller" actionListener="#{reportBean.acceptReport(report)}"/>
+						        <p:commandButton value="Reject report" update="allReports:reportScroller" actionListener="#{reportBean.removeReport(report)}" />				       
+						        <p:commandButton value="Accept report"  update="allReports:reportScroller" actionListener="#{reportBean.acceptReport(report)}"/>
 					        </f:facet>
 					    </p:toolbar>
 					    
-					    <div style="min-height:6rem">
-					    	<h:outputText value="Reporter: #{report.reporter.name}" />
-					    	<h:outputText value="Reason: #{report.reportType}" />
-				    		<h:outputText value="#{report.getTextComponent().text}" />
+					    <div style="min-height:6rem" id="reportInfoArea">
+					    	<div><h:outputText value="Reporter: #{report.reporter.name}" /></div>
+					    	<div><h:outputText value="Reason: #{report.reportType}" /></div>
+					    	<div><h:outputText value="Text: #{report.getTextComponent().text}" /></div>
 					    </div>
 					    
 				 	</p:panel>

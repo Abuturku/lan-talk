@@ -38,11 +38,11 @@
 							        	<p:menuitem value="Insult in content" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser, 'insult')}" />
 							        	<p:menuitem value="Inappropriate content" actionListener="#{reportBean.reportComment(comment, userManagerBean.loggedInUser, 'inappropriate')}" />
 							        </p:menuButton>
-									<p:commandButton value="Delete" update="comments:commentScroller" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
+									<p:commandButton value="Delete" update="comments talks:talkScroller" icon="ui-icon-trash" rendered="#{userManagerBean.isUserOwnerOrMod(comment)}" actionListener="#{commentManagerBean.deleteComment(comment, userManagerBean.loggedInUser)}"/>
 			        			</div>
 		        			
 			        		</p:layoutUnit>
-					    	<p:layoutUnit position="east" size="50">
+					    	<p:layoutUnit position="east" class="votingArea" size="50">
 								<h:commandButton action="#{commentManagerBean.upvoteComment(comment, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
 								
 					    		<h:outputText value="#{comment.votes}"/>

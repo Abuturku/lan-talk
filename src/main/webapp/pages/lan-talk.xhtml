@@ -12,7 +12,7 @@
 		<ui:define name="lt-menu-specifics-content">
 		    <p:commandButton rendered="#{userManagerBean.isUserInRole('Moderator')}" action="./reports.xhtml?faces-redirect=true" value="Show reports"/>
 		
-			<p:selectOneMenu value="#{postManagerBean.sortBy}" style="width:150px">
+			<p:selectOneMenu value="#{postManagerBean.sortBy}">
                 <p:ajax update="talks:talkScroller" listener="#{postManagerBean.sortAllPosts()}"/>
                 <f:selectItems value="#{postManagerBean.sortMethods}" />
             </p:selectOneMenu>
@@ -65,11 +65,11 @@
 							        </f:facet>
 							    </p:toolbar>
 							    
-							    <p:layout style="min-height:6rem">
+							    <p:layout style="min-height:6rem" >
 							    	<p:layoutUnit position="center">
 							    		<h:outputText value="#{post.text}" />
 							    	</p:layoutUnit>
-							    	<p:layoutUnit position="east" size="50">
+							    	<p:layoutUnit class="votingArea" position="east" size="50">
 										<h:commandButton action="#{postManagerBean.upvotePost(post, userManagerBean.loggedInUser)}" value="&#x02C4;"/>
 										
 							    		<h:outputText value="#{post.votes}"/>
