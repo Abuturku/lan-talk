@@ -49,10 +49,12 @@ public class Post extends TextComponent {
 		if (!(obj instanceof Post)) {
 			return false;
 		}
-		Post post = (Post) obj;
-		if (!commentList.equals(post.commentList)) {
+		
+		Post post = (Post) obj;		
+		if (!(post.getId() == this.getId())) {
 			return false;
 		}
+		
 		return true;
 	}
 }

@@ -136,7 +136,7 @@ public class Report implements IPrimKey {
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof Post)) {
+		if (!(obj instanceof Report)) {
 			return false;
 		}
 		Report report = (Report) obj;

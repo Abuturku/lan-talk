@@ -218,7 +218,7 @@ public abstract class TextComponent implements IPrimKey {
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof Post)) {
+		if (!(obj instanceof TextComponent)) {
 			return false;
 		}
 		TextComponent textComponent = (TextComponent) obj;

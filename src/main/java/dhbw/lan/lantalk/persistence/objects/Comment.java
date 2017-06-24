@@ -46,10 +46,12 @@ public class Comment extends TextComponent {
 		if (!(obj instanceof Post)) {
 			return false;
 		}
+		
 		Comment comment = (Comment) obj;
-		if (!post.equals(comment.post)) {
+		if (!(comment.getId() == this.getId())) {
 			return false;
 		}
+		
 		return true;
 	}
 }

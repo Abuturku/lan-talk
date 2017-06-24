@@ -2,15 +2,11 @@ package dhbw.lan.lantalk.application.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,7 +28,7 @@ import dhbw.lan.lantalk.persistence.objects.TextType;
 import dhbw.lan.lantalk.persistence.objects.User;
 
 @Named
-@RequestScoped
+@SessionScoped
 public class ReportBean implements Serializable {
 	private static final long serialVersionUID = -6770456571006529147L;
 
@@ -177,6 +173,7 @@ public class ReportBean implements Serializable {
 		for (int i = 0; i < reports.size(); i++) {
 			if (!reports.get(i).getReporter().equals(user)) {
 				reports.remove(reports.get(i));
+				i--;
 			}
 		}
 
@@ -198,35 +195,28 @@ public class ReportBean implements Serializable {
 		}
 
 		for (int i = 0; i < reports.size(); i++) {
-			if (reports.get(i).getTextComponent().equals(component)) {
+			if (!reports.get(i).getTextComponent().equals(component)) {
 				reports.remove(reports.get(i));
+				i--;
 			}
 		}
 
 		return reports;
 	}
 	
-	public List<Object> getAllDistinctTextComponents(){
+	public List<TextComponent> getAllDistinctTextComponents(){
 		List<Report> reports = reportFactory.getAll();
 		List<TextComponent> textComponents = new ArrayList<>();
 		
 		for (int i = 0; i < reports.size(); i++) {
-			textComponents.add(reports.get(i).getTextComponent());
+			TextComponent componentToAdd = reports.get(i).getTextComponent();
+			
+			if (!textComponents.contains(componentToAdd)) {
+				textComponents.add(componentToAdd);
+			}
 		}
 		
-		//see https://stackoverflow.com/questions/5741038/remove-duplicates-from-arraylists
-		Set<TextComponent> s = new TreeSet<TextComponent>(new Comparator<TextComponent>() {
-			@Override
-			public int compare(TextComponent component1, TextComponent component2) {
-				if (component1.equals(component2)) {
-					return 0;
-				}
-				return -1;
-			}
-		});
-		
-		s.addAll(textComponents);
-		return Arrays.asList(s.toArray());
+		return textComponents;
 	}
 	
 	public TextComponent getSelectedTextComponent() {
