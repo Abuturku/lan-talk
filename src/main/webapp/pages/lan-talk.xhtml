@@ -56,13 +56,11 @@
 							        	<span class="modOnly">Author: #{post.user.name}</span>
 							        </f:facet>
 							        <f:facet name="right">
-							        	<h:form>
-									        <p:menuButton value="Report" icon="ui-icon-alert" >
-									        	<p:menuitem value="Spam content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'spam')}" />
-									        	<p:menuitem value="Insult in content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'insult')}" />
-									        	<p:menuitem value="Inappropriate content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'inappropriate')}" />
-									        </p:menuButton>
-								        </h:form>
+								        <p:menuButton value="Report" >
+								        	<p:menuitem value="Spam content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'spam')}" />
+								        	<p:menuitem value="Insult in content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'insult')}" />
+								        	<p:menuitem value="Inappropriate content" actionListener="#{reportBean.reportPost(post, userManagerBean.loggedInUser, 'inappropriate')}" />
+								        </p:menuButton>
 								        <p:commandButton value="Delete" icon="ui-icon-trash" update="talkScroller" rendered="#{userManagerBean.isUserOwnerOrMod(post)}" actionListener="#{postManagerBean.deletePost(post, userManagerBean.loggedInUser)}"/>
 							        </f:facet>
 							    </p:toolbar>
