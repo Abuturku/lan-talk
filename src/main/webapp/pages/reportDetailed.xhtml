@@ -11,7 +11,7 @@
 		<ui:define name="reportDetails">
 			
 			<h:form id="allReports">
-				<p:dataScroller id="reportScroller" value="#{reportBean.getAllReportsOfTextComponent(reportBean.getSelectedReport())}" var="report" chunkSize="10">
+				<p:dataScroller id="reportScroller" value="#{reportBean.getAllReportsOfTextComponent(reportBean.getSelectedTextComponent())}" var="report" chunkSize="10">
 				
 					<p:panel class="reports">
 	       				<p:toolbar class="reportInfo+Command">

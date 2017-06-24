@@ -24,7 +24,7 @@
 										<span>Number of Reports: #{reportBean.getAllReportsOfTextComponent(reportedTC).size()}</span>
 									</f:facet>
 									<f:facet name="right">
-										<p:commandButton action="./reportDetailed.xhtml?faces-redirect=true" value="Show reports" icon="ui-icon-alert" actionListener="#{reportBean.setSelectedTextComponent(reportedTC) }" />
+										<p:commandButton action="./reportDetailed.xhtml?faces-redirect=true" value="Show reports" actionListener="#{reportBean.setSelectedTextComponent(reportedTC) }" />
 									</f:facet>
 								</p:toolbar>
 								
