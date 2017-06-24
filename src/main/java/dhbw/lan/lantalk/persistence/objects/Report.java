@@ -3,7 +3,7 @@ package dhbw.lan.lantalk.persistence.objects;
 import javax.persistence.*;
 
 /**
- * Represents a report to a Textcomponent
+ * Represents a report to a text-component
  * 
  * @author Niklas Nikisch
  *
@@ -21,7 +21,7 @@ public class Report implements IPrimKey {
 	private int id;
 
 	/**
-	 * Represents the user who reportet the textcomponent
+	 * Represents the user who reported the text-component
 	 */
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn
@@ -34,7 +34,7 @@ public class Report implements IPrimKey {
 	private long time;
 
 	/**
-	 * Reference to the text from the report
+	 * Reference to the text-component from the report
 	 */
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn
@@ -67,14 +67,14 @@ public class Report implements IPrimKey {
 	/**
 	 *
 	 * @param user
-	 *            set the {@link Report#reporter} who reported the textcomponent
+	 *            set the {@link Report#reporter} who reported the text-component
 	 */
 	public void setReporter(User reporter) {
 		this.reporter = reporter;
 	}
 
 	/**
-	 * @return the {@link Report#reporter} who reported the textcomponent
+	 * @return the {@link Report#reporter} who reported the text-component
 	 */
 	public User getReporter() {
 		return this.reporter;

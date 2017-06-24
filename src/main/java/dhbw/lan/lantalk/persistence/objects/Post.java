@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 /**
- * Represents a comment from the database
+ * Represents a post from the database
  * 
  * @author Niklas Nikisch
  *

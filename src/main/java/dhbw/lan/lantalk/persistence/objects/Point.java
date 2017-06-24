@@ -3,7 +3,7 @@ package dhbw.lan.lantalk.persistence.objects;
 import javax.persistence.*;
 
 /**
- * Represents a comment from the database
+ * Represents a point from the database
  * 
  * @author Niklas Nikisch
  *
@@ -28,19 +28,19 @@ public class Point implements IPrimKey {
 	private User user;
 
 	/**
-	 * Represents the user who created the point
+	 * Shows if it is an upvote (true) or downvote (false)
 	 */
 	@Column
 	private boolean upvote;
 
 	/**
-	 * Represents the creation time of the post
+	 * Represents the creation time of the vote
 	 */
 	@Column
 	private long time;
 
 	/**
-	 * Reference to the text from the vote
+	 * Reference to the text-component from the vote
 	 */
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn
@@ -49,14 +49,14 @@ public class Point implements IPrimKey {
 	/**
 	 *
 	 * @param id
-	 *            set the {@link Point#id} of the post
+	 *            set the {@link Point#id} of the point
 	 */
 	public void setID(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the {@link Point#id} of the post
+	 * @return the {@link Point#id} of the point
 	 */
 	@Override
 	public int getId() {
