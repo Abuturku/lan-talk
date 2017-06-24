@@ -204,7 +204,7 @@ public class ReportBean implements Serializable {
 		return reports;
 	}
 	
-	public List<Object> getAllDistinctReports(){
+	public List<Object> getAllDistinctTextComponents(){
 		List<Report> reports = reportFactory.getAll();
 		List<TextComponent> textComponents = new ArrayList<>();
 		
@@ -212,6 +212,7 @@ public class ReportBean implements Serializable {
 			textComponents.add(reports.get(i).getTextComponent());
 		}
 		
+		//see https://stackoverflow.com/questions/5741038/remove-duplicates-from-arraylists
 		Set<TextComponent> s = new TreeSet<TextComponent>(new Comparator<TextComponent>() {
 			@Override
 			public int compare(TextComponent component1, TextComponent component2) {
